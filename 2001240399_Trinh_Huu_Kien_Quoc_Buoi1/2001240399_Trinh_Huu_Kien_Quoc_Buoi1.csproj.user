@@ -19,6 +19,12 @@
     <Compile Update="Bai5.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Bai6.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Btvn.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Bai2.xaml">
