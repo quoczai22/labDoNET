@@ -1,0 +1,56 @@
+﻿<Window x:Class="_2001240399_Trinh_Huu_Kien_Quoc_Buoi2.Bai1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_2001240399_Trinh_Huu_Kien_Quoc_Buoi2"
+        mc:Ignorable="d"
+        Title="Bai1" Height="405" Width="800">
+    <Grid Margin="0,0,0,80">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Thong tin"
+            FontSize="22" FontWeight="Bold"
+            HorizontalAlignment="Center"
+            Margin="156,19,156,5" Foreground="#2C3E50"
+            Grid.Row="0"/>
+        <Border Grid.Row="1"
+         CornerRadius="12"
+         BorderBrush="LightBlue"
+         BorderThickness="2"
+         Padding="15"
+         Margin="10,10,10,-293">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#3498DB" Offset="0.0"/>
+                    <GradientStop Color="#2ECC71" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Nhap ho ten" FontSize="22" Width="180" FontWeight="Bold" HorizontalAlignment="Left"
+                           Margin="46,5,0,15" Foreground="White"
+                           Grid.Row="0"/>
+                <TextBox x:Name="txthoten" Height="30" FontSize="16"
+                            Margin="248,5,36,14"
+                            Grid.Row="0" TextChanged="txthoten_TextChanged"/>
+                <TextBlock Text="Nam sinh" FontSize="22" Width="180" FontWeight="Bold" HorizontalAlignment="Left" Margin="63,27,0,0" Foreground="White" Grid.Row="3" VerticalAlignment="Top"  />
+                <TextBox x:Name="txtns" Height="30" FontSize="16"
+                            Margin="248,25,36,5"
+                            Grid.Row="3" TextChanged="txtns_TextChanged"/>
+                <Button x:Name="btn_hienthi" Content="Hien thi" Margin="10,105,520,-114" Grid.Row="3" Background="AliceBlue" Click="btn_hienthi_Click" />
+                <Button x:Name="btn_xoa" Content="Xoa" Margin="265,105,265,-114" Grid.Row="3" Background="AliceBlue"/>
+                <Button x:Name="btn_thoat" Content="Thoat" Margin="520,105,10,-114" Grid.Row="3" Background="AliceBlue" Click="btn_thoat_Click"/>
+                <TextBlock x:Name="lbloi1"  HorizontalAlignment="Left" Margin="263,49,0,55" Text="" Grid.RowSpan="4" FontSize="16" Foreground="red" Width="447" Height="20"/>
+                <TextBlock x:Name="lbloi2"  HorizontalAlignment="Left" Margin="248,66,0,-19" Text="" FontSize="16" Foreground="red" Width="462" Height="20" Grid.Row="3"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
-namespace WpfApp1
+namespace _2001240399_Trinh_Huu_Kien_Quoc_Buoi2
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -14,4 +10,5 @@ namespace WpfApp1
     public partial class App : Application
     {
     }
+
 }

@@ -10,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfApp1
+namespace _2001240399_Trinh_Huu_Kien_Quoc_Buoi2
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Bai2.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Bai2 : Window
     {
-        public MainWindow()
+        public Bai2()
         {
             InitializeComponent();
         }
