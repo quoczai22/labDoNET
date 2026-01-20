@@ -6,7 +6,17 @@
         xmlns:local="clr-namespace:_2001240399_Trinh_Huu_Kien_Quoc_Buoi2"
         mc:Ignorable="d"
         Title="Bai2" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <StackPanel Background="{DynamicResource BackgroundColor}" VerticalAlignment="Top">
+        <TextBlock Text="Chọn chủ đề:" 
+                   Foreground="{DynamicResource ForegroundColor}" 
+                   FontSize="16"/>
+        <ComboBox x:Name="cboX" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_SelectionChanged">
+            <ComboBoxItem>Sang</ComboBoxItem>
+            <ComboBoxItem>Tối</ComboBoxItem>
+        </ComboBox>
+        <Button Content="Nut mau" Width="120" Height="40"
+            Background="{DynamicResource BackgroundColor}"
+            Foreground="{DynamicResource ForegroundColor}"
+            FontWeight="Bold" Margin="5"/>
+    </StackPanel>
 </Window>

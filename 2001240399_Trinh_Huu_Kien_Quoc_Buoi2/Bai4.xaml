@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Bai4" Height="487" Width="800">
     <Grid Margin="10">
-        <StackPanel Height="404" VerticalAlignment="Top">
+        <StackPanel Height="428" VerticalAlignment="Top">
             <TextBlock Text="Giai phuong trinh " Foreground="red" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,15"/>
             <GroupBox Header="ban vui long chon" Width="676" Height="132">
                 <StackPanel Height="106">
@@ -16,14 +16,14 @@
                 </StackPanel>
             </GroupBox>
             <GroupBox
-          Margin="20"
+          Margin="10"
           Padding="10"
-          Width="742"
+          Width="672"
           Height="143">
-
-                <Grid>
+                <Grid Margin="0,0,-7,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="200"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
@@ -32,43 +32,45 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-
-                    <TextBlock Grid.Row="0" Grid.Column="0"
+                    <Button x:Name="Giai" Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Height="40" Width="100" Margin="98,10,99,26" Content="Giai" Click="GiaiPT"/>
+                    <Button Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Height="40" Width="100"  Margin="98,28,99,8" Content="Thoat" Click="Thoat"/>
+                    <TextBlock x:Name="a" Grid.Row="0" Grid.Column="0"
                    Text="a"
                    FontSize="18"
                    VerticalAlignment="Center"/>
 
-                    <TextBox Grid.Row="0" Grid.Column="1"
+                    <TextBox x:Name="bien_a" Grid.Row="0" Grid.Column="1"
                  Height="28"
-                 Margin="10,5,0,5"/>
+                 Margin="10,5,10,5" TextChanged="TextChanged"/>
 
-                    <TextBlock Grid.Row="1" Grid.Column="0"
+                    <TextBlock x:Name="b" Grid.Row="1" Grid.Column="0"
                    Text="b"
                    FontSize="18"
-                   VerticalAlignment="Center"/>
+                   VerticalAlignment="Center" />
 
-                    <TextBox Grid.Row="1" Grid.Column="1"
+                    <TextBox x:Name="bien_b" Grid.Row="1" Grid.Column="1"
                  Height="28"
-                 Margin="10,5,0,5"/>
+                 Margin="10,5,10,5" TextChanged="TextChanged"/>
 
-                    <TextBlock Grid.Row="2" Grid.Column="0"
+                    <TextBlock x:Name="c" Grid.Row="2" Grid.Column="0"
                    Text="c"
                    FontSize="18"
                    VerticalAlignment="Center"/>
 
-                    <TextBox Grid.Row="2" Grid.Column="1"
+                    <TextBox x:Name="bien_c" Grid.Row="2" Grid.Column="1"
                  Height="28"
-                 Margin="10,5,0,5"/>
+                 Margin="10,5,10,5" TextChanged="TextChanged"/>
                 </Grid>
+
             </GroupBox>
             <GroupBox Header="Kết quả"
               Grid.Row="1"
-              Padding="10"
-              Width="776">
+              Padding="5"
+              Width="665">
 
-                <TextBlock 
+                <TextBlock x:Name="showkq" 
                    FontSize="16"
-                   Foreground="DarkBlue" Height="25"/>
+                   Foreground="DarkBlue" Height="50"/>
             </GroupBox>
         </StackPanel>
     </Grid>

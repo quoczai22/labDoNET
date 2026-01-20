@@ -130,7 +130,7 @@
 
                     <Button Content="Thoát"
                     Grid.Column="1"
-                    Style="{StaticResource ActionButtonStyle}" Grid.ColumnSpan="2" Margin="238,0,26,0" Click="thoat"/>
+                    Style="{StaticResource ActionButtonStyle}" Grid.ColumnSpan="2" Margin="238,0,26,0" Click="thoat" Height="33" VerticalAlignment="Top"/>
                 </Grid>
 
             </Grid>
