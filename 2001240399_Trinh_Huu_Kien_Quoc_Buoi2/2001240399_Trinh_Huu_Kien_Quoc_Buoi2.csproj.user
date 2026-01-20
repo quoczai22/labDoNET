@@ -16,6 +16,9 @@
     <Compile Update="Bai3.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Bai4.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Bai1.xaml">
@@ -25,6 +28,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Bai3.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Bai4.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MainWindow.xaml">

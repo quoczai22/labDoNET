@@ -1,0 +1,75 @@
+﻿<Window x:Class="_2001240399_Trinh_Huu_Kien_Quoc_Buoi2.Bai4"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_2001240399_Trinh_Huu_Kien_Quoc_Buoi2"
+        mc:Ignorable="d"
+        Title="Bai4" Height="487" Width="800">
+    <Grid Margin="10">
+        <StackPanel Height="404" VerticalAlignment="Top">
+            <TextBlock Text="Giai phuong trinh " Foreground="red" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+            <GroupBox Header="ban vui long chon" Width="676" Height="132">
+                <StackPanel Height="106">
+                    <RadioButton x:Name="bac1" Content="Phuong trinh bac nhat" Checked="LoaiPT" FontSize="16" Margin="0,20,0,0"/>
+                    <RadioButton x:Name="bac2" Content="Phuong trinh bac hai" Checked="LoaiPT" FontSize="16" Margin="0,20,0,0"/>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox
+          Margin="20"
+          Padding="10"
+          Width="742"
+          Height="143">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0"
+                   Text="a"
+                   FontSize="18"
+                   VerticalAlignment="Center"/>
+
+                    <TextBox Grid.Row="0" Grid.Column="1"
+                 Height="28"
+                 Margin="10,5,0,5"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0"
+                   Text="b"
+                   FontSize="18"
+                   VerticalAlignment="Center"/>
+
+                    <TextBox Grid.Row="1" Grid.Column="1"
+                 Height="28"
+                 Margin="10,5,0,5"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0"
+                   Text="c"
+                   FontSize="18"
+                   VerticalAlignment="Center"/>
+
+                    <TextBox Grid.Row="2" Grid.Column="1"
+                 Height="28"
+                 Margin="10,5,0,5"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="Kết quả"
+              Grid.Row="1"
+              Padding="10"
+              Width="776">
+
+                <TextBlock 
+                   FontSize="16"
+                   Foreground="DarkBlue" Height="25"/>
+            </GroupBox>
+        </StackPanel>
+    </Grid>
+</Window>
