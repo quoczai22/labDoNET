@@ -5,17 +5,108 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="Bai5" Height="450" Width="800">
+        Title="Bai5" Height="500" Width="900">
     <Grid Margin="10">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="400"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
         <Grid.RowDefinitions>
-            <RowDefinition Height="86"/>
-            <RowDefinition/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
 
+        <TextBlock Text="THÊM NHÂN VIÊN"
+                   FontSize="22"
+                   FontWeight="Bold"
+                   Foreground="Blue"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Mã nhân viên:"/>
+                <TextBox x:Name="txtma" Margin="120,0,0,8"/>
+
+                <TextBlock Grid.Row="1" Text="Họ tên:"/>
+                <TextBox x:Name="txtten" Grid.Row="1" Margin="120,0,0,8"/>
+
+                <TextBlock Grid.Row="2" Text="Giới tính:"/>
+                <StackPanel Grid.Row="2" Margin="120,0,0,8" Orientation="Horizontal">
+                    <RadioButton Content="Nam" x:Name="rbnnam"/>
+                    <RadioButton x:Name="rbnnu" Content="Nữ" Margin="20,0,0,0"/>
+                </StackPanel>
+
+                <TextBlock Grid.Row="3" Text="Ngày sinh:"/>
+                <DatePicker x:Name="dtpns" Grid.Row="3" Margin="120,0,0,8"/>
+
+                <TextBlock Grid.Row="4" Text="Phòng ban:"/>
+                <ComboBox x:Name="cbpb" Grid.Row="4" Margin="120,0,0,8">
+                    <ComboBoxItem Content="Phòng Kế Toán"/>
+                    <ComboBoxItem Content="Phòng Nhân Sự"/>
+                    <ComboBoxItem Content="Phòng IT"/>
+                    <ComboBoxItem Content="Phòng Marketing"/>
+                </ComboBox>
+
+                <TextBlock Grid.Row="5" Text="Ghi chú:"/>
+                <TextBox x:Name="txtnote" Margin="120,0,10,0" Grid.Row="5" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="76"/>
+            </Grid>
+
+            <Grid Grid.Column="1" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Loại hồ sơ:"/>
+                <StackPanel Grid.Row="1">
+                    <RadioButton x:Name="rbthuviec" Content="Thử việc"/>
+                    <RadioButton x:Name="rbhd" Content="Hợp đồng năm"/>
+                    <RadioButton x:Name="rbcthuc" Content="Chính thức"/>
+                </StackPanel>
+
+                <TextBlock Grid.Row="2" Margin="0,10,0,0" Text="Giấy tờ nộp kèm:"/>
+                <TextBox x:Name="txtgiayto" Grid.Row="3"/>
+                <Button x:Name="btn_them_giayto" Grid.Row="4" Content="Thêm giấy tờ" Width="110" Margin="0,5,0,0" Click="btn_them_giayto_Click"/>
+
+                <TextBlock Grid.Row="5" Margin="0,10,0,0" Text="Năng khiếu:"/>
+                <StackPanel Grid.Row="5" Margin="0,25,0,0">
+                    <CheckBox x:Name="chkthuviec" Content="Thử việc"/>
+                    <CheckBox x:Name="chkhd" Content="Hợp đồng năm"/>
+                    <CheckBox x:Name="chkcthuc" Content="Chính thức"/>
+                </StackPanel>
+            </Grid>
+
+            <GroupBox Grid.Column="2" Header="Giấy tờ" Margin="10">
+                <ListBox x:Name="lstgiayto">
+                    <ListBoxItem Content="Giấy khám sức khỏe"/>
+                    <ListBoxItem Content="Bằng điểm"/>
+                    <ListBoxItem Content="Chứng chỉ Tin học"/>
+                    <ListBoxItem Content="Chứng chỉ Anh văn"/>
+                </ListBox>
+            </GroupBox>
+        </Grid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="Thêm" Width="90" Margin="15" Click="btn_them"/>
+            <Button Content="Xóa" Width="90" Margin="15" Click="btn_xoa"/>
+            <Button Content="Thoát" Width="90" Margin="15" Click="btn_thoat"/>
+        </StackPanel>
     </Grid>
 </Window>
