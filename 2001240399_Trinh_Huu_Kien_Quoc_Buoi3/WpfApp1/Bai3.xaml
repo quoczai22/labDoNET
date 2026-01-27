@@ -1,0 +1,47 @@
+﻿<Window x:Class="WpfApp1.Bai3"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="Bai3" Height="450" Width="800">
+    <Grid Margin="15">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Section (Order Information) -->
+        <StackPanel Grid.Column="0" Margin="10">
+            <TextBlock Text="Thông tin đặt món" FontSize="16" FontWeight="Bold" Margin="0,0,0,15"/>
+            <TextBlock Text="Tên khách hàng:" FontWeight="Bold"/>
+            <TextBox x:Name="txtThongTinKhach" Margin="0,0,0,10"/>
+            <TextBlock Text="Số điện thoại:" FontWeight="Bold"/>
+            <TextBox x:Name="txtSDTKhach" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Chọn bàn:" FontWeight="Bold"/>
+            <ComboBox x:Name="cboBan" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Chọn món:" FontWeight="Bold"/>
+            <ComboBox x:Name="cboMon" Margin="0,0,0,10"/>
+            <Button Content="Thêm món" Width="100" Margin="0,0,0,15" Click="ThemMon_Click"/>
+        </StackPanel>
+
+        <!-- Right Section (Order Details) -->
+        <StackPanel Grid.Column="1" Margin="10">
+            <TextBlock Text="Thông tin hiển thị" FontSize="16" FontWeight="Bold" Margin="0,0,0,15"/>
+            <TextBlock Text="Thông tin khách hàng" FontWeight="Bold"/>
+            <TextBlock x:Name="txtThongTin"/>
+            <TextBlock x:Name="txtSDT"/>
+            <TextBlock x:Name="txtBan"/>
+
+
+            <TextBlock Text="Danh sách món đã chọn:" FontWeight="Bold"/>
+            <ListBox x:Name="lstOrderItems" Height="150" Margin="0,0,0,15"/>
+
+            <Button Content="Xóa món" Width="100" Margin="0,0,0,10" Click="Xoa_Click"/>
+            <Button x:Name="DatMon" Content="Đặt món" Width="100" Click="DatMon_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

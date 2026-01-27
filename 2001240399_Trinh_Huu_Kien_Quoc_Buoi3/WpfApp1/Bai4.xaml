@@ -1,0 +1,114 @@
+﻿<Window x:Class="WpfApp1.Bai4"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Form Thông tin - Sở thích cá nhân"
+        Height="494" Width="899">
+
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Tiêu đề -->
+        <TextBlock Text="Form Thông tin - Sở thích cá nhân"
+                   FontSize="22"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,15"/>
+
+        <!-- TAB -->
+        <TabControl Grid.Row="1">
+            <!-- TAB 1 -->
+            <TabItem Header="Thông tin cá nhân">
+                <Grid Margin="15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="120"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Nhập họ tên:" Grid.Row="0"/>
+                    <TextBox x:Name="txtHoTen" Grid.Row="0" Grid.Column="1"/>
+
+                    <TextBlock Text="Ngày sinh:" Grid.Row="1"/>
+                    <DatePicker x:Name="dtpNgaySinh" Grid.Row="1" Grid.Column="1"/>
+
+                    <TextBlock Text="Giới tính:" Grid.Row="2"/>
+                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                        <RadioButton x:Name="radNam" Content="Nam" Margin="0,0,20,0"/>
+                        <RadioButton x:Name="radNu" Content="Nữ"/>
+                    </StackPanel>
+
+                    <TextBlock Text="Quốc tịch:" Grid.Row="3"/>
+                    <ComboBox x:Name="cboQuocTich" Grid.Row="3" Grid.Column="1">
+                        <ComboBoxItem Content="Việt Nam"/>
+                        <ComboBoxItem Content="Mỹ"/>
+                        <ComboBoxItem Content="Nhật Bản"/>
+                        <ComboBoxItem Content="Hàn Quốc"/>
+                    </ComboBox>
+
+                    <TextBlock Text="Nghề nghiệp:" Grid.Row="4"/>
+                    <TextBox x:Name="txtNgheNghiep" Grid.Row="4" Grid.Column="1"/>
+                </Grid>
+            </TabItem>
+
+            <!-- TAB 2 -->
+            <TabItem Header="Sở thích - Ghi chú">
+                <Grid Margin="15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Sở thích -->
+                    <GroupBox Header="Sở thích cá nhân" Margin="10">
+                        <StackPanel>
+                            <CheckBox x:Name="chkDocSach" Content="Đọc sách"/>
+                            <CheckBox x:Name="chkDuLich" Content="Du lịch"/>
+                            <CheckBox x:Name="chkNgheNhac" Content="Nghe nhạc"/>
+                            <CheckBox x:Name="chkTheThao" Content="Thể thao"/>
+                            <CheckBox x:Name="chkGame" Content="Chơi game"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- Kỹ năng -->
+                    <GroupBox Header="Kỹ năng" Grid.Column="1" Margin="10">
+                        <ListBox x:Name="lstKyNang" SelectionMode="Multiple">
+                            <ListBoxItem Content="C# / .NET"/>
+                            <ListBoxItem Content="WPF / XAML"/>
+                            <ListBoxItem Content="SQL Server"/>
+                            <ListBoxItem Content="HTML / CSS"/>
+                            <ListBoxItem Content="Giao tiếp / Làm việc nhóm"/>
+                        </ListBox>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <!-- Nút -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal"
+                    HorizontalAlignment="Center" Margin="0,15,0,0">
+            <Button Content="Hiển thông tin"
+                    Width="130" Height="35"
+                    Background="#2ECC71"
+                    Foreground="White"
+                    Margin="0,0,15,0"
+                    Click="BtnHienThongTin_Click"/>
+
+            <Button Content="Thoát"
+                    Width="100" Height="35"
+                    Background="#E74C3C"
+                    Foreground="White"
+                    Click="BtnThoat_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

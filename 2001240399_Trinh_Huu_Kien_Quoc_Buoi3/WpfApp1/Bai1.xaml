@@ -1,0 +1,31 @@
+﻿<Window x:Class="WpfApp1.Bai1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="Bai1" Height="450" Width="800">
+    <Grid x:Name="btnnhap">
+        <TextBlock x:Name="hodem" HorizontalAlignment="Left" Height="25" Margin="55,69,0,0"  Text="Ho dem" VerticalAlignment="Top" Width="132" TextAlignment="Center"/>
+        <TextBlock x:Name="ten" HorizontalAlignment="Left" Height="25" Margin="55,112,0,0"  Text="ten" VerticalAlignment="Top" Width="132" TextAlignment="Center"/>
+        <TextBox x:Name="txthodem" HorizontalAlignment="Left" Height="25" Margin="174,69,0,0" TextWrapping="Wrap" Text="hop soan thao" VerticalAlignment="Top" Width="435" />
+        <TextBox x:Name="txtten" HorizontalAlignment="Left" Height="25" Margin="174,112,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="435"/>
+        <TextBlock x:Name="gioitinh" HorizontalAlignment="Left" Height="25" Margin="55,192,0,0"  Text="Gioi tinh" VerticalAlignment="Top" Width="132" TextAlignment="Center"/>
+        <TextBlock x:Name="nn" HorizontalAlignment="Left" Height="25" Margin="55,241,0,0"  Text="Ngoai ngu" VerticalAlignment="Top" Width="132" TextAlignment="Center"/>
+        <RadioButton x:Name="rbnam" Content="Nam" HorizontalAlignment="Left" Margin="237,193,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="rbnu" Content="Nu" HorizontalAlignment="Center" Margin="0,193,0,0" VerticalAlignment="Top" />
+        <CheckBox x:Name="nnta" Content="Tieng Anh" HorizontalAlignment="Left" Margin="237,242,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="nntt" Content="Tieng Trung" HorizontalAlignment="Left" Margin="383,242,0,0" VerticalAlignment="Top"/>
+        <TextBlock x:Name="qq" HorizontalAlignment="Left" Height="25" Margin="55,295,0,0"  Text="Que quan" VerticalAlignment="Top" Width="132" TextAlignment="Center"/>
+        <ComboBox x:Name="cbqq" HorizontalAlignment="Left" Margin="237,297,0,0" VerticalAlignment="Top" Width="120">
+            <ComboBoxItem Content="Ha Noi"/>
+            <ComboBoxItem Content="Hai Phong"/>
+            <ComboBoxItem Content="Nam Dinh"/>
+            <ComboBoxItem Content="Thai Binh"/>
+        </ComboBox>
+        <Button x:Name="btnNhap" Content="Nhap lai" HorizontalAlignment="Left" Margin="445,368,0,0" VerticalAlignment="Top" Click="Nhap" Width="100"/>
+        <Button x:Name="btnxem" Content="Xem thong tin" HorizontalAlignment="Left" Margin="174,368,0,0" VerticalAlignment="Top" Click="Xem" Width="100"/>
+
+    </Grid>
+</Window>
