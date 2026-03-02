@@ -1,0 +1,61 @@
+﻿<Window x:Class="_2001240399_Trinh_Huu_Kien_Quoc_Buoi4.Bai2"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Quản lý phòng ban"
+        Height="450"
+        Width="800"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ===== BÊN TRÁI ===== -->
+        <StackPanel Grid.Column="0">
+
+            <TextBlock Text="Mã phòng"/>
+            <TextBox x:Name="txtMaPhong"
+                     Height="25"
+                     Margin="0 5 0 10"/>
+
+            <TextBlock Text="Tên phòng"/>
+            <TextBox x:Name="txtTenPhong"
+                     Height="25"
+                     Margin="0 5 0 15"/>
+
+            <Button Content="Thêm"
+                    Height="30"
+                    Click="BtnThem_Click"/>
+
+        </StackPanel>
+
+        <!-- ===== BÊN PHẢI ===== -->
+        <StackPanel Grid.Column="1" Margin="20 0 0 0">
+
+            <TextBlock Text="Phòng ban"
+                       FontWeight="Bold"
+                       Margin="0 0 0 5"/>
+
+            <TreeView x:Name="treePhongBan"
+                      Height="180"
+                      SelectedItemChanged="tvPhongBan_SelectedItemChanged">
+            </TreeView>
+
+            <GroupBox Header="Thông tin phòng ban" Height="130">
+                <StackPanel Margin="130,0,0,0" Height="50" VerticalAlignment="Top">
+                    <TextBlock x:Name="lblMaPhong"
+                               FontWeight="Bold"/>
+                    <TextBlock x:Name="lblTenPhong"
+                               FontWeight="Bold"/>
+                </StackPanel>
+            </GroupBox>
+            <Button Content="Thoát"
+                    Height="30"
+                    Width="100"
+                    HorizontalAlignment="Center"
+                    Click="BtnThoat_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

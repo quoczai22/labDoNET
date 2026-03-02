@@ -1,0 +1,67 @@
+﻿<Window x:Class="_2001240399_Trinh_Huu_Kien_Quoc_Buoi4.Bai4"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Quản lý phòng ban"
+        Height="500"
+        Width="900"
+        WindowStartupLocation="CenterScreen">
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Hệ thống">
+                <MenuItem Header="Đăng nhập"/>
+                <MenuItem Header="Đổi mật khẩu"/>
+                <Separator/>
+                <MenuItem Header="Thoát" Click="BtnThoat_Click" InputGestureText="Alt+F4"/>
+            </MenuItem>
+
+            <MenuItem Header="Danh mục"/>
+        </Menu>
+
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="Phòng ban" FontWeight="Bold"/>
+                <TreeView x:Name="treePhongBan"
+                          Height="300"
+                          SelectedItemChanged="treePhongBan_SelectedItemChanged"/>
+                <TextBlock Text="Tên phòng ban" Margin="0,10,0,0"/>
+                <TextBox x:Name="txtTenPhong" Width="200" Height="25"/>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                    <Button Content="Thêm phòng ban" Width="120" Margin="5" Click="BtnThemPhongBan_Click"/>
+                    <Button Content="Xóa phòng ban" Width="120" Margin="5" Click="BtnXoaPhongBan_Click"/>
+                </StackPanel>
+            </StackPanel>
+            
+            
+
+            <StackPanel Grid.Column="1" Margin="20,0,0,0">
+                <GroupBox Header="HỒ SƠ NHÂN VIÊN" Height="300">
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Mã số"/>
+                        <TextBox x:Name="txtMaNV" Width="200" Height="25"/>
+                        <TextBlock Text="Họ tên"/>
+                        <TextBox x:Name="txtHoTen" Width="200" Height="25"/>
+                        <TextBlock Text="Địa chỉ"/>
+                        <TextBox x:Name="txtDiaChi" Width="200" Height="25"/>
+                        <TextBlock Text="Điện thoại"/>
+                        <TextBox x:Name="txtSDT" Width="200" Height="25"/>
+                        <TextBlock Text="Phòng ban"/>
+                        <TextBlock x:Name="lblPhongBan" FontWeight="Bold"/>
+                    </StackPanel>
+                </GroupBox>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                    <Button Content="Thêm" Width="80" Margin="5" Click="BtnThemNhanVien_Click"/>
+                    <Button Content="Sửa" Width="80" Margin="5" Click="BtnSuaNhanVien_Click"/>
+                    <Button Content="Xóa" Width="80" Margin="5" Click="BtnXoaNhanVien_Click"/>
+                    <Button Content="Thoát" Width="80" Margin="5" Click="BtnThoat_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</Window>
