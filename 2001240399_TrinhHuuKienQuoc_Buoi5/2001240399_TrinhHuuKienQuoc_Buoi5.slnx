@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="MVVM/MVVM.csproj" />
+  <Project Path="MVVM_Bai2/MVVM_Bai2.csproj" />
+  <Project Path="MVVM_Bai3/MVVM_Bai3.csproj" Id="0347b8cd-dae8-47f5-89f5-3fe9f91f39ee" />
+  <Project Path="MVVM_Bai4/MVVM_Bai4.csproj" Id="f00bc248-9a2a-435b-b66e-64db216a0631" />
+  <Project Path="MVVM_Bai5/MVVM_Bai5.csproj" Id="b5100a81-d0e7-4eda-84c1-8832f2ea2640" />
+</Solution>
