@@ -43,13 +43,7 @@
                         </StackPanel>
                         <StackPanel>
                             <TextBox Width="200" Text="{Binding NewAge, Mode=TwoWay}"/>
-                            <ComboBox Width="200" ItemsSource="{Binding Cities}" SelectedItem="{Binding SelectedCity}">
-                                <ComboBoxItem Content="Hà Nội"/>
-                                <ComboBoxItem Content="Hồ Chí Minh"/>
-                                <ComboBoxItem Content="Đà Nẵng"/>
-                                <ComboBoxItem Content="Hải Phòng"/>
-                                <ComboBoxItem Content="Cần Thơ"/>
-                            </ComboBox>
+                            <ComboBox Width="200" ItemsSource="{Binding Cities}" SelectedItem="{Binding SelectedCity}"/>
                         </StackPanel>
                     </StackPanel>
 

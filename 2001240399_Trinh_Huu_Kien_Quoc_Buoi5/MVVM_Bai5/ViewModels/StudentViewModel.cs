@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MVVM_Bai5.Models;
+using MVVM_Bai5.Views;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -6,9 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using MVVM_Bai5.Models;
 
 namespace MVVM_Bai5.ViewModels
 {
@@ -53,6 +55,18 @@ namespace MVVM_Bai5.ViewModels
             }
         }
 
+        private ObservableCollection<string> _cities;
+        public ObservableCollection<string> Cities
+        {
+            get { return _cities; }
+            set
+            {
+                _cities = value;
+                OnPropertyChanged(nameof(Cities));
+            }
+        }
+
+
         public StudentViewModel()
         {
             Students = new ObservableCollection<Student>
@@ -60,6 +74,13 @@ namespace MVVM_Bai5.ViewModels
                 new Student { Name = "Quốc", Age = 19 , Gender = "Nam", City = "Hồ Chí Minh"},
                 new Student { Name = "Vy", Age = 20, Gender = "Nữ", City = "Hồ Chí Minh"},
             };
+            Cities = new ObservableCollection<string> {
+                "Hà Nội",
+                "Hồ Chí Minh",
+                "Đà Nẵng",
+                "Hải Phòng",
+                "Cần Thơ"
+                };
             StudentsView = CollectionViewSource.GetDefaultView(Students);
             StudentsView.Filter = StudentFilter;
         }
@@ -165,9 +186,11 @@ namespace MVVM_Bai5.ViewModels
         {
             if (SelectedStudent != null)
             {
+                _undoStack.Push(new ObservableCollection<Student>(Students));
                 Students.Remove(SelectedStudent);
                 SelectedStudent = null;
             }
+
             OnPropertyChanged(nameof(StudentCountMale));
             OnPropertyChanged(nameof(StudentCountFemale));
         }
@@ -181,21 +204,17 @@ namespace MVVM_Bai5.ViewModels
                     return;
                 }
 
-                // Cập nhật thông tin từ ô nhập vào đối tượng SelectedStudent
+                _undoStack.Push(new ObservableCollection<Student>(Students));
+
                 SelectedStudent.Name = NewName;
                 SelectedStudent.Age = NewAge;
                 SelectedStudent.City = SelectedCity;
                 SelectedStudent.Gender = IsMale ? "Nam" : "Nữ";
 
-                // Thông báo cho UI cập nhật lại
-                OnPropertyChanged(nameof(SelectedStudent));
                 OnPropertyChanged(nameof(StudentCountMale));
                 OnPropertyChanged(nameof(StudentCountFemale));
-                OnPropertyChanged(nameof(NewName));
-                OnPropertyChanged(nameof(NewAge));
-                OnPropertyChanged(nameof(SelectedCity));
-                OnPropertyChanged(nameof(IsMale));
-                OnPropertyChanged(nameof(IsFemale));
+
+                StudentsView?.Refresh();
             }
         }
 
