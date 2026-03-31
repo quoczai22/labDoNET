@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -12,36 +10,54 @@ namespace Bai2.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        private KhoDuLieu _khoDuLieu;
+        private readonly KhoDuLieu _khoDuLieu;
 
         public ObservableCollection<LoaiSanPham> DanhSachLoai { get; set; }
+        public ObservableCollection<string> DanhSachBan { get; set; }
 
         private LoaiSanPham _selectedLoai;
         public LoaiSanPham SelectedLoai
         {
-            get { return _selectedLoai; }
+            get => _selectedLoai;
             set
             {
                 _selectedLoai = value;
                 OnPropertyChanged(nameof(SelectedLoai));
-                FilterSanPham(); 
+                FilterSanPham();
             }
         }
 
         private ObservableCollection<SanPham> _danhSachSanPhamFiltered;
         public ObservableCollection<SanPham> DanhSachSanPhamFiltered
         {
-            get { return _danhSachSanPhamFiltered; }
-            set { _danhSachSanPhamFiltered = value; OnPropertyChanged(nameof(DanhSachSanPhamFiltered)); }
+            get => _danhSachSanPhamFiltered;
+            set
+            {
+                _danhSachSanPhamFiltered = value;
+                OnPropertyChanged(nameof(DanhSachSanPhamFiltered));
+            }
         }
 
-        public SanPham SelectedSanPham { get; set; }
+        private SanPham _selectedSanPham;
+        public SanPham SelectedSanPham
+        {
+            get => _selectedSanPham;
+            set
+            {
+                _selectedSanPham = value;
+                OnPropertyChanged(nameof(SelectedSanPham));
+            }
+        }
 
         private string _soLuongText;
         public string SoLuongText
         {
-            get { return _soLuongText; }
-            set { _soLuongText = value; OnPropertyChanged(nameof(SoLuongText)); }
+            get => _soLuongText;
+            set
+            {
+                _soLuongText = value;
+                OnPropertyChanged(nameof(SoLuongText));
+            }
         }
 
         public ObservableCollection<ChiTietHoaDon> DanhSachChiTietHoaDon { get; set; }
@@ -49,12 +65,46 @@ namespace Bai2.ViewModels
         private double _tongTienHienTai;
         public double TongTienHienTai
         {
-            get { return _tongTienHienTai; }
-            set { _tongTienHienTai = value; OnPropertyChanged(nameof(TongTienHienTai)); }
+            get => _tongTienHienTai;
+            set
+            {
+                _tongTienHienTai = value;
+                OnPropertyChanged(nameof(TongTienHienTai));
+            }
         }
 
-        public string HoTen { get; set; }
-        public string SoDienThoai { get; set; }
+        private string _hoTen;
+        public string HoTen
+        {
+            get => _hoTen;
+            set
+            {
+                _hoTen = value;
+                OnPropertyChanged(nameof(HoTen));
+            }
+        }
+
+        private string _soDienThoai;
+        public string SoDienThoai
+        {
+            get => _soDienThoai;
+            set
+            {
+                _soDienThoai = value;
+                OnPropertyChanged(nameof(SoDienThoai));
+            }
+        }
+
+        private string _selectedBan;
+        public string SelectedBan
+        {
+            get => _selectedBan;
+            set
+            {
+                _selectedBan = value;
+                OnPropertyChanged(nameof(SelectedBan));
+            }
+        }
 
         public ICommand ThemCommand { get; set; }
         public ICommand TinhTienCommand { get; set; }
@@ -65,6 +115,16 @@ namespace Bai2.ViewModels
             DanhSachLoai = new ObservableCollection<LoaiSanPham>(_khoDuLieu.DanhSachLoaiSanPham);
             DanhSachSanPhamFiltered = new ObservableCollection<SanPham>();
             DanhSachChiTietHoaDon = new ObservableCollection<ChiTietHoaDon>();
+            DanhSachBan = new ObservableCollection<string>
+            {
+                "Bàn 1 - Tầng trệt",
+                "Bàn 2 - Tầng trệt",
+                "Bàn 3 - Tầng trệt",
+                "Bàn 1 - Tầng 1",
+                "Bàn 2 - Tầng 1",
+                "Bàn 3 - Tầng 1",
+                "Bàn 4 - Tầng 1"
+            };
 
             ThemCommand = new RelayCommand(ThemChiTiet);
             TinhTienCommand = new RelayCommand(TinhTien);
@@ -74,8 +134,14 @@ namespace Bai2.ViewModels
         {
             if (SelectedLoai != null)
             {
-                var filtered = _khoDuLieu.DanhSachSanPham.Where(x => x.MaLoai == SelectedLoai.MaLoai).ToList();
+                var filtered = _khoDuLieu.DanhSachSanPham
+                    .Where(x => x.MaLoai == SelectedLoai.MaLoai)
+                    .ToList();
                 DanhSachSanPhamFiltered = new ObservableCollection<SanPham>(filtered);
+            }
+            else
+            {
+                DanhSachSanPhamFiltered = new ObservableCollection<SanPham>();
             }
         }
 
@@ -98,6 +164,7 @@ namespace Bai2.ViewModels
                 };
 
                 DanhSachChiTietHoaDon.Add(chiTiet);
+                SoLuongText = string.Empty;
                 CapNhatTongTien();
             }
             else
@@ -113,12 +180,30 @@ namespace Bai2.ViewModels
 
         private void TinhTien(object obj)
         {
+            if (string.IsNullOrWhiteSpace(HoTen))
+            {
+                MessageBox.Show("Vui lòng nhập họ tên khách hàng.");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(SelectedBan))
+            {
+                MessageBox.Show("Vui lòng chọn vị trí bàn.");
+                return;
+            }
+
+            if (DanhSachChiTietHoaDon.Count == 0)
+            {
+                MessageBox.Show("Hóa đơn chưa có sản phẩm nào.");
+                return;
+            }
+
             HoaDon hd = new HoaDon
             {
-                TenKhachHang = this.HoTen,
-                DienThoai = this.SoDienThoai,
-                TenBan = "Bàn đã chọn", // Logic lấy bàn tương tự nếu anh liên kết list vị trí
-                DanhSachChiTiet = this.DanhSachChiTietHoaDon.ToList()
+                TenKhachHang = HoTen,
+                DienThoai = SoDienThoai,
+                TenBan = SelectedBan,
+                DanhSachChiTiet = DanhSachChiTietHoaDon.ToList()
             };
 
             MessageBox.Show(hd.ToString(), "Thông tin hóa đơn");

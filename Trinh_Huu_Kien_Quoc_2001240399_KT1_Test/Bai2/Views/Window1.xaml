@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Bai2.Views"
+        xmlns:vm="clr-namespace:Bai2.ViewModels"
         mc:Ignorable="d"
-        Title="Window1" Height="550" Width="800">
+        Title="Hóa đơn tính tiền" Height="550" Width="800">
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
@@ -40,7 +41,7 @@
                 <ComboBox x:Name="cboLoaiThucUong" Grid.Row="0" Grid.Column="1" Height="25" Margin="0,0,0,15"
                           ItemsSource="{Binding DanhSachLoai}"
                           DisplayMemberPath="TenLoai"
-                          SelectedItem="{Binding SelectedLoai}"/>
+                          SelectedItem="{Binding SelectedLoai, Mode=TwoWay}"/>
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Chọn nước" Margin="0,0,0,5"/>
                 <TextBlock Grid.Row="1" Grid.Column="1" Text="Số lượng" HorizontalAlignment="Center" Margin="0,0,0,5"/>
@@ -48,11 +49,11 @@
                 <ListBox x:Name="lstNuoc" Grid.Row="2" Grid.Column="0" Margin="0,0,15,0"
                          ItemsSource="{Binding DanhSachSanPhamFiltered}"
                          DisplayMemberPath="TenSanPham"
-                         SelectedItem="{Binding SelectedSanPham}"/>
+                         SelectedItem="{Binding SelectedSanPham, Mode=TwoWay}"/>
 
                 <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center">
                     <TextBox x:Name="txtSoLuong" Width="80" Height="25" Margin="0,0,0,15" TextAlignment="Center"
-                             Text="{Binding SoLuongText, UpdateSourceTrigger=PropertyChanged}"/>
+                             Text="{Binding SoLuongText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <Button x:Name="btnThem" Content="Thêm" Width="80" Height="30" Background="#E1E1E1"
                             Command="{Binding ThemCommand}"/>
                 </StackPanel>
@@ -72,14 +73,15 @@
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Tên thức uống" Width="160" DisplayMemberBinding="{Binding TenSanPham}"/>
-                            <GridViewColumn Header="Đơn giá" Width="90" DisplayMemberBinding="{Binding DonGia}"/>
+                            <GridViewColumn Header="Đơn giá" Width="90" DisplayMemberBinding="{Binding DonGia, StringFormat={}{0:N0}}"/>
                             <GridViewColumn Header="Số lượng" Width="80" DisplayMemberBinding="{Binding SoLuong}"/>
+                            <GridViewColumn Header="Thành tiền" Width="110" DisplayMemberBinding="{Binding ThanhTien, StringFormat={}{0:N0}}"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
 
                 <TextBlock x:Name="tbTongTien" Grid.Row="2" Foreground="Red" HorizontalAlignment="Right" Margin="0,0,10,0"
-                           Text="{Binding TongTienHienTai, StringFormat='Tổng tiền: {0:N0}'}"/>
+                           Text="{Binding TongTienHienTai, StringFormat=Tổng tiền: {0:N0}}"/>
             </Grid>
         </Grid>
 
@@ -106,11 +108,11 @@
 
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Họ tên" VerticalAlignment="Center" Margin="0,0,15,15" HorizontalAlignment="Right"/>
                     <TextBox x:Name="txtHoTen" Grid.Row="1" Grid.Column="1" Height="25" Margin="0,0,0,15"
-                             Text="{Binding HoTen, UpdateSourceTrigger=PropertyChanged}"/>
+                             Text="{Binding HoTen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="Số điện thoại" VerticalAlignment="Center" Margin="0,0,15,25" HorizontalAlignment="Right"/>
                     <TextBox x:Name="txtSoDienThoai" Grid.Row="2" Grid.Column="1" Height="25" Margin="0,0,0,25"
-                             Text="{Binding SoDienThoai, UpdateSourceTrigger=PropertyChanged}"/>
+                             Text="{Binding SoDienThoai, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
                         <Button x:Name="btnTinhTien" Content="Tính tiền" Width="100" Height="30" Margin="0,0,30,0" Background="#E1E1E1"
@@ -126,15 +128,9 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0" Text="Chọn vị trí:" Margin="0,0,15,0"/>
-                    <ListBox x:Name="lstViTri" Grid.Column="1" Height="140" VerticalAlignment="Top">
-                        <ListBoxItem Content="Bàn 1 - Tầng trệt"/>
-                        <ListBoxItem Content="Bàn 2 - Tầng trệt"/>
-                        <ListBoxItem Content="Bàn 3 - Tầng trệt"/>
-                        <ListBoxItem Content="Bàn 1 - Tầng 1"/>
-                        <ListBoxItem Content="Bàn 2 - Tầng 1"/>
-                        <ListBoxItem Content="Bàn 3 - Tầng 1"/>
-                        <ListBoxItem Content="Bàn 4 - Tầng 1"/>
-                    </ListBox>
+                    <ListBox x:Name="lstViTri" Grid.Column="1" Height="140" VerticalAlignment="Top"
+                             ItemsSource="{Binding DanhSachBan}"
+                             SelectedItem="{Binding SelectedBan, Mode=TwoWay}"/>
                 </Grid>
             </Grid>
         </Border>
