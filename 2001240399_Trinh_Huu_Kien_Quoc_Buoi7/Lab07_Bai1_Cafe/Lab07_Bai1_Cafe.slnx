@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="../Lab07_Bai2_Hotel/Lab07_Bai2_Hotel.csproj" />
+  <Project Path="../Lab07_Bai3_Feedback/Lab07_Bai3_Feedback.csproj" />
+  <Project Path="Lab07_Bai1_Cafe.csproj" />
+</Solution>

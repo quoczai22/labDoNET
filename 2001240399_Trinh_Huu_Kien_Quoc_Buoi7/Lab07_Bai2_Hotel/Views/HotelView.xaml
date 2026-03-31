@@ -1,0 +1,83 @@
+﻿<Window x:Class="Lab07_Bai2_Hotel.Views.HotelView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Lab07_Bai2_Hotel.Views"
+        xmlns:vm="clr-namespace:Lab07_Bai2_Hotel.ViewModels"
+        mc:Ignorable="d"
+        Title="HotelView" Height="700" Width="1000">
+    <Window.DataContext>
+        <vm:HotelViewModel/>
+    </Window.DataContext>
+
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="1" Padding="10" Margin="0,0,10,0">
+            <StackPanel>
+                <TextBlock Text="THANH TOÁN TIỀN PHÒNG" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                <TextBlock Text="Họ tên"/>
+                <TextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,10"/>
+
+                <TextBlock Text="Địa chỉ"/>
+                <TextBox Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,10"/>
+
+                <TextBlock Text="Số ngày ở"/>
+                <TextBox Text="{Binding Days, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,10"/>
+
+                <TextBlock Text="Loại phòng"/>
+                <ComboBox ItemsSource="{Binding RoomTypes}" SelectedItem="{Binding RoomType}" Margin="0,5,0,10"/>
+
+                <TextBlock Text="Tiện nghi" FontWeight="Bold"/>
+                <CheckBox Content="Tivi" IsChecked="{Binding HasTivi}"/>
+                <CheckBox Content="Internet" IsChecked="{Binding HasInternet}"/>
+                <CheckBox Content="Máy nước nóng" IsChecked="{Binding HasHotWater}"/>
+
+                <TextBlock Text="Dịch vụ" FontWeight="Bold" Margin="0,10,0,0"/>
+                <CheckBox Content="Karaoke" IsChecked="{Binding Karaoke}"/>
+                <CheckBox Content="Ăn sáng" IsChecked="{Binding Breakfast}"/>
+
+                <WrapPanel Margin="0,15,0,0">
+                    <Button Content="Tính tiền" Width="100" Margin="5" Command="{Binding CalculateCommand}"/>
+                    <Button Content="Nhập lại" Width="90" Margin="5" Command="{Binding ResetCommand}"/>
+                </WrapPanel>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Padding="10">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,10,0,0">
+                    <Button Content="Xóa" Width="80" Margin="0,0,20,0" Command="{Binding DeleteCommand}"/>
+                    <TextBlock Text="Số lượt: " FontWeight="Bold"/>
+                    <TextBlock Text="{Binding TotalCheckoutCount}" Margin="0,0,20,0"/>
+                    <TextBlock Text="Tổng thu: " FontWeight="Bold"/>
+                    <TextBlock Text="{Binding TotalRevenue, StringFormat=N0}"/>
+                </StackPanel>
+
+                <DataGrid ItemsSource="{Binding BillsView}"
+                          SelectedItem="{Binding SelectedBill}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Họ tên" Binding="{Binding FullName}" Width="120"/>
+                        <DataGridTextColumn Header="Địa chỉ" Binding="{Binding Address}" Width="140"/>
+                        <DataGridTextColumn Header="Số ngày" Binding="{Binding Days}" Width="70"/>
+                        <DataGridTextColumn Header="Loại phòng" Binding="{Binding RoomType}" Width="100"/>
+                        <DataGridCheckBoxColumn Header="Tivi" Binding="{Binding HasTivi}" Width="60"/>
+                        <DataGridCheckBoxColumn Header="Internet" Binding="{Binding HasInternet}" Width="70"/>
+                        <DataGridCheckBoxColumn Header="Nước nóng" Binding="{Binding HasHotWater}" Width="80"/>
+                        <DataGridCheckBoxColumn Header="Karaoke" Binding="{Binding Karaoke}" Width="70"/>
+                        <DataGridCheckBoxColumn Header="Ăn sáng" Binding="{Binding Breakfast}" Width="70"/>
+                        <DataGridTextColumn Header="Tổng tiền" Binding="{Binding TotalAmount, StringFormat=N0}" Width="120"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </Border>
+    </Grid>
+</Window>

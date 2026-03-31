@@ -1,0 +1,142 @@
+﻿<Window x:Class="Bai2.Views.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Bai2.Views"
+        mc:Ignorable="d"
+        Title="Window1" Height="550" Width="800">
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Hóa đơn tính tiền" Foreground="#FF5722" FontSize="22" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,25"/>
+
+        <Grid Grid.Row="1" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4.5*"/>
+                <ColumnDefinition Width="5.5*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" Margin="0,0,30,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Chọn loại thức uống" VerticalAlignment="Center" Margin="0,0,15,15"/>
+                <ComboBox x:Name="cboLoaiThucUong" Grid.Row="0" Grid.Column="1" Height="25" Margin="0,0,0,15"
+                          ItemsSource="{Binding DanhSachLoai}"
+                          DisplayMemberPath="TenLoai"
+                          SelectedItem="{Binding SelectedLoai}"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Chọn nước" Margin="0,0,0,5"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="Số lượng" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+
+                <ListBox x:Name="lstNuoc" Grid.Row="2" Grid.Column="0" Margin="0,0,15,0"
+                         ItemsSource="{Binding DanhSachSanPhamFiltered}"
+                         DisplayMemberPath="TenSanPham"
+                         SelectedItem="{Binding SelectedSanPham}"/>
+
+                <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center">
+                    <TextBox x:Name="txtSoLuong" Width="80" Height="25" Margin="0,0,0,15" TextAlignment="Center"
+                             Text="{Binding SoLuongText, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button x:Name="btnThem" Content="Thêm" Width="80" Height="30" Background="#E1E1E1"
+                            Command="{Binding ThemCommand}"/>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="Chi tiết hóa đơn" FontWeight="SemiBold" Margin="0,0,0,10"/>
+
+                <ListView x:Name="lsvChiTiet" Grid.Row="1" Margin="0,0,0,15"
+                          ItemsSource="{Binding DanhSachChiTietHoaDon}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Tên thức uống" Width="160" DisplayMemberBinding="{Binding TenSanPham}"/>
+                            <GridViewColumn Header="Đơn giá" Width="90" DisplayMemberBinding="{Binding DonGia}"/>
+                            <GridViewColumn Header="Số lượng" Width="80" DisplayMemberBinding="{Binding SoLuong}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <TextBlock x:Name="tbTongTien" Grid.Row="2" Foreground="Red" HorizontalAlignment="Right" Margin="0,0,10,0"
+                           Text="{Binding TongTienHienTai, StringFormat='Tổng tiền: {0:N0}'}"/>
+            </Grid>
+        </Grid>
+
+        <Border Grid.Row="2" BorderBrush="#D3D3D3" BorderThickness="0,1,0,0" Padding="0,20,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0" Margin="0,0,20,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Thông tin khách hàng" FontWeight="SemiBold" Margin="0,0,0,15"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Họ tên" VerticalAlignment="Center" Margin="0,0,15,15" HorizontalAlignment="Right"/>
+                    <TextBox x:Name="txtHoTen" Grid.Row="1" Grid.Column="1" Height="25" Margin="0,0,0,15"
+                             Text="{Binding HoTen, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Số điện thoại" VerticalAlignment="Center" Margin="0,0,15,25" HorizontalAlignment="Right"/>
+                    <TextBox x:Name="txtSoDienThoai" Grid.Row="2" Grid.Column="1" Height="25" Margin="0,0,0,25"
+                             Text="{Binding SoDienThoai, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button x:Name="btnTinhTien" Content="Tính tiền" Width="100" Height="30" Margin="0,0,30,0" Background="#E1E1E1"
+                                Command="{Binding TinhTienCommand}"/>
+                        <Button x:Name="btnThoat" Content="Thoát" Width="100" Height="30" Background="#E1E1E1" Click="btnThoat_Click"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="Chọn vị trí:" Margin="0,0,15,0"/>
+                    <ListBox x:Name="lstViTri" Grid.Column="1" Height="140" VerticalAlignment="Top">
+                        <ListBoxItem Content="Bàn 1 - Tầng trệt"/>
+                        <ListBoxItem Content="Bàn 2 - Tầng trệt"/>
+                        <ListBoxItem Content="Bàn 3 - Tầng trệt"/>
+                        <ListBoxItem Content="Bàn 1 - Tầng 1"/>
+                        <ListBoxItem Content="Bàn 2 - Tầng 1"/>
+                        <ListBoxItem Content="Bàn 3 - Tầng 1"/>
+                        <ListBoxItem Content="Bàn 4 - Tầng 1"/>
+                    </ListBox>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

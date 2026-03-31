@@ -1,0 +1,9 @@
+﻿<Application x:Class="Lab06_Bai1_BankMVVM.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Lab06_Bai1_BankMVVM"
+             StartupUri="Views/BankView.xaml">
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>
