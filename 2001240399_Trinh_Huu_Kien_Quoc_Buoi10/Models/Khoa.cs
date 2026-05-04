@@ -12,7 +12,7 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_Buoi10.Models
     using System;
     using System.Collections.Generic;
     
-    public  class Khoa
+    public partial class Khoa
     {
         public string MaKhoa { get; set; }
         public string TenKhoa { get; set; }

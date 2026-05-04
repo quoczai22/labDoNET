@@ -7,14 +7,12 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_Buoi10.ViewModels
 {
     public class KhoaViewModel : BaseViewModel
     {
-        QLSinhVienEntities1 db = new QLSinhVienEntities1();
+        QL_KhoaEntities db = new QL_KhoaEntities();
 
         public ObservableCollection<Khoa> DS_Khoa { get; set; }
         public RelayCommand AddCommand { get; set; }
         public RelayCommand DeleteCommand { get; set; }
         public RelayCommand UpdateCommand { get; set; }
-
-        public Khoa NewKhoa { get; set; }
 
         private Khoa _SelectedKhoa;
         public Khoa SelectedKhoa
@@ -24,27 +22,42 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_Buoi10.ViewModels
             {
                 _SelectedKhoa = value;
                 OnPropertyChanged(nameof(SelectedKhoa));
-
                 if (SelectedKhoa != null)
                 {
-                    NewKhoa = new Khoa()
-                    {
-                        MaKhoa = _SelectedKhoa.MaKhoa,
-                        TenKhoa = _SelectedKhoa.TenKhoa
-                    };
-                    OnPropertyChanged(nameof(NewKhoa));
+                    MaKhoa = SelectedKhoa.MaKhoa;
+                    TenKhoa = SelectedKhoa.TenKhoa;
                 }
+            }
+        }
+
+        private string _MaKhoa;
+        public string MaKhoa
+            {
+            get => _MaKhoa;
+            set
+            {
+                _MaKhoa = value;
+                OnPropertyChanged(nameof(MaKhoa));
+            }
+        }
+        
+        private string _TenKhoa;
+        public string TenKhoa
+        {
+            get => _TenKhoa;
+            set
+            {
+                _TenKhoa = value;
+                OnPropertyChanged(nameof(TenKhoa));
             }
         }
 
         public KhoaViewModel()
         {
-            NewKhoa = new Khoa();
 
             AddCommand = new RelayCommand(o => Add());
             DeleteCommand = new RelayCommand(o => Delete(), o => SelectedKhoa != null);
             UpdateCommand = new RelayCommand(o => Update(), o => SelectedKhoa != null);
-
             LoadData();
         }
 
@@ -52,64 +65,62 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_Buoi10.ViewModels
         {
             DS_Khoa = new ObservableCollection<Khoa>(db.Khoas.ToList());
             OnPropertyChanged(nameof(DS_Khoa));
-            SelectedKhoa = DS_Khoa.FirstOrDefault();
         }
 
         private void Add()
         {
+            if (string.IsNullOrWhiteSpace(MaKhoa) || string.IsNullOrWhiteSpace(TenKhoa)) return;
             var newKhoa = new Khoa
             {
-                MaKhoa = NewKhoa.MaKhoa,
-                TenKhoa = NewKhoa.TenKhoa
+                MaKhoa = MaKhoa,
+                TenKhoa = TenKhoa,
             };
-
-            DS_Khoa.Add(newKhoa);
             db.Khoas.Add(newKhoa);
-            SelectedKhoa = newKhoa;
-
             db.SaveChanges();
-
-            NewKhoa.MaKhoa = "";
-            NewKhoa.TenKhoa = "";
-            OnPropertyChanged(nameof(NewKhoa));
+            LoadData();
+            MaKhoa=string.Empty;
+            TenKhoa=string.Empty;
         }
 
         private void Delete()
         {
-            if (SelectedKhoa == null)
-                return;
-
-            if (MessageBox.Show("Bạn chắc chắn muốn xóa khoa này?",
-                                "Xác nhận",
-                                MessageBoxButton.YesNo,
-                                MessageBoxImage.Question) != MessageBoxResult.Yes)
-                return;
-
-            db.Khoas.Remove(SelectedKhoa);
-            DS_Khoa.Remove(SelectedKhoa);
-            db.SaveChanges();
-            SelectedKhoa = DS_Khoa.FirstOrDefault();
+            if (SelectedKhoa == null) return;
+            var KhoaDelete=db.Khoas.Find(SelectedKhoa.MaKhoa);
+            if (KhoaDelete != null)
+            {
+                if (MessageBox.Show("Bạn chắc chắn muốn xóa khoa này?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) return;
+                try
+                {
+                    db.Khoas.Remove(KhoaDelete);
+                    db.SaveChanges();
+                    LoadData();
+                    MaKhoa = string.Empty;
+                    TenKhoa = string.Empty;
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
+                {
+                    MessageBox.Show("Lỗi khi xóa: " + ex.Message);
+                }
+            }
         }
-
         private void Update()
         {
             try
             {
                 if (SelectedKhoa == null) return;
-
-                if (SelectedKhoa.MaKhoa != NewKhoa.MaKhoa)
+                if (SelectedKhoa == null || string.IsNullOrEmpty(TenKhoa)|| string.IsNullOrEmpty(MaKhoa)) return;
+                var khoaUp = db.Khoas.Find(SelectedKhoa.MaKhoa);
+                if (khoaUp != null)
                 {
-                    MessageBox.Show("Không được phép thay đổi Mã khoa (Khóa chính). Vui lòng chỉ cập nhật Tên khoa.");
-                    NewKhoa.MaKhoa = SelectedKhoa.MaKhoa;
-                    OnPropertyChanged(nameof(NewKhoa));
-                    return;
+                    khoaUp.MaKhoa = MaKhoa;
+                    khoaUp.TenKhoa = TenKhoa;
+                    db.SaveChanges();
+                    LoadData();
+                    MaKhoa = string.Empty;
+                    TenKhoa=string.Empty;
+                    MessageBox.Show("Cập nhật thành công!");
                 }
-                // GÁN NGƯỢC: NewKhoa -> SelectedKhoa
-                SelectedKhoa.MaKhoa = NewKhoa.MaKhoa;
-                SelectedKhoa.TenKhoa = NewKhoa.TenKhoa;
-                db.SaveChanges();
-                LoadData();
-                MessageBox.Show("Cập nhật thành công!");
+
             }
             catch (System.Exception ex)
             {

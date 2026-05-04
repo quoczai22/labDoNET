@@ -9,7 +9,7 @@
         Title="Quản lý Khoa" Height="450" Width="800" WindowStartupLocation="CenterScreen">
 
     <Window.DataContext>
-        <vm:KhoaViewModel/>
+        <vm:KhoaViewModel />
     </Window.DataContext>
 
     <Grid Margin="10">
@@ -23,12 +23,10 @@
 
                 <Label Content="Mã khoa:" Padding="0,0,0,5" />
                 <TextBox x:Name="txtMaKhoa" Height="22" Margin="0,0,0,15" VerticalContentAlignment="Center" 
-                         Text="{Binding NewKhoa.MaKhoa, UpdateSourceTrigger=PropertyChanged}"/>
+                         Text="{Binding MaKhoa}"/>
 
                 <Label Content="Tên khoa:" Padding="0,0,0,5" />
-                <TextBox x:Name="txtTenKhoa" Height="22" Margin="0,0,0,25" VerticalContentAlignment="Center" 
-                         Text="{Binding NewKhoa.TenKhoa, UpdateSourceTrigger=PropertyChanged}" />
-
+                <TextBox x:Name="txtTenKhoa" Height="22" Margin="0,0,0,25" VerticalContentAlignment="Center" Text="{Binding TenKhoa}"/>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />

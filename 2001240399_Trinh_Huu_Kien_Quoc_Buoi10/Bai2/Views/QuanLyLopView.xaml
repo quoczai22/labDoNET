@@ -1,0 +1,79 @@
+﻿<Window x:Class="Bai2.Views.QuanLyLopView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Bai2.ViewModels"
+        xmlns:local="clr-namespace:Bai2.Views"
+        mc:Ignorable="d"
+        Title="QuanLyLopView" Height="450" Width="800">
+    
+    <Window.DataContext>
+        <vm:QuanLyLopViewModel />
+    </Window.DataContext>
+    
+    <Grid Margin="15">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+
+        <GroupBox Grid.Column="0" Margin="0,0,15,0" BorderBrush="#D3D3D3" BorderThickness="1">
+            <GroupBox.Header>
+                <TextBlock Text="THÔNG TIN LỚP" FontWeight="Bold" FontSize="16" Margin="5"/>
+            </GroupBox.Header>
+
+            <StackPanel Margin="15,10,15,10">
+                <Label Content="Mã lớp:" Margin="0,0,0,2"/>
+                <TextBox x:Name="txtMaLop" Height="28" Padding="5,2" Margin="0,0,0,15" 
+                         Text="{Binding MaLop, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Content="Mã khoa:" Margin="0,0,0,2"/>
+                <ComboBox x:Name="cboMaKhoa" Height="28" Padding="5,2" Margin="0,0,0,30"
+                          ItemsSource="{Binding DS_Khoa}" 
+                          SelectedValuePath="MaKhoa" 
+                          DisplayMemberPath="TenKhoa"
+                          SelectedValue="{Binding MaKhoa}">
+
+                    <ComboBox.Style>
+                        <Style TargetType="ComboBox">
+                            <Style.Triggers>
+                                <Trigger Property="SelectedIndex" Value="-1">
+                                    <Setter Property="Text" Value="-- Chọn khoa --"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ComboBox.Style>
+                </ComboBox>
+
+                <UniformGrid Rows="1" Columns="5" Height="30">
+                    <Button x:Name="btnThem" Content="Thêm" Margin="0,0,10,0" Background="#E1E1E1" Command="{Binding AddCommand}"/>
+                    <Button x:Name="btnSua" Content="Sửa" Margin="0,0,10,0" Background="#E1E1E1" Command="{Binding UpdateCommand}"/>
+                    <Button x:Name="btnXoa" Content="Xóa" Margin="0,0,10,0" Background="#E1E1E1" Command="{Binding DeleteCommand}"/>
+                    <Button x:Name="btnLuu" Content="Lưu" Margin="0,0,10,0" Background="#E1E1E1" Command="{Binding SaveCommand}"/>
+                    <Button x:Name="btnHuy" Content="Hủy" Background="#E1E1E1" Command="{Binding CancelCommand}"/>
+                </UniformGrid>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Grid.Column="1" BorderBrush="#D3D3D3" BorderThickness="1">
+            <GroupBox.Header>
+                <TextBlock Text="DANH SÁCH LỚP" FontWeight="Bold" FontSize="16" Margin="5"/>
+            </GroupBox.Header>
+
+            <DataGrid x:Name="dgvDanhSachLop" Margin="10" 
+                      AutoGenerateColumns="False" 
+                      CanUserAddRows="False" 
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="All"
+                      Background="#F4F4F4"
+                      ItemsSource="{Binding DS_Lop}"
+                      SelectedItem="{Binding SelectedLop, Mode=TwoWay}">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Mã lớp" Binding="{Binding MaLop}" Width="*"/>
+                    <DataGridTextColumn Header="Mã khoa" Binding="{Binding MaKhoa}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+    </Grid>
+</Window>
