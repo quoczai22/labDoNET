@@ -1,0 +1,120 @@
+﻿<Window x:Class="Bai3.Views.QuanLyCapNhatDiemView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Bai3.Views"
+        xmlns:vm="clr-namespace:Bai3.ViewModels"
+        mc:Ignorable="d"
+        Title="QuanLyCapNhatDiemView" Height="450" Width="800">
+    <Window.DataContext>
+        <vm:SinhVienViewModel />
+    </Window.DataContext>
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" BorderBrush="#D3D3D3" BorderThickness="1" Padding="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="1.5*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" Content="Môn học:" VerticalAlignment="Center"/>
+                <ComboBox Grid.Column="1" Margin="10,0,20,0" Height="28"
+                          ItemsSource="{Binding DS_MonHoc}"
+                          DisplayMemberPath="TenMonHoc"
+                          SelectedValuePath="MaMonHoc"
+                          SelectedValue="{Binding SelectedMaMonHoc}"/>
+
+                <Label Grid.Column="2" Content="Năm học:" VerticalAlignment="Center"/>
+                <ComboBox Grid.Column="3" Margin="10,0,20,0" Height="28"
+                          ItemsSource="{Binding DS_NamHoc}"
+                          SelectedValue="{Binding SelectedNamHoc}"/>
+
+                <Label Grid.Column="4" Content="Học kỳ:" VerticalAlignment="Center"/>
+                <ComboBox Grid.Column="5" Margin="10,0,0,0" Height="28"
+                          ItemsSource="{Binding DS_HocKy}"
+                          SelectedValue="{Binding SelectedHocKy}"/>
+
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" BorderBrush="#D3D3D3" BorderThickness="1,0,1,1" Padding="10">
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="btnTaiDanhSach" Content="Tải danh sách sinh viên" 
+                        Width="160" Height="30" Margin="0,0,15,0" Background="#E1E1E1"
+                        Command="{Binding LoadCommand}"/>
+
+                <Button x:Name="btnLuuDiem" Content="Lưu điểm" 
+                        Width="120" Height="30" Background="#E1E1E1"
+                        Command="{Binding SaveCommnad}"/>
+                <TextBlock Text="|" VerticalAlignment="Center" Margin="0,0,30,0" Foreground="Gray"/>
+
+                <Label Content="Nhập điểm cho SV đang chọn:" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtNhapDiem" Width="80" Height="28" Margin="5,0,15,0" 
+                         VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                         Text="{Binding NewDiem, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Button x:Name="btnNhap" Content="Nhập" 
+                        Width="80" Height="30" Background="#E1E1E1"
+                        Command="{Binding InputCommand}"/>
+            </StackPanel>
+        </Border>
+
+        <DataGrid Grid.Row="2" x:Name="dgvNhapDiem" Margin="0,15,0,0" 
+                  AutoGenerateColumns="False" 
+                  CanUserAddRows="False" 
+                  HeadersVisibility="Column"
+                  GridLinesVisibility="All"
+                  Background="#F4F4F4"
+                  RowHeight="30"
+                  ItemsSource="{Binding DS_KetQua}"
+                  SelectedItem="{Binding SelectedSinhVien}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Mã SV" Binding="{Binding MaSV}" Width="150" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="5,0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Họ tên" Binding="{Binding TenSV}" Width="250" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="5,0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Lớp" Binding="{Binding MaLopSV}" Width="150" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="5,0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Điểm" Binding="{Binding DiemSV, UpdateSourceTrigger=PropertyChanged}" Width="*">
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid> 
+    </Grid>
+</Window>
