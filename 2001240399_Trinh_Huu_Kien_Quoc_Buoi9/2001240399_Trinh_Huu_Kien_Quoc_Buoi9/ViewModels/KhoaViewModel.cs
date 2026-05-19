@@ -10,7 +10,7 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_Buoi9.ViewModels
 {
     internal class KhoaViewModel: BaseViewModel
     {
-        private QLSinhVienEntities db = new QLSinhVienEntities();
+        private QL_Khoa db = new QL_Khoa();
         public ObservableCollection<Khoa> DS_Khoa { get; set; }
         private Khoa _SelectedKhoa;
         public Khoa SelectedKhoa

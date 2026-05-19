@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _2001240399_Trinh_Huu_Kien_Quoc_Buoi9.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,7 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_Buoi9.Views
         public KhoaView()
         {
             InitializeComponent();
+            this.DataContext = new KhoaViewModel();
         }
     }
 }
