@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace _2001240399_Trinh_Huu_Kien_Quoc_Bai3.ViewModels
 {
-    public class BaseViewModel
+    public class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)

@@ -5,12 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_2001240399_Trinh_Huu_Kien_Quoc_Buoi10.Views"
         mc:Ignorable="d"
-        xmlns:vm="clr-namespace:_2001240399_Trinh_Huu_Kien_Quoc_Buoi10.ViewModels"
         Title="Quản lý Khoa" Height="450" Width="800" WindowStartupLocation="CenterScreen">
 
-    <Window.DataContext>
-        <vm:KhoaViewModel />
-    </Window.DataContext>
 
     <Grid Margin="10">
         <Grid.ColumnDefinitions>

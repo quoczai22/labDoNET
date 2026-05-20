@@ -28,5 +28,6 @@ namespace Bai3.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<KetQua> KetQuas { get; set; }
+        public virtual Lop Lop { get; set; }
     }
 }

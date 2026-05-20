@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Bai3.Models
+namespace Bai7.Models
 {
     using System;
     using System.Data.Entity;
@@ -26,6 +26,8 @@ namespace Bai3.Models
         }
     
         public virtual DbSet<KetQua> KetQuas { get; set; }
+        public virtual DbSet<Khoa> Khoas { get; set; }
+        public virtual DbSet<Lop> Lops { get; set; }
         public virtual DbSet<MonHoc> MonHocs { get; set; }
         public virtual DbSet<SinhVien> SinhViens { get; set; }
     }

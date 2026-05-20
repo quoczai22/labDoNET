@@ -1,0 +1,99 @@
+﻿<Window x:Class="Bai6.Views.QuanLyMonHocView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Bai6.Views"
+        mc:Ignorable="d"
+        Title="QuanLyMonHocView" Height="450" Width="800">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" BorderBrush="#CCCCCC" BorderThickness="1" Background="White" Padding="15,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Content="Môn học:" VerticalAlignment="Center" Grid.Column="0"/>
+                <ComboBox Grid.Column="1" 
+                  ItemsSource="{Binding DS_MonHoc}" 
+                  SelectedValue="{Binding SelectedMonHoc, UpdateSourceTrigger=PropertyChanged}"
+                  DisplayMemberPath="TenMonHoc" 
+                  SelectedValuePath="MaMonHoc" />
+
+                <Label Content="Năm học:" VerticalAlignment="Center" Grid.Column="3"/>
+                <ComboBox Grid.Column="4" Height="28" VerticalContentAlignment="Center"
+                        ItemsSource="{Binding DS_NamHoc}"
+                        SelectedItem="{Binding SelectedNamHoc}"/>
+
+                <Label Content="Học kỳ:" VerticalAlignment="Center" Grid.Column="6"/>
+                <ComboBox Grid.Column="7" Height="28" VerticalContentAlignment="Center"
+                        ItemsSource="{Binding DS_HocKy}"
+                        SelectedItem="{Binding SelectedHocKy}"/>
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,15">
+            <Button Content="Tải danh sách sinh viên" 
+                  Padding="15,5" Height="32" Margin="0,0,10,0"
+                  Command="{Binding LoadCommand}"
+                  Background="#E1E1E1" BorderBrush="#CCCCCC"/>
+
+            <Button Content="Lưu điểm" 
+                  Padding="25,5" Height="32"
+                  Command="{Binding SaveCommand}"
+                  Background="#E1E1E1" BorderBrush="#CCCCCC"/>
+        </StackPanel>
+
+        <Border Grid.Row="2" BorderBrush="#CCCCCC" BorderThickness="1" Background="White">
+            <DataGrid ItemsSource="{Binding DS_KetQua}" 
+          AutoGenerateColumns="False" 
+          CanUserAddRows="False"
+          HeadersVisibility="Column"
+          GridLinesVisibility="All"
+          BorderThickness="0"
+          RowHeight="30"
+          Background="White">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Mã SV" Binding="{Binding MaSinhVien}" Width="120" IsReadOnly="True"/>
+
+                    <DataGridTextColumn Header="Họ tên" Binding="{Binding SinhVien.HoTen}" Width="*" IsReadOnly="True"/>
+
+                    <DataGridTextColumn Header="Lớp" Binding="{Binding SinhVien.MaLop}" Width="150" IsReadOnly="True"/>
+
+                    <DataGridTextColumn Header="Điểm" Binding="{Binding Diem, UpdateSourceTrigger=LostFocus, ConverterCulture='en-US'}" Width="100">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                        <Setter Property="Padding" Value="10,5"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Background" Value="#F9F9F9"/>
+                        <Setter Property="BorderBrush" Value="#DDDDDD"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+            </DataGrid>
+        </Border>
+    </Grid>
+</Window>

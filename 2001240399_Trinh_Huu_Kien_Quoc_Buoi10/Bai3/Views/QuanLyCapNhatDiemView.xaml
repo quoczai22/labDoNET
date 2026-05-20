@@ -6,10 +6,11 @@
         xmlns:local="clr-namespace:Bai3.Views"
         xmlns:vm="clr-namespace:Bai3.ViewModels"
         mc:Ignorable="d"
-        Title="QuanLyCapNhatDiemView" Height="450" Width="800">
+        Title="Quản Lý Cập Nhật Điểm Sinh Viên" Height="500" Width="850" WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <vm:SinhVienViewModel />
     </Window.DataContext>
+
     <Grid Margin="15">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -17,7 +18,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" BorderBrush="#D3D3D3" BorderThickness="1" Padding="10">
+        <Border Grid.Row="0" BorderBrush="#D3D3D3" BorderThickness="1" Padding="10" Background="#F9F9F9">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -28,63 +29,64 @@
                     <ColumnDefinition Width="1.5*"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Grid.Column="0" Content="Môn học:" VerticalAlignment="Center"/>
-                <ComboBox Grid.Column="1" Margin="10,0,20,0" Height="28"
+                <Label Grid.Column="0" Content="Môn học:" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                <ComboBox Grid.Column="1" Margin="10,0,20,0" Height="28" VerticalContentAlignment="Center"
                           ItemsSource="{Binding DS_MonHoc}"
                           DisplayMemberPath="TenMonHoc"
                           SelectedValuePath="MaMonHoc"
-                          SelectedValue="{Binding SelectedMaMonHoc}"/>
+                          SelectedValue="{Binding SelectedMaMonHoc, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Label Grid.Column="2" Content="Năm học:" VerticalAlignment="Center"/>
-                <ComboBox Grid.Column="3" Margin="10,0,20,0" Height="28"
+                <Label Grid.Column="2" Content="Năm học:" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                <ComboBox Grid.Column="3" Margin="10,0,20,0" Height="28" VerticalContentAlignment="Center"
                           ItemsSource="{Binding DS_NamHoc}"
-                          SelectedValue="{Binding SelectedNamHoc}"/>
+                          SelectedItem="{Binding SelectedNamHoc, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Label Grid.Column="4" Content="Học kỳ:" VerticalAlignment="Center"/>
-                <ComboBox Grid.Column="5" Margin="10,0,0,0" Height="28"
+                <Label Grid.Column="4" Content="Học kỳ:" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                <ComboBox Grid.Column="5" Margin="10,0,0,0" Height="28" VerticalContentAlignment="Center"
                           ItemsSource="{Binding DS_HocKy}"
-                          SelectedValue="{Binding SelectedHocKy}"/>
-
+                          SelectedItem="{Binding SelectedHocKy, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
         </Border>
 
-        <Border Grid.Row="1" BorderBrush="#D3D3D3" BorderThickness="1,0,1,1" Padding="10">
+        <Border Grid.Row="1" BorderBrush="#D3D3D3" BorderThickness="1,0,1,1" Padding="10" Background="#F1F1F1">
             <StackPanel Orientation="Horizontal">
                 <Button x:Name="btnTaiDanhSach" Content="Tải danh sách sinh viên" 
-                        Width="160" Height="30" Margin="0,0,15,0" Background="#E1E1E1"
+                        Width="160" Height="30" Margin="0,0,15,0" FontWeight="SemiBold"
                         Command="{Binding LoadCommand}"/>
 
                 <Button x:Name="btnLuuDiem" Content="Lưu điểm" 
-                        Width="120" Height="30" Background="#E1E1E1"
-                        Command="{Binding SaveCommnad}"/>
-                <TextBlock Text="|" VerticalAlignment="Center" Margin="0,0,30,0" Foreground="Gray"/>
+                        Width="120" Height="30" FontWeight="SemiBold" Background="#E1E1E1" Foreground="Black"
+                        Command="{Binding SaveCommand}"/>
 
-                <Label Content="Nhập điểm cho SV đang chọn:" VerticalAlignment="Center"/>
+                <TextBlock Text="|" VerticalAlignment="Center" Margin="20,0" Foreground="Gray" FontSize="16"/>
+
+                <Label Content="Nhập điểm nhanh cho SV đang chọn:" VerticalAlignment="Center" FontWeight="SemiBold"/>
                 <TextBox x:Name="txtNhapDiem" Width="80" Height="28" Margin="5,0,15,0" 
-                         VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
-                         Text="{Binding NewDiem, UpdateSourceTrigger=PropertyChanged}"/>
+                         VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="14"
+                         Text="{Binding NewDiem, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}"/>
 
-                <Button x:Name="btnNhap" Content="Nhập" 
-                        Width="80" Height="30" Background="#E1E1E1"
+                <Button x:Name="btnNhap" Content="Nhập điểm" 
+                        Width="100" Height="30" FontWeight="SemiBold" Background="#E1E1E1" Foreground="Black"
                         Command="{Binding InputCommand}"/>
             </StackPanel>
         </Border>
 
-        <DataGrid Grid.Row="2" x:Name="dgvNhapDiem" Margin="0,15,0,0" 
+        <DataGrid Grid.Row="2" x:Name="dgvNhapDiem" 
+                  Margin="0,15,0,0" 
                   AutoGenerateColumns="False" 
                   CanUserAddRows="False" 
                   HeadersVisibility="Column"
                   GridLinesVisibility="All"
-                  Background="#F4F4F4"
-                  RowHeight="30"
+                  Background="White"
+                  RowHeight="32"
                   ItemsSource="{Binding DS_KetQua}"
-                  SelectedItem="{Binding SelectedSinhVien}">
+                  SelectedItem="{Binding SelectedSinhVien, Mode=TwoWay}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Mã SV" Binding="{Binding MaSV}" Width="150" IsReadOnly="True">
+                <DataGridTextColumn Header="Mã SV" Binding="{Binding MaSV}" Width="130" IsReadOnly="True">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="Margin" Value="5,0"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
@@ -93,28 +95,45 @@
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="Margin" Value="5,0"/>
+                            <Setter Property="Margin" Value="10,0"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Header="Lớp" Binding="{Binding MaLopSV}" Width="150" IsReadOnly="True">
+                <DataGridTextColumn Header="Lớp hiện tại" Binding="{Binding MaLopSV}" Width="150" IsReadOnly="True">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="Margin" Value="5,0"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Header="Điểm" Binding="{Binding DiemSV, UpdateSourceTrigger=PropertyChanged}" Width="*">
+                <DataGridTextColumn Header="Điểm Số (Hệ 10)" Binding="{Binding DiemSV, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.0}}" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
                     <DataGridTextColumn.EditingElementStyle>
                         <Style TargetType="TextBox">
                             <Setter Property="VerticalContentAlignment" Value="Center"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
                         </Style>
                     </DataGridTextColumn.EditingElementStyle>
                 </DataGridTextColumn>
             </DataGrid.Columns>
-        </DataGrid> 
+
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="Padding" Value="5"/>
+                    <Setter Property="Background" Value="#EFEFEF"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+        </DataGrid>
     </Grid>
 </Window>

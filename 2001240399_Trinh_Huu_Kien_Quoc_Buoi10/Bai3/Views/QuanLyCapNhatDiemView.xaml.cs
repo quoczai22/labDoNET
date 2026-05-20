@@ -22,6 +22,7 @@ namespace Bai3.Views
         public QuanLyCapNhatDiemView()
         {
             InitializeComponent();
+            DataContext = new ViewModels.SinhVienViewModel();
         }
     }
 }

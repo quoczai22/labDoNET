@@ -4,37 +4,41 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using Bai3.Views;
+using System.Windows.Input;
+
 namespace Bai3.ViewModels
 {
     public class SinhVienViewModel : BaseViewModel
     {
-        QLSinhVienEntities db = new QLSinhVienEntities();
+        QLCapNhatDiemEntities db = new QLCapNhatDiemEntities();
 
-        public ObservableCollection<SinhVien> DS_SinhVien { get; set; }
         public ObservableCollection<MonHoc> DS_MonHoc { get; set; }
-        public List<string> DS_NamHoc { get; set; } = new List<string> { "2023-2024", "2024-2025" };
+        public List<string> DS_NamHoc { get; set; } = new List<string> { "2023-2024", "2024-2025", "2025-2026" };
         public List<int> DS_HocKy { get; set; } = new List<int> { 1, 2, 3 };
-        public RelayCommand SaveCommnad { get; set; }
-        public RelayCommand LoadCommand { get; set; }
-        public RelayCommand InputCommand { get; set; }
-        public ObservableCollection<SinhVienViewModel> DS_KetQua { get; set; } = new ObservableCollection<SinhVienViewModel>();
 
-        private SinhVienViewModel _SelectedSinhVien;
-        public SinhVienViewModel SelectedSinhVien
+        private ObservableCollection<KetQua> _dsKetQua = new ObservableCollection<KetQua>();
+        public ObservableCollection<KetQua> DS_KetQua
         {
-            get => _SelectedSinhVien;
+            get => _dsKetQua;
+            set { _dsKetQua = value; OnPropertyChanged(nameof(DS_KetQua)); }
+        }
+
+        private KetQua _selectedSinhVien;
+        public KetQua SelectedSinhVien
+        {
+            get => _selectedSinhVien;
             set
             {
-                _SelectedSinhVien = value;
+                _selectedSinhVien = value;
                 OnPropertyChanged(nameof(SelectedSinhVien));
                 if (SelectedSinhVien != null)
-                { 
-                    DiemSV = SelectedSinhVien.DiemSV;
+                {
+                    NewDiem = SelectedSinhVien.SinhVien.KetQuas.FirstOrDefault()?.Diem;
                 }
             }
         }
-        string _selectedMaMonHoc;
+
+        private string _selectedMaMonHoc;
         public string SelectedMaMonHoc
         {
             get => _selectedMaMonHoc;
@@ -44,7 +48,8 @@ namespace Bai3.ViewModels
                 OnPropertyChanged(nameof(SelectedMaMonHoc));
             }
         }
-        string _selectedNamHoc;
+
+        private string _selectedNamHoc;
         public string SelectedNamHoc
         {
             get => _selectedNamHoc;
@@ -55,194 +60,175 @@ namespace Bai3.ViewModels
             }
         }
 
-        int _selectedHocKy;
+        private int _selectedHocKy;
         public int SelectedHocKy
         {
             get => _selectedHocKy;
             set
-            { _selectedHocKy = value;
+            {
+                _selectedHocKy = value;
                 OnPropertyChanged(nameof(SelectedHocKy));
             }
         }
 
-
-        private string _maSV;
-        public string MaSV
-            {
-            get => _maSV;
-            set
-            {
-                _maSV = value;
-                OnPropertyChanged(nameof(MaSV));
-            }
-        }
-        
-        private string _tenSV;
-        public string TenSV
-        {
-            get => _tenSV;
-            set
-            {
-                _tenSV = value;
-                OnPropertyChanged(nameof(TenSV));
-            }
-        }
-        string _maLopSV;
-        public string MaLopSV
-            {
-            get => _maLopSV;
-            set
-            {
-                _maLopSV = value;
-                OnPropertyChanged(nameof(MaLopSV));
-            }
-        }
-        double _diemSV;
-        public double DiemSV
-            {
-            get => _diemSV;
-            set
-            {
-                _diemSV = value;
-                OnPropertyChanged(nameof(DiemSV));
-            }
-        }
-
-        double? _newDiem;
+        private double? _newDiem;
         public double? NewDiem
         {
             get => _newDiem;
-            set
-            {
-                _newDiem = value;
-                OnPropertyChanged(nameof(NewDiem));
-            }
+            set { _newDiem = value; OnPropertyChanged(nameof(NewDiem)); }
         }
+
+        string _masv;
+        public string MaSV
+        {
+            get => _masv;
+            set { _masv = value; OnPropertyChanged(nameof(MaSV)); }
+        }
+
+        private int _tenSinhVien;
+        public int TenSinhVien
+        {
+            get => _tenSinhVien;
+            set { _tenSinhVien = value; OnPropertyChanged(nameof(TenSinhVien)); }
+        }
+        string _maLop;
+        public string MaLop { 
+            get => _maLop;
+            set { _maLop = value; OnPropertyChanged(nameof(MaLop)); }
+        }
+
+        string _diemSV;
+        public string DiemSV { 
+            get => _diemSV;
+            set { _diemSV = value; OnPropertyChanged(nameof(DiemSV)); }
+        }
+
+        public ICommand SaveCommand { get; set; }
+        public ICommand LoadCommand { get; set; }
+        public ICommand InputCommand { get; set; }
 
         public SinhVienViewModel()
         {
-                SaveCommnad = new RelayCommand(o => Save());
-                LoadCommand = new RelayCommand(o => LoadDataList());
-                InputCommand = new RelayCommand(o => Input());
-            LoadData();
+            SaveCommand = new RelayCommand(Save, CanSave);
+            LoadCommand = new RelayCommand(LoadDataList, CanLoadDataList);
+            InputCommand = new RelayCommand(Input, CanInput);
+
+            LoadDefaultComboBoxData();
+
+            if (DS_MonHoc != null && DS_MonHoc.Count > 0) SelectedMaMonHoc = DS_MonHoc[0].MaMonHoc;
+            SelectedNamHoc = DS_NamHoc[1];
+            SelectedHocKy = DS_HocKy[0];
+        }
+        bool CanSave(object p)
+        {
+            return SelectedSinhVien != null && NewDiem.HasValue && NewDiem >= 0 && NewDiem <= 10;
+        }
+        
+        bool CanLoadDataList(object p)
+        {
+            return !string.IsNullOrEmpty(SelectedMaMonHoc) && !string.IsNullOrEmpty(SelectedNamHoc) && SelectedHocKy > 0;
         }
 
-        void LoadData()
+        bool CanInput(object p)
+        {
+            return SelectedSinhVien != null && NewDiem.HasValue && NewDiem >= 0 && NewDiem <= 10;
+        }
+        void LoadDefaultComboBoxData()
         {
             try
             {
-                DS_SinhVien = new ObservableCollection<SinhVien>(db.SinhViens.ToList());
-                OnPropertyChanged(nameof(DS_SinhVien));
                 DS_MonHoc = new ObservableCollection<MonHoc>(db.MonHocs.ToList());
                 OnPropertyChanged(nameof(DS_MonHoc));
             }
             catch (Exception ex)
             {
-                string errorMsg = "LỖI KẾT NỐI ENTITY FRAMEWORK:\n" + ex.Message;
-                if (ex.InnerException != null)
-                {
-                    errorMsg += "\n\nCHI TIẾT LỖI (Inner 1):\n" + ex.InnerException.Message;
-
-                    if (ex.InnerException.InnerException != null)
-                    {
-                        errorMsg += "\n\nCHI TIẾT LỖI (Inner 2):\n" + ex.InnerException.InnerException.Message;
-                    }
-                }
-                MessageBox.Show(errorMsg, "Lỗi Database", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Lỗi kết nối cơ sở dữ liệu: " + ex.Message, "Thông báo lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        private void Input()
+        void LoadDataList(object p)
         {
-            if (SelectedSinhVien != null && NewDiem.HasValue)
+            if (string.IsNullOrEmpty(SelectedMaMonHoc) || string.IsNullOrEmpty(SelectedNamHoc) || SelectedHocKy == 0)
             {
-                if (NewDiem < 0 || NewDiem > 10)
-                {
-                    MessageBox.Show("Điểm phải từ 0 đến 10!");
-                    return;
-                }
-
-                var ketQua = db.KetQuas.FirstOrDefault(kq =>
-                    kq.MaSinhVien == SelectedSinhVien.MaSV &&
-                    kq.MaMonHoc == SelectedMaMonHoc &&
-                    kq.NamHoc == SelectedNamHoc &&
-                    kq.HocKy == SelectedHocKy);
-
-                if (ketQua != null)
-                {
-                    ketQua.Diem = NewDiem; 
-                    db.SaveChanges();      
-
-                    SelectedSinhVien.DiemSV = NewDiem.Value; 
-
-                    MessageBox.Show("Cập nhật điểm thành công!");
-                }
-                else
-                {
-                    MessageBox.Show("Không tìm thấy kết quả để cập nhật!");
-                }
-                NewDiem = null;
+                return;
             }
+
+            DS_KetQua.Clear();
+
+            var listSinhVien = db.SinhViens.ToList();
+            var danhSachMoi = new ObservableCollection<KetQua>();
+
+            foreach (var sv in listSinhVien)
+            {
+                var ketQuaDb = db.KetQuas.FirstOrDefault(k =>
+                    k.MaSinhVien == sv.MaSinhVien &&
+                    k.MaMonHoc.Trim() == SelectedMaMonHoc.Trim() &&
+                    k.NamHoc.Trim() == SelectedNamHoc.Trim() &&
+                    k.HocKy == SelectedHocKy);
+
+                danhSachMoi.Add(new KetQua
+                {
+                    MaSinhVien = sv.MaSinhVien,
+                    SinhVien = sv,
+                    MaMonHoc = SelectedMaMonHoc,
+                    NamHoc = SelectedNamHoc,
+                    HocKy = SelectedHocKy,
+                });
+            }
+
+            DS_KetQua = danhSachMoi;
         }
-        
-        void Save()
+
+        private void Input(object p)
+        {
+            if (SelectedSinhVien == null)
+            {
+                MessageBox.Show("Vui lòng chọn một dòng sinh viên trên bảng trước!");
+                return;
+            }
+
+            if (!NewDiem.HasValue || NewDiem < 0 || NewDiem > 10)
+            {
+                MessageBox.Show("Điểm nhập vào phải nằm trong khoảng từ 0 đến 10!");
+                return;
+            }
+
+            var ketQua = db.KetQuas.FirstOrDefault(kq =>
+                kq.MaSinhVien == SelectedSinhVien.MaSinhVien &&
+                kq.MaMonHoc.Trim() == SelectedMaMonHoc.Trim() &&
+                kq.NamHoc.Trim() == SelectedNamHoc.Trim() &&
+                kq.HocKy == SelectedHocKy);
+
+            if (ketQua == null)
+            {
+                ketQua = new KetQua
+                {
+                    MaSinhVien = SelectedSinhVien.MaSinhVien,
+                    MaMonHoc = SelectedMaMonHoc,
+                    NamHoc = SelectedNamHoc,
+                    HocKy = SelectedHocKy
+                };
+                db.KetQuas.Add(ketQua);
+            }
+
+            ketQua.Diem = NewDiem;
+            db.SaveChanges();
+
+            MessageBox.Show("Cập nhật điểm thành công!");
+        }
+
+        private void Save(object p)
         {
             try
             {
-                foreach (var item in DS_KetQua)
-                {
-                    if (item.DiemSV < 0 || item.DiemSV > 10)
-                    {
-                        MessageBox.Show($"Điểm của sinh viên {item.MaSV} không hợp lệ. Phải từ 0 đến 10!");
-                        return;
-                    }
-
-                    var ketQuaDb = db.KetQuas.FirstOrDefault(k =>
-                        k.MaSinhVien == item.MaSV &&
-                        k.MaMonHoc == SelectedMaMonHoc &&
-                        k.NamHoc == SelectedNamHoc &&
-                        k.HocKy == SelectedHocKy);
-
-                    if (ketQuaDb != null)
-                    {
-                        ketQuaDb.Diem = item.DiemSV;
-                    }
-                }
-
                 db.SaveChanges();
-                MessageBox.Show("Lưu thành công!");
+                MessageBox.Show("Lưu điểm thành công!");
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi khi lưu: " + ex.Message);
             }
         }
-        void LoadDataList()
-        {
-            var lstSV = db.SinhViens.ToList();
-            var lstDiem =new ObservableCollection<KetQua>(db.KetQuas.ToList());
-            if (string.IsNullOrEmpty(SelectedMaMonHoc) || string.IsNullOrEmpty(SelectedNamHoc))
-            {
-                return;
-            }
-            DS_KetQua.Clear();
-            var danhSachKetQua = (from kq in db.KetQuas
-                                  join sv in db.SinhViens on kq.MaSinhVien equals sv.MaSinhVien
-                                  where kq.MaMonHoc == SelectedMaMonHoc
-                                     && kq.NamHoc == SelectedNamHoc
-                                     && kq.HocKy == SelectedHocKy
-                                  select new SinhVienViewModel
-                                  {
-                                      MaSV = sv.MaSinhVien,
-                                      TenSV = sv.HoTen,
-                                      MaLopSV = sv.MaLop,
-                                      DiemSV = (double)(kq.Diem ?? 0)
-                                  }).ToList();
-
-            foreach (var item in danhSachKetQua)
-            {
-                DS_KetQua.Add(item);
-            }
-        }
     }
+
 }

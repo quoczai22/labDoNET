@@ -1,0 +1,143 @@
+﻿<Window x:Class="Bai7.Views.BangDiemSinhVienView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Bai7.Views"
+        mc:Ignorable="d"
+        Title="BangDiemSinhVienView" Height="500" Width="850" WindowStartupLocation="CenterScreen">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="BẢNG ĐIỂM SINH VIÊN" 
+                   FontSize="26" FontWeight="Bold" Foreground="#002060" 
+                   HorizontalAlignment="Center" Margin="0,0,0,25"/>
+
+        <Border Grid.Row="1" BorderBrush="#B2BCC6" BorderThickness="1" 
+                CornerRadius="3" Padding="15,12" Background="White" Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Mã sinh viên:" VerticalAlignment="Center" Grid.Column="0" Margin="0,0,10,0"/>
+
+                <TextBox Grid.Column="1" Height="28" VerticalContentAlignment="Center" Padding="5,0"
+                         Text="{Binding MaSV, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Button Content="Tìm" Grid.Column="2" Width="80" Height="28" Margin="10,0,20,0"
+                        Command="{Binding TimKiemCommand}" Background="#E1E1E1"/>
+
+                <TextBlock Text="Họ tên:" VerticalAlignment="Center" Grid.Column="3" Margin="0,0,10,0" FontWeight="SemiBold"/>
+                <TextBlock Text="{Binding HoTenHienThi}" Grid.Column="4" VerticalAlignment="Center" Foreground="#2C3E50"/>
+
+                <TextBlock Text="Lớp:" VerticalAlignment="Center" Grid.Column="5" Margin="0,0,10,0" FontWeight="SemiBold"/>
+                <TextBlock Text="{Binding LopHienThi}" Grid.Column="6" VerticalAlignment="Center" Foreground="#2C3E50"/>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2" BorderBrush="#B2BCC6" BorderThickness="1" 
+                CornerRadius="3" Padding="15,12" Background="White" Margin="0,0,0,12">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Năm học:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <ComboBox Width="180" Height="28" VerticalContentAlignment="Center"
+                          ItemsSource="{Binding DS_NamHoc}"
+                          SelectedItem="{Binding SelectedNamHoc}"/>
+
+                <TextBlock Text="Học kỳ:" VerticalAlignment="Center" Margin="30,0,10,0"/>
+                <ComboBox Width="120" Height="28" VerticalContentAlignment="Center"
+                          ItemsSource="{Binding DS_HocKy}"
+                          SelectedItem="{Binding SelectedHocKy}"/>
+
+                <Button Content="Xem bảng điểm" Width="140" Height="28" Margin="40,0,0,0"
+                        Command="{Binding XemDiemCommand}" FontWeight="SemiBold" Background="#E1E1E1"/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="3" BorderBrush="#B2BCC6" BorderThickness="1" Background="White">
+
+            <DataGrid ItemsSource="{Binding DS_KetQua}" 
+                      AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                      HeadersVisibility="Column" GridLinesVisibility="All" RowHeight="32">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="STT" Binding="{Binding STT}" Width="50">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="Mã MH" Binding="{Binding MaMonHoc}" Width="120"/>
+                    <DataGridTextColumn Header="Tên môn học" Binding="{Binding TenMonHoc}" Width="*"/>
+                    <DataGridTextColumn Header="Số TC" Binding="{Binding SoTC}" Width="80">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Điểm" Binding="{Binding DiemSo, StringFormat={}{0:0.0}}" Width="100">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Điểm chữ" Binding="{Binding DiemChu}" Width="100">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Padding" Value="10,5"/>
+                        <Setter Property="Background" Value="#F8F9FA"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+            </DataGrid>
+        </Border>
+
+        <Border Grid.Row="4" BorderBrush="#B2BCC6" BorderThickness="1" 
+                CornerRadius="3" Padding="20,15" Background="White" Margin="0,12,0,0">
+            <UniformGrid Columns="3">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Tổng Tín chỉ:" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding TongTinChi}" Margin="10,0,0,0" VerticalAlignment="Center" FontWeight="Bold"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="GPA:" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding GPA, StringFormat={}{0:0.00}}" Margin="10,0,0,0" VerticalAlignment="Center" FontWeight="Bold"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Xếp loại:" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding XepLoai}" Margin="10,0,0,0" VerticalAlignment="Center" FontWeight="Bold"/>
+                </StackPanel>
+            </UniformGrid>
+        </Border>
+    </Grid>
+</Window>
