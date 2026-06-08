@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6d0c4d4021e84360bcd4a395f60d1887" Name="Diagram1">
+        <EntityTypeShape EntityType="QLHangHoaModel.CHITIETPHIEUNHAP" Width="1.5" PointX="5.25" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLHangHoaModel.LOAISANPHAM" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLHangHoaModel.NHACUNGCAP" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLHangHoaModel.NHANVIEN" Width="1.5" PointX="0.75" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLHangHoaModel.PHIEUNHAP" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLHangHoaModel.SANPHAM" Width="1.5" PointX="3" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLHangHoaModel.TONKHO_NGAY" Width="1.5" PointX="5.25" PointY="5.375" IsExpanded="true" />
+        <AssociationConnector Association="QLHangHoaModel.FK_CTPN_PHIEUNHAP" ManuallyRouted="false" />
+        <AssociationConnector Association="QLHangHoaModel.FK_CTPN_SANPHAM" ManuallyRouted="false" />
+        <AssociationConnector Association="QLHangHoaModel.FK_SANPHAM_LOAISP" ManuallyRouted="false" />
+        <AssociationConnector Association="QLHangHoaModel.FK_PHIEUNHAP_NCC" ManuallyRouted="false" />
+        <AssociationConnector Association="QLHangHoaModel.FK_PHIEUNHAP_NV" ManuallyRouted="false" />
+        <AssociationConnector Association="QLHangHoaModel.FK_TONKHO_SANPHAM" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

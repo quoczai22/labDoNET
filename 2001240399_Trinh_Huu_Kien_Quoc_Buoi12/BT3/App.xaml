@@ -1,0 +1,9 @@
+﻿<Application x:Class="BT3.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:BT3"
+             StartupUri="Views/frmPhieuNhap.xaml">
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>

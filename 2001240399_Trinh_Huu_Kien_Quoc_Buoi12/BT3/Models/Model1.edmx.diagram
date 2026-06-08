@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3cae13a2ebf643e887c0e8eb35eddeb3" Name="Diagram1">
+        <EntityTypeShape EntityType="QuanLyKhoModel.CHITIETPHIEUNHAP" Width="1.5" PointX="5.25" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanLyKhoModel.LOAISANPHAM" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanLyKhoModel.NHACUNGCAP" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanLyKhoModel.NHANVIEN" Width="1.5" PointX="0.75" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanLyKhoModel.PHIEUNHAP" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanLyKhoModel.SANPHAM" Width="1.5" PointX="3" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanLyKhoModel.TONKHO_NGAY" Width="1.5" PointX="5.25" PointY="5.375" IsExpanded="true" />
+        <AssociationConnector Association="QuanLyKhoModel.FK_CTPN_PN" ManuallyRouted="false" />
+        <AssociationConnector Association="QuanLyKhoModel.FK_CTPN_SP" ManuallyRouted="false" />
+        <AssociationConnector Association="QuanLyKhoModel.FK_SP_LSP" ManuallyRouted="false" />
+        <AssociationConnector Association="QuanLyKhoModel.FK_PN_NCC" ManuallyRouted="false" />
+        <AssociationConnector Association="QuanLyKhoModel.FK_PN_NV" ManuallyRouted="false" />
+        <AssociationConnector Association="QuanLyKhoModel.FK_TK_SP" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
