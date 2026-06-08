@@ -167,6 +167,24 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
 
         void ThemPhuThu(object p)
         {
+            if (SelectedPhuThu == null)
+            {
+                System.Windows.MessageBox.Show("Vui lòng chọn phụ thu.");
+                return;
+            }
+
+            if (SsoLuongDTO <= 0)
+            {
+                System.Windows.MessageBox.Show("Số lượng phụ thu phải lớn hơn 0.");
+                return;
+            }
+
+            if (SelectedPhong == null && _maDatPhongHienTai == null)
+            {
+                System.Windows.MessageBox.Show("Vui lòng chọn phòng trước khi thêm phụ thu.");
+                return;
+            }
+
             var ctPhuThu = new ChiTietPhuThuModel()
             {
                 MaPhuThu = SelectedPhuThu.MaPhuThu,
@@ -206,8 +224,19 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
         {
             try
             {
+                if (SelectedPhong == null || SelectedKhachHang == null)
+                {
+                    System.Windows.MessageBox.Show("Vui lòng chọn phòng và khách hàng.");
+                    return;
+                }
+
                 // 1. Ghép ngày đặt và giờ vào/ra thành DateTime hoàn chỉnh
-                DateTime ngayDat = DateTime.ParseExact(NgayDatPhong, "dd/MM/yyyy", null);
+                if (!DateTime.TryParseExact(NgayDatPhong, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime ngayDat))
+                {
+                    System.Windows.MessageBox.Show("Ngày đặt không hợp lệ. Vui lòng nhập dạng dd/MM/yyyy.");
+                    return;
+                }
+
                 if (!TimeSpan.TryParse(GioVaoDTO, out TimeSpan gioVao) || !TimeSpan.TryParse(GioRaDTO, out TimeSpan gioRa))
                 {
                     System.Windows.MessageBox.Show("Giờ vào/giờ ra không hợp lệ. Vui lòng nhập theo dạng HH:mm, ví dụ 19:30.");

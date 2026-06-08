@@ -93,20 +93,44 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
         void TimKiem(object p)
         {
             if (SelectedTang == null || TimKiemSucChua == null)
+            {
+                System.Windows.MessageBox.Show("Vui lòng chọn tầng và nhập sức chứa cần tìm.");
                 return;
+            }
+
+            if (TimKiemSucChua <= 0)
+            {
+                System.Windows.MessageBox.Show("Sức chứa tìm kiếm phải lớn hơn 0.");
+                return;
+            }
+
             var query = db.PHONGs.Where(x => x.MaNhom == SelectedTang.MaNhom && x.SucChua >= TimKiemSucChua);
             KetQuaTimKiem = new ObservableCollection<PHONG>(query.ToList());
+            SelectedPhong = KetQuaTimKiem.FirstOrDefault();
+
+            if (KetQuaTimKiem.Count == 0)
+            {
+                CapNhatChiTietPhong();
+                System.Windows.MessageBox.Show("Không tìm thấy phòng phù hợp.");
+            }
         }
 
         bool CanTimKiem( object p)
         {
-            return SelectedTang != null && TimKiemSucChua != null;
+            return SelectedTang != null && TimKiemSucChua != null && TimKiemSucChua > 0;
         }
 
         void CapNhatChiTietPhong()
         {
          if(SelectedPhong==null)
+            {
+                ChiTietPhong = string.Empty;
+                ChiTietSucChua = string.Empty;
+                ChiTietGia = string.Empty;
+                ChiTietKieuPhong = string.Empty;
+                CHiTietTinhTrang = string.Empty;
             return;
+            }
             ChiTietPhong = SelectedPhong.TenPhong;
             ChiTietSucChua=SelectedPhong.SucChua.ToString();
             ChiTietGia= SelectedPhong.GiaPhong.ToString();

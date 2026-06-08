@@ -140,6 +140,9 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KT2L2.ViewModels
 
         void Them(object p)
         {
+            MaPhong = MaPhong?.Trim();
+            TenPhong = TenPhong?.Trim();
+
             if (string.IsNullOrWhiteSpace(MaPhong) || string.IsNullOrWhiteSpace(TenPhong) || SelectedLoaiPhong == null)
             {
                 MessageBox.Show("Vui lòng nhập mã phòng, tên phòng và chọn loại phòng.");
@@ -152,7 +155,14 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KT2L2.ViewModels
                 return;
             }
 
-            if (db.PHONGs.Any(x => x.MaPhong == MaPhong))
+            if (!PhongTrong && !PhongDangNhan)
+            {
+                MessageBox.Show("Vui lòng chọn tình trạng phòng.");
+                return;
+            }
+
+            string maPhongChuan = MaPhong.ToUpper();
+            if (db.PHONGs.Any(x => x.MaPhong.ToUpper() == maPhongChuan))
             {
                 MessageBox.Show("Mã phòng đã tồn tại.");
                 return;
@@ -160,7 +170,7 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KT2L2.ViewModels
 
             var phong = new PHONG
             {
-                MaPhong = MaPhong,
+                MaPhong = maPhongChuan,
                 TenPhong = TenPhong,
                 SucChua = SucChua,
                 GiaPhong = GiaPhong,
@@ -217,12 +227,21 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KT2L2.ViewModels
         {
             if (SelectedPhong == null || SelectedLoaiPhong == null)
             {
+                MessageBox.Show("Vui lòng chọn phòng và loại phòng cần sửa.");
                 return;
             }
+
+            TenPhong = TenPhong?.Trim();
 
             if (string.IsNullOrWhiteSpace(TenPhong) || SucChua <= 0 || GiaPhong <= 0)
             {
                 MessageBox.Show("Vui lòng nhập đầy đủ thông tin hợp lệ.");
+                return;
+            }
+
+            if (!PhongTrong && !PhongDangNhan)
+            {
+                MessageBox.Show("Vui lòng chọn tình trạng phòng.");
                 return;
             }
 

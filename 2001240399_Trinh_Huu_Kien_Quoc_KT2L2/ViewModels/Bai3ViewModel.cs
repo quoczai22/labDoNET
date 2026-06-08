@@ -171,6 +171,24 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KT2L2.ViewModels
 
         void ThemDichVu(object p)
         {
+            if (SelectedDichVu == null)
+            {
+                MessageBox.Show("Vui lòng chọn dịch vụ.");
+                return;
+            }
+
+            if (SoLuongDTO <= 0)
+            {
+                MessageBox.Show("Số lượng dịch vụ phải lớn hơn 0.");
+                return;
+            }
+
+            if (SelectedPhong == null && _maDatPhongHienTai == null)
+            {
+                MessageBox.Show("Vui lòng chọn phòng trước khi thêm dịch vụ.");
+                return;
+            }
+
             var chiTiet = new ChiTietDichVuModel
             {
                 MaDV = SelectedDichVu.MaDV,
@@ -210,6 +228,18 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KT2L2.ViewModels
         {
             try
             {
+                if (SelectedPhong == null || SelectedKhachHang == null)
+                {
+                    MessageBox.Show("Vui lòng chọn phòng và khách hàng.");
+                    return;
+                }
+
+                if (SelectedPhong.TinhTrang == 1)
+                {
+                    MessageBox.Show("Phòng này đang có khách nhận phòng, vui lòng chọn phòng khác.");
+                    return;
+                }
+
                 if (!DateTime.TryParseExact(NgayDatPhong, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime ngayDat))
                 {
                     MessageBox.Show("Ngày đặt không hợp lệ. Vui lòng nhập dạng dd/MM/yyyy.");

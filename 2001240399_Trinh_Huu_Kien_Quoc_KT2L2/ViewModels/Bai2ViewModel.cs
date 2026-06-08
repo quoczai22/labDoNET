@@ -1,6 +1,7 @@
 using _2001240399_Trinh_Huu_Kien_Quoc_KT2L2.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace _2001240399_Trinh_Huu_Kien_Quoc_KT2L2.ViewModels
@@ -100,17 +101,34 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KT2L2.ViewModels
         {
             DanhSachLoaiPhong = new ObservableCollection<LOAIPHONG>(db.LOAIPHONGs.ToList());
             KetQuaTimKiem = new ObservableCollection<PHONG>();
-            TimKiemCommand = new RelayCommand(TimKiem, p => SelectedLoaiPhong != null && SucChuaTimKiem != null);
+            TimKiemCommand = new RelayCommand(TimKiem, p => SelectedLoaiPhong != null && SucChuaTimKiem != null && SucChuaTimKiem > 0);
         }
 
         void TimKiem(object p)
         {
+            if (SelectedLoaiPhong == null || SucChuaTimKiem == null)
+            {
+                MessageBox.Show("Vui lòng chọn loại phòng và nhập sức chứa.");
+                return;
+            }
+
+            if (SucChuaTimKiem <= 0)
+            {
+                MessageBox.Show("Sức chứa tìm kiếm phải lớn hơn 0.");
+                return;
+            }
+
             var query = db.PHONGs.Where(x =>
                 x.MaLoai == SelectedLoaiPhong.MaLoai &&
                 x.SucChua >= SucChuaTimKiem.Value);
 
             KetQuaTimKiem = new ObservableCollection<PHONG>(query.ToList());
             SelectedPhong = KetQuaTimKiem.FirstOrDefault();
+
+            if (KetQuaTimKiem.Count == 0)
+            {
+                MessageBox.Show("Không tìm thấy phòng phù hợp.");
+            }
         }
 
         void CapNhatChiTietPhong()

@@ -155,13 +155,32 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
         }
         void Them(object p)
         {
+            MaPhong = MaPhong?.Trim();
+            TenPhong = TenPhong?.Trim();
+
             if (string.IsNullOrWhiteSpace(MaPhong) || string.IsNullOrWhiteSpace(TenPhong) || SelectedTang == null)
             {
                 System.Windows.MessageBox.Show("Vui lòng nhập đầy đủ thông tin: Mã phòng, Tên phòng và Chọn tầng!",
                     "Thông báo", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
                 return;
             }
-            bool isExisted = db.PHONGs.Any(x => x.MaPhong == MaPhong);
+
+            if (GiaPhong <= 0 || SucChuaToiDa <= 0)
+            {
+                System.Windows.MessageBox.Show("Giá phòng và sức chứa phải lớn hơn 0.",
+                    "Thông báo", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!LoaiPhongQuat && !LoaiPhongMayLanh)
+            {
+                System.Windows.MessageBox.Show("Vui lòng chọn loại phòng.",
+                    "Thông báo", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                return;
+            }
+
+            string maPhongChuan = MaPhong.ToUpper();
+            bool isExisted = db.PHONGs.Any(x => x.MaPhong.ToUpper() == maPhongChuan);
             if (isExisted)
             {
                 System.Windows.MessageBox.Show("Mã phòng này đã tồn tại! Vui lòng nhập mã khác.",
@@ -171,7 +190,7 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
 
             PHONG phongmoi = new PHONG()
             {
-                MaPhong = MaPhong,
+                MaPhong = maPhongChuan,
                 TenPhong = TenPhong,
                 GiaPhong = GiaPhong,
                 SucChua = SucChuaToiDa,
@@ -254,9 +273,25 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
                     "Thông báo", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
                 return;
             }
+            TenPhong = TenPhong?.Trim();
+
             if (string.IsNullOrWhiteSpace(TenPhong) || SelectedTang == null)
             {
                 System.Windows.MessageBox.Show("Vui lòng nhập đầy đủ Tên phòng và Chọn tầng!",
+                    "Thông báo", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                return;
+            }
+
+            if (GiaPhong <= 0 || SucChuaToiDa <= 0)
+            {
+                System.Windows.MessageBox.Show("Giá phòng và sức chứa phải lớn hơn 0.",
+                    "Thông báo", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!LoaiPhongQuat && !LoaiPhongMayLanh)
+            {
+                System.Windows.MessageBox.Show("Vui lòng chọn loại phòng.",
                     "Thông báo", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
                 return;
             }
