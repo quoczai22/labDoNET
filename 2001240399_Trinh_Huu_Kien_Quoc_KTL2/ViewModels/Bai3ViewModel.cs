@@ -24,11 +24,22 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
         public PHONG SelectedPhong
         {
             get { return _selectedPhong; }
-            set { _selectedPhong = value; OnPropertyChanged(nameof(SelectedPhong)); 
+            set
+            {
+                _selectedPhong = value;
+                OnPropertyChanged(nameof(SelectedPhong));
                 if (_selectedPhong != null)
+                {
                     GiaPhongDTO = _selectedPhong.GiaPhong.ToString();
-                    SucChuaDTO = _selectedPhong.SucChua.ToString(); 
-                    TinhTongTien();
+                    SucChuaDTO = _selectedPhong.SucChua.ToString();
+                }
+                else
+                {
+                    GiaPhongDTO = string.Empty;
+                    SucChuaDTO = string.Empty;
+                }
+                TinhTongTien();
+                CommandManager.InvalidateRequerySuggested();
             }
         } 
 
@@ -46,7 +57,17 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
             set { _sucChuaDTO = value; OnPropertyChanged(nameof(SucChuaDTO)); }
         }
 
-        public KHACHHANG SelectedKhachHang { get; set; }
+        KHACHHANG _selectedKhachHang;
+        public KHACHHANG SelectedKhachHang
+        {
+            get { return _selectedKhachHang; }
+            set
+            {
+                _selectedKhachHang = value;
+                OnPropertyChanged(nameof(SelectedKhachHang));
+                CommandManager.InvalidateRequerySuggested();
+            }
+        }
 
         string _gioVaoDTO;
         public string GioVaoDTO
@@ -57,6 +78,7 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
                 _gioVaoDTO = value;
                 OnPropertyChanged(nameof(GioVaoDTO));
                 TinhTongTien();
+                CommandManager.InvalidateRequerySuggested();
             }
         }
 
@@ -69,6 +91,7 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
                 _gioRaDTO = value;
                 OnPropertyChanged(nameof(GioRaDTO));
                 TinhTongTien();
+                CommandManager.InvalidateRequerySuggested();
             }
         }
 
@@ -84,6 +107,7 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
                 {
                     GiaPhuThuDTO = SelectedPhuThu.GiaPT.ToString();
                 }
+                CommandManager.InvalidateRequerySuggested();
             }
         }
 
@@ -98,7 +122,12 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
         public int SsoLuongDTO
         {
             get { return _soLuongDTO; }
-            set { _soLuongDTO = value; OnPropertyChanged(nameof(SsoLuongDTO)); }
+            set
+            {
+                _soLuongDTO = value;
+                OnPropertyChanged(nameof(SsoLuongDTO));
+                CommandManager.InvalidateRequerySuggested();
+            }
         }
 
         decimal tongTienTamTinh;
@@ -150,16 +179,39 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
             {
                 // 1. Ghép ngày đặt và giờ vào/ra thành DateTime hoàn chỉnh
                 DateTime ngayDat = DateTime.ParseExact(NgayDatPhong, "dd/MM/yyyy", null);
-                TimeSpan gioVao = TimeSpan.Parse(GioVaoDTO);
-                TimeSpan gioRa = TimeSpan.Parse(GioRaDTO);
+                if (!TimeSpan.TryParse(GioVaoDTO, out TimeSpan gioVao) || !TimeSpan.TryParse(GioRaDTO, out TimeSpan gioRa))
+                {
+                    System.Windows.MessageBox.Show("Giờ vào/giờ ra không hợp lệ. Vui lòng nhập theo dạng HH:mm, ví dụ 19:30.");
+                    return;
+                }
+
+                if (gioRa <= gioVao)
+                {
+                    System.Windows.MessageBox.Show("Giờ ra phải lớn hơn giờ vào.");
+                    return;
+                }
+
+                DateTime thoiGianVao = ngayDat.Add(gioVao);
+                DateTime thoiGianRa = ngayDat.Add(gioRa);
+
+                bool biTrungLich = db.DATPHONGs.Any(x =>
+                    x.MaPh == SelectedPhong.MaPhong &&
+                    x.NgayDat < thoiGianRa &&
+                    x.NgayTra > thoiGianVao);
+
+                if (biTrungLich)
+                {
+                    System.Windows.MessageBox.Show("Phòng này đã được đặt trong khoảng thời gian đã chọn.");
+                    return;
+                }
 
                 // 2. Tạo phiếu đặt phòng
                 var datPhong = new DATPHONG
                 {
                     MaKH = SelectedKhachHang.MaKhachHang,
                     MaPh = SelectedPhong.MaPhong,
-                    NgayDat = ngayDat.Add(gioVao),
-                    NgayTra = ngayDat.Add(gioRa)
+                    NgayDat = thoiGianVao,
+                    NgayTra = thoiGianRa
                 };
 
                 db.DATPHONGs.Add(datPhong);
@@ -212,8 +264,11 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
                 // Tính tiền hát theo giờ = (giờ ra - giờ vào) * giá phòng 
                 if (!string.IsNullOrWhiteSpace(GioVaoDTO) && !string.IsNullOrWhiteSpace(GioRaDTO) && SelectedPhong != null)
                 {
-                    TimeSpan thoiGianVao = TimeSpan.Parse(GioVaoDTO);
-                    TimeSpan thoiGianRa = TimeSpan.Parse(GioRaDTO);
+                    if (!TimeSpan.TryParse(GioVaoDTO, out TimeSpan thoiGianVao) || !TimeSpan.TryParse(GioRaDTO, out TimeSpan thoiGianRa))
+                    {
+                        return;
+                    }
+
                     double soGio = (thoiGianRa - thoiGianVao).TotalHours;
 
                     if (soGio > 0)

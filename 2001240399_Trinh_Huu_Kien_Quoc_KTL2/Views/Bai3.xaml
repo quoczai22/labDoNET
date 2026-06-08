@@ -73,7 +73,7 @@
 
                 <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,15">
                     <TextBlock Text="Số lượng:" VerticalAlignment="Center" Width="85"/>
-                    <TextBox Width="120" Height="25" Margin="0,0,10,0" Text="{Binding SsoLuongDTO, Mode=TwoWay}"/>
+                    <TextBox Width="120" Height="25" Margin="0,0,10,0" Text="{Binding SsoLuongDTO, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <Button Content="Thêm" Command="{Binding ThemPhuThuCommand}" Width="70" Height="25" Background="#E0E0E0"/>
                 </StackPanel>
 

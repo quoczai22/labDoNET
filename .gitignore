@@ -14,6 +14,13 @@ obj/
 *.bak
 Properties/
 packages/
+!2001240399_Trinh_Huu_Kien_Quoc_KTL2/packages/
+!2001240399_Trinh_Huu_Kien_Quoc_KTL2/packages/EntityFramework.6.5.2/
+!2001240399_Trinh_Huu_Kien_Quoc_KTL2/packages/EntityFramework.6.5.2/build/
+!2001240399_Trinh_Huu_Kien_Quoc_KTL2/packages/EntityFramework.6.5.2/build/*.dll
+!2001240399_Trinh_Huu_Kien_Quoc_KTL2/packages/EntityFramework.6.5.2/lib/
+!2001240399_Trinh_Huu_Kien_Quoc_KTL2/packages/EntityFramework.6.5.2/lib/net45/
+!2001240399_Trinh_Huu_Kien_Quoc_KTL2/packages/EntityFramework.6.5.2/lib/net45/*.dll
 #loai bo file .rar
 *.rar
 
