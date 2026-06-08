@@ -1,0 +1,405 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="QuanLyKhachSanModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CHITIETDATPHONG">
+          <Key>
+            <PropertyRef Name="MaCT" />
+          </Key>
+          <Property Name="MaCT" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaDatPhong" Type="int" Nullable="false" />
+          <Property Name="MaDV" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="SoLuong" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DATPHONG">
+          <Key>
+            <PropertyRef Name="MaDatPhong" />
+          </Key>
+          <Property Name="MaDatPhong" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaPh" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="MaKH" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="NgayDat" Type="date" Nullable="false" />
+          <Property Name="NgayTra" Type="date" />
+          <Property Name="GioVao" Type="time" Precision="7" Nullable="false" />
+          <Property Name="GioRa" Type="time" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DICHVU">
+          <Key>
+            <PropertyRef Name="MaDV" />
+          </Key>
+          <Property Name="MaDV" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="TenDV" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="GiaDV" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="KHACHHANG">
+          <Key>
+            <PropertyRef Name="MaKH" />
+          </Key>
+          <Property Name="MaKH" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="TenKH" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="SoDT" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="DiaChi" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="LOAIPHONG">
+          <Key>
+            <PropertyRef Name="MaLoai" />
+          </Key>
+          <Property Name="MaLoai" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="TenLoai" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="GiaLoai" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PHONG">
+          <Key>
+            <PropertyRef Name="MaPhong" />
+          </Key>
+          <Property Name="MaPhong" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="TenPhong" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="SucChua" Type="int" Nullable="false" />
+          <Property Name="GiaPhong" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="MaLoai" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="TinhTrang" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CTDP_DATPHONG">
+          <End Role="DATPHONG" Type="Self.DATPHONG" Multiplicity="1" />
+          <End Role="CHITIETDATPHONG" Type="Self.CHITIETDATPHONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DATPHONG">
+              <PropertyRef Name="MaDatPhong" />
+            </Principal>
+            <Dependent Role="CHITIETDATPHONG">
+              <PropertyRef Name="MaDatPhong" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CTDP_DICHVU">
+          <End Role="DICHVU" Type="Self.DICHVU" Multiplicity="1" />
+          <End Role="CHITIETDATPHONG" Type="Self.CHITIETDATPHONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DICHVU">
+              <PropertyRef Name="MaDV" />
+            </Principal>
+            <Dependent Role="CHITIETDATPHONG">
+              <PropertyRef Name="MaDV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DATPHONG_KHACHHANG">
+          <End Role="KHACHHANG" Type="Self.KHACHHANG" Multiplicity="1" />
+          <End Role="DATPHONG" Type="Self.DATPHONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KHACHHANG">
+              <PropertyRef Name="MaKH" />
+            </Principal>
+            <Dependent Role="DATPHONG">
+              <PropertyRef Name="MaKH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DATPHONG_PHONG">
+          <End Role="PHONG" Type="Self.PHONG" Multiplicity="1" />
+          <End Role="DATPHONG" Type="Self.DATPHONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PHONG">
+              <PropertyRef Name="MaPhong" />
+            </Principal>
+            <Dependent Role="DATPHONG">
+              <PropertyRef Name="MaPh" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PHONG_LOAIPHONG">
+          <End Role="LOAIPHONG" Type="Self.LOAIPHONG" Multiplicity="1" />
+          <End Role="PHONG" Type="Self.PHONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LOAIPHONG">
+              <PropertyRef Name="MaLoai" />
+            </Principal>
+            <Dependent Role="PHONG">
+              <PropertyRef Name="MaLoai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QuanLyKhachSanModelStoreContainer">
+          <EntitySet Name="CHITIETDATPHONG" EntityType="Self.CHITIETDATPHONG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DATPHONG" EntityType="Self.DATPHONG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DICHVU" EntityType="Self.DICHVU" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KHACHHANG" EntityType="Self.KHACHHANG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LOAIPHONG" EntityType="Self.LOAIPHONG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PHONG" EntityType="Self.PHONG" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CTDP_DATPHONG" Association="Self.FK_CTDP_DATPHONG">
+            <End Role="DATPHONG" EntitySet="DATPHONG" />
+            <End Role="CHITIETDATPHONG" EntitySet="CHITIETDATPHONG" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CTDP_DICHVU" Association="Self.FK_CTDP_DICHVU">
+            <End Role="DICHVU" EntitySet="DICHVU" />
+            <End Role="CHITIETDATPHONG" EntitySet="CHITIETDATPHONG" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DATPHONG_KHACHHANG" Association="Self.FK_DATPHONG_KHACHHANG">
+            <End Role="KHACHHANG" EntitySet="KHACHHANG" />
+            <End Role="DATPHONG" EntitySet="DATPHONG" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DATPHONG_PHONG" Association="Self.FK_DATPHONG_PHONG">
+            <End Role="PHONG" EntitySet="PHONG" />
+            <End Role="DATPHONG" EntitySet="DATPHONG" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PHONG_LOAIPHONG" Association="Self.FK_PHONG_LOAIPHONG">
+            <End Role="LOAIPHONG" EntitySet="LOAIPHONG" />
+            <End Role="PHONG" EntitySet="PHONG" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QuanLyKhachSanModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CHITIETDATPHONG">
+          <Key>
+            <PropertyRef Name="MaCT" />
+          </Key>
+          <Property Name="MaCT" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaDatPhong" Type="Int32" Nullable="false" />
+          <Property Name="MaDV" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SoLuong" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DATPHONG" Relationship="Self.FK_CTDP_DATPHONG" FromRole="CHITIETDATPHONG" ToRole="DATPHONG" />
+          <NavigationProperty Name="DICHVU" Relationship="Self.FK_CTDP_DICHVU" FromRole="CHITIETDATPHONG" ToRole="DICHVU" />
+        </EntityType>
+        <EntityType Name="DATPHONG">
+          <Key>
+            <PropertyRef Name="MaDatPhong" />
+          </Key>
+          <Property Name="MaDatPhong" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaPh" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MaKH" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NgayDat" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NgayTra" Type="DateTime" Precision="0" />
+          <Property Name="GioVao" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="GioRa" Type="Time" Nullable="false" Precision="7" />
+          <NavigationProperty Name="CHITIETDATPHONGs" Relationship="Self.FK_CTDP_DATPHONG" FromRole="DATPHONG" ToRole="CHITIETDATPHONG" />
+          <NavigationProperty Name="KHACHHANG" Relationship="Self.FK_DATPHONG_KHACHHANG" FromRole="DATPHONG" ToRole="KHACHHANG" />
+          <NavigationProperty Name="PHONG" Relationship="Self.FK_DATPHONG_PHONG" FromRole="DATPHONG" ToRole="PHONG" />
+        </EntityType>
+        <EntityType Name="DICHVU">
+          <Key>
+            <PropertyRef Name="MaDV" />
+          </Key>
+          <Property Name="MaDV" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TenDV" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GiaDV" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <NavigationProperty Name="CHITIETDATPHONGs" Relationship="Self.FK_CTDP_DICHVU" FromRole="DICHVU" ToRole="CHITIETDATPHONG" />
+        </EntityType>
+        <EntityType Name="KHACHHANG">
+          <Key>
+            <PropertyRef Name="MaKH" />
+          </Key>
+          <Property Name="MaKH" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TenKH" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SoDT" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DiaChi" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DATPHONGs" Relationship="Self.FK_DATPHONG_KHACHHANG" FromRole="KHACHHANG" ToRole="DATPHONG" />
+        </EntityType>
+        <EntityType Name="LOAIPHONG">
+          <Key>
+            <PropertyRef Name="MaLoai" />
+          </Key>
+          <Property Name="MaLoai" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TenLoai" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GiaLoai" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <NavigationProperty Name="PHONGs" Relationship="Self.FK_PHONG_LOAIPHONG" FromRole="LOAIPHONG" ToRole="PHONG" />
+        </EntityType>
+        <EntityType Name="PHONG">
+          <Key>
+            <PropertyRef Name="MaPhong" />
+          </Key>
+          <Property Name="MaPhong" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TenPhong" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SucChua" Type="Int32" Nullable="false" />
+          <Property Name="GiaPhong" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="MaLoai" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TinhTrang" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DATPHONGs" Relationship="Self.FK_DATPHONG_PHONG" FromRole="PHONG" ToRole="DATPHONG" />
+          <NavigationProperty Name="LOAIPHONG" Relationship="Self.FK_PHONG_LOAIPHONG" FromRole="PHONG" ToRole="LOAIPHONG" />
+        </EntityType>
+        <Association Name="FK_CTDP_DATPHONG">
+          <End Role="DATPHONG" Type="Self.DATPHONG" Multiplicity="1" />
+          <End Role="CHITIETDATPHONG" Type="Self.CHITIETDATPHONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DATPHONG">
+              <PropertyRef Name="MaDatPhong" />
+            </Principal>
+            <Dependent Role="CHITIETDATPHONG">
+              <PropertyRef Name="MaDatPhong" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CTDP_DICHVU">
+          <End Role="DICHVU" Type="Self.DICHVU" Multiplicity="1" />
+          <End Role="CHITIETDATPHONG" Type="Self.CHITIETDATPHONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DICHVU">
+              <PropertyRef Name="MaDV" />
+            </Principal>
+            <Dependent Role="CHITIETDATPHONG">
+              <PropertyRef Name="MaDV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DATPHONG_KHACHHANG">
+          <End Role="KHACHHANG" Type="Self.KHACHHANG" Multiplicity="1" />
+          <End Role="DATPHONG" Type="Self.DATPHONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KHACHHANG">
+              <PropertyRef Name="MaKH" />
+            </Principal>
+            <Dependent Role="DATPHONG">
+              <PropertyRef Name="MaKH" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DATPHONG_PHONG">
+          <End Role="PHONG" Type="Self.PHONG" Multiplicity="1" />
+          <End Role="DATPHONG" Type="Self.DATPHONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PHONG">
+              <PropertyRef Name="MaPhong" />
+            </Principal>
+            <Dependent Role="DATPHONG">
+              <PropertyRef Name="MaPh" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PHONG_LOAIPHONG">
+          <End Role="LOAIPHONG" Type="Self.LOAIPHONG" Multiplicity="1" />
+          <End Role="PHONG" Type="Self.PHONG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LOAIPHONG">
+              <PropertyRef Name="MaLoai" />
+            </Principal>
+            <Dependent Role="PHONG">
+              <PropertyRef Name="MaLoai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QuanLyKhachSanEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CHITIETDATPHONGs" EntityType="Self.CHITIETDATPHONG" />
+          <EntitySet Name="DATPHONGs" EntityType="Self.DATPHONG" />
+          <EntitySet Name="DICHVUs" EntityType="Self.DICHVU" />
+          <EntitySet Name="KHACHHANGs" EntityType="Self.KHACHHANG" />
+          <EntitySet Name="LOAIPHONGs" EntityType="Self.LOAIPHONG" />
+          <EntitySet Name="PHONGs" EntityType="Self.PHONG" />
+          <AssociationSet Name="FK_CTDP_DATPHONG" Association="Self.FK_CTDP_DATPHONG">
+            <End Role="DATPHONG" EntitySet="DATPHONGs" />
+            <End Role="CHITIETDATPHONG" EntitySet="CHITIETDATPHONGs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CTDP_DICHVU" Association="Self.FK_CTDP_DICHVU">
+            <End Role="DICHVU" EntitySet="DICHVUs" />
+            <End Role="CHITIETDATPHONG" EntitySet="CHITIETDATPHONGs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DATPHONG_KHACHHANG" Association="Self.FK_DATPHONG_KHACHHANG">
+            <End Role="KHACHHANG" EntitySet="KHACHHANGs" />
+            <End Role="DATPHONG" EntitySet="DATPHONGs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DATPHONG_PHONG" Association="Self.FK_DATPHONG_PHONG">
+            <End Role="PHONG" EntitySet="PHONGs" />
+            <End Role="DATPHONG" EntitySet="DATPHONGs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PHONG_LOAIPHONG" Association="Self.FK_PHONG_LOAIPHONG">
+            <End Role="LOAIPHONG" EntitySet="LOAIPHONGs" />
+            <End Role="PHONG" EntitySet="PHONGs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QuanLyKhachSanModelStoreContainer" CdmEntityContainer="QuanLyKhachSanEntities">
+          <EntitySetMapping Name="CHITIETDATPHONGs">
+            <EntityTypeMapping TypeName="QuanLyKhachSanModel.CHITIETDATPHONG">
+              <MappingFragment StoreEntitySet="CHITIETDATPHONG">
+                <ScalarProperty Name="MaCT" ColumnName="MaCT" />
+                <ScalarProperty Name="MaDatPhong" ColumnName="MaDatPhong" />
+                <ScalarProperty Name="MaDV" ColumnName="MaDV" />
+                <ScalarProperty Name="SoLuong" ColumnName="SoLuong" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DATPHONGs">
+            <EntityTypeMapping TypeName="QuanLyKhachSanModel.DATPHONG">
+              <MappingFragment StoreEntitySet="DATPHONG">
+                <ScalarProperty Name="MaDatPhong" ColumnName="MaDatPhong" />
+                <ScalarProperty Name="MaPh" ColumnName="MaPh" />
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="NgayDat" ColumnName="NgayDat" />
+                <ScalarProperty Name="NgayTra" ColumnName="NgayTra" />
+                <ScalarProperty Name="GioVao" ColumnName="GioVao" />
+                <ScalarProperty Name="GioRa" ColumnName="GioRa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DICHVUs">
+            <EntityTypeMapping TypeName="QuanLyKhachSanModel.DICHVU">
+              <MappingFragment StoreEntitySet="DICHVU">
+                <ScalarProperty Name="MaDV" ColumnName="MaDV" />
+                <ScalarProperty Name="TenDV" ColumnName="TenDV" />
+                <ScalarProperty Name="GiaDV" ColumnName="GiaDV" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KHACHHANGs">
+            <EntityTypeMapping TypeName="QuanLyKhachSanModel.KHACHHANG">
+              <MappingFragment StoreEntitySet="KHACHHANG">
+                <ScalarProperty Name="MaKH" ColumnName="MaKH" />
+                <ScalarProperty Name="TenKH" ColumnName="TenKH" />
+                <ScalarProperty Name="SoDT" ColumnName="SoDT" />
+                <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LOAIPHONGs">
+            <EntityTypeMapping TypeName="QuanLyKhachSanModel.LOAIPHONG">
+              <MappingFragment StoreEntitySet="LOAIPHONG">
+                <ScalarProperty Name="MaLoai" ColumnName="MaLoai" />
+                <ScalarProperty Name="TenLoai" ColumnName="TenLoai" />
+                <ScalarProperty Name="GiaLoai" ColumnName="GiaLoai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PHONGs">
+            <EntityTypeMapping TypeName="QuanLyKhachSanModel.PHONG">
+              <MappingFragment StoreEntitySet="PHONG">
+                <ScalarProperty Name="MaPhong" ColumnName="MaPhong" />
+                <ScalarProperty Name="TenPhong" ColumnName="TenPhong" />
+                <ScalarProperty Name="SucChua" ColumnName="SucChua" />
+                <ScalarProperty Name="GiaPhong" ColumnName="GiaPhong" />
+                <ScalarProperty Name="MaLoai" ColumnName="MaLoai" />
+                <ScalarProperty Name="TinhTrang" ColumnName="TinhTrang" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

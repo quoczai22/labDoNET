@@ -1,0 +1,23 @@
+<Window x:Class="_2001240399_Trinh_Huu_Kien_Quoc_KT2L2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="KT2L2 - Quản lý khách sạn" Height="260" Width="520">
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Quản lý khách sạn - KT2L2"
+                   FontSize="20"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,18"/>
+
+        <StackPanel Grid.Row="1" VerticalAlignment="Center">
+            <Button Content="Bài 1 - Quản lý phòng" Height="36" Margin="0,5" Click="OpenBai1_Click"/>
+            <Button Content="Bài 2 - Tìm kiếm phòng" Height="36" Margin="0,5" Click="OpenBai2_Click"/>
+            <Button Content="Bài 3 - Đặt phòng và dịch vụ" Height="36" Margin="0,5" Click="OpenBai3_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
