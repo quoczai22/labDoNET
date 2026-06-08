@@ -12,6 +12,7 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
     public class Bai3ViewModel:BaseViewModel
     {
         QL_KaraokeEntities1 db = new QL_KaraokeEntities1();
+        int? _maDatPhongHienTai;
 
         public ObservableCollection<PHONG> DanhSachPhong { get; set; }
         public ObservableCollection<ChiTietPhuThuModel> DanhSachChiTietPhuThu { get; set; }
@@ -39,6 +40,8 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
                     SucChuaDTO = string.Empty;
                 }
                 TinhTongTien();
+                _maDatPhongHienTai = null;
+                DanhSachChiTietPhuThu?.Clear();
                 CommandManager.InvalidateRequerySuggested();
             }
         } 
@@ -65,6 +68,7 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
             {
                 _selectedKhachHang = value;
                 OnPropertyChanged(nameof(SelectedKhachHang));
+                _maDatPhongHienTai = null;
                 CommandManager.InvalidateRequerySuggested();
             }
         }
@@ -78,6 +82,7 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
                 _gioVaoDTO = value;
                 OnPropertyChanged(nameof(GioVaoDTO));
                 TinhTongTien();
+                _maDatPhongHienTai = null;
                 CommandManager.InvalidateRequerySuggested();
             }
         }
@@ -91,6 +96,7 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
                 _gioRaDTO = value;
                 OnPropertyChanged(nameof(GioRaDTO));
                 TinhTongTien();
+                _maDatPhongHienTai = null;
                 CommandManager.InvalidateRequerySuggested();
             }
         }
@@ -152,7 +158,7 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
 
         bool CanThemPhuThu(object p)
         {
-            return SelectedPhong != null && SelectedPhuThu != null && SsoLuongDTO > 0;
+            return SelectedPhuThu != null && SsoLuongDTO > 0 && (SelectedPhong != null || _maDatPhongHienTai != null);
         }
         bool CanDatPhong(object p)
         {
@@ -169,6 +175,29 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
                 SoLuong = SsoLuongDTO,
                 ThanhTien = (SelectedPhuThu.GiaPT ?? 0) * SsoLuongDTO
             };
+
+            if (_maDatPhongHienTai != null)
+            {
+                try
+                {
+                    db.CHITIETDATPHONGs.Add(new CHITIETDATPHONG
+                    {
+                        MaDP = _maDatPhongHienTai.Value,
+                        MaPT = ctPhuThu.MaPhuThu,
+                        SL = ctPhuThu.SoLuong
+                    });
+                    db.SaveChanges();
+                    DanhSachChiTietPhuThu.Add(ctPhuThu);
+                    TinhTongTien();
+                    System.Windows.MessageBox.Show("Đã thêm phụ thu vào phiếu đặt phòng hiện tại!");
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show("Lỗi khi thêm phụ thu: " + ex.Message);
+                }
+                return;
+            }
+
             DanhSachChiTietPhuThu.Add(ctPhuThu);
             TinhTongTien();
         }
@@ -234,10 +263,8 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
                     db.SaveChanges();
                 }
 
-                System.Windows.MessageBox.Show("Đặt phòng thành công!");
-
-                // Reset lại giỏ hàng sau khi đặt xong
-                DanhSachChiTietPhuThu.Clear();
+                _maDatPhongHienTai = datPhong.MaDatPhong;
+                System.Windows.MessageBox.Show("Đặt phòng thành công! Bạn có thể thêm phụ thu tiếp cho phiếu đặt này.");
                 TinhTongTien();
             }
             catch (Exception ex)
