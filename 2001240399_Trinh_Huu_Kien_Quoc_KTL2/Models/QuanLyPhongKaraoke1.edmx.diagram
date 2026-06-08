@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="190312a0176a4cbb9705a365976bb518" Name="Diagram1">
+        <EntityTypeShape EntityType="QL_KaraokeModel1.CHITIETDATPHONG" Width="1.5" PointX="7.5" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_KaraokeModel1.DATPHONG" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_KaraokeModel1.KHACHHANG" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_KaraokeModel1.LOAIPHONG" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_KaraokeModel1.PHONG" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="QL_KaraokeModel1.PHUTHU" Width="1.5" PointX="5.25" PointY="5.375" IsExpanded="true" />
+        <AssociationConnector Association="QL_KaraokeModel1.FK_CTDP_DATPHONG" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_KaraokeModel1.FK_CTDP_PHUTHU" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_KaraokeModel1.FK_DATPHONG_KHACHHANG" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_KaraokeModel1.FK_DATPHONG_PHONG" ManuallyRouted="false" />
+        <AssociationConnector Association="QL_KaraokeModel1.FK_PHONG_LOAIPHONG" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

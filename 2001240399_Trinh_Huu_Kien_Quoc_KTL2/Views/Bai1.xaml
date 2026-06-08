@@ -1,0 +1,85 @@
+﻿<Window x:Class="_2001240399_Trinh_Huu_Kien_Quoc_KTL2.Views.Bai1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_2001240399_Trinh_Huu_Kien_Quoc_KTL2.Views"
+        mc:Ignorable="d"
+        Title="Bai1" Height="450" Width="800">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <GroupBox Header="Thông tin phòng" Grid.Row="0" Margin="0,0,0,10" Padding="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Chọn tầng nhà:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" FontWeight="Bold" Margin="0,5,10,5"/>
+                <ComboBox Grid.Row="0" Grid.Column="1" Margin="0,5,20,5" Height="25"
+                          ItemsSource="{Binding DanhSachTang}" 
+                          DisplayMemberPath="TenNhom"
+                          SelectedItem="{Binding SelectedTang, Mode=TwoWay}"/>
+
+                <TextBlock Text="Mã phòng:" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" FontWeight="Bold" Margin="0,5,10,5"/>
+                <TextBox Grid.Row="0" Grid.Column="3" Margin="0,5,0,5" Height="25"
+                         Text="{Binding MaPhong, Mode=TwoWay}"/>
+
+                <TextBlock Text="Tên phòng:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" FontWeight="Bold" Margin="0,5,10,5"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,5,0,5" Height="25"
+                         Text="{Binding TenPhong, Mode=TwoWay}"/>
+
+                <TextBlock Text="Giá phòng:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" FontWeight="Bold" Margin="0,15,10,5"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Margin="0,15,20,5" Height="25"
+                         Text="{Binding GiaPhong, Mode=TwoWay}"/>
+
+                <TextBlock Text="Sức chứa tối đa:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" FontWeight="Bold" Margin="0,15,10,5"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Margin="0,15,20,5" Height="25"
+                         Text="{Binding SucChuaToiDa, Mode=TwoWay}"/>
+
+                <GroupBox Header="Loại phòng" Grid.Row="2" Grid.Column="2" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="0,5,0,5" FontWeight="Bold">
+                    <StackPanel Margin="10,5,5,5">
+                        <RadioButton Content="Phòng quạt" Margin="0,0,0,10" FontWeight="Normal"
+                     IsChecked="{Binding LoaiPhongQuat, Mode=TwoWay}"/>
+
+                        <RadioButton Content="Phòng máy lạnh" FontWeight="Normal"
+                     IsChecked="{Binding LoaiPhongMayLanh, Mode=TwoWay}"/>
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
+        </GroupBox>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,20">
+            <Button Content="Thêm" Command="{Binding ThemCommand}" Width="90" Height="35" Margin="5,0,5,0" Background="#E0E0E0" FontWeight="Bold"/>
+            <Button Content="Xóa" Command="{Binding XoaCommand}" Width="90" Height="35" Margin="5,0,5,0" Background="#E0E0E0" FontWeight="Bold"/>
+            <Button Content="Sửa" Command="{Binding SuaCommand}" Width="90" Height="35" Margin="5,0,5,0" Background="#E0E0E0" FontWeight="Bold"/>
+            <Button Content="Lưu" Command="{Binding LuuCommand}" Width="90" Height="35" Margin="5,0,5,0" Background="#E0E0E0" FontWeight="Bold"/>
+        </StackPanel>
+
+        <DataGrid Grid.Row="2" AutoGenerateColumns="False" 
+                  CanUserAddRows="False" IsReadOnly="True"
+                  ItemsSource="{Binding DanhSachPhong}"
+                  SelectedItem="{Binding SelectedPhong, Mode=TwoWay}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Mã phòng" Binding="{Binding MaPhong}" Width="100"/>
+                <DataGridTextColumn Header="Tên phòng" Binding="{Binding TenPhong}" Width="150"/>
+                <DataGridTextColumn Header="Sức chứa" Binding="{Binding SucChua}" Width="80"/>
+                <DataGridTextColumn Header="Giá phòng" Binding="{Binding GiaPhong}" Width="120"/>
+                <DataGridTextColumn Header="Tên tầng" Binding="{Binding LOAIPHONG.TenNhom}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

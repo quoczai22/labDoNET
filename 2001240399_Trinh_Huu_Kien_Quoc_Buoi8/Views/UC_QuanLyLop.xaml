@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="_2001240399_Trinh_Huu_Kien_Quoc_Buoi8.Views.UC_QuanLyLop"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:_2001240399_Trinh_Huu_Kien_Quoc_Buoi8.Views"
+             mc:Ignorable="d"
+             Background="White"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </UserControl.Resources>
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+
+        <GroupBox Header="Danh sách lớp">
+            <TreeView ItemsSource="{Binding DanhSachLop}" SelectedItemChanged="TreeView_SelectedItemChanged">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding DanhSachSinhVien}">
+                        <TextBlock Text="{Binding TenLop}" FontWeight="SemiBold"/>
+                        <HierarchicalDataTemplate.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="15,2">
+                                    <Run Text="{Binding MaSV}"/>
+                                    <Run Text=" - "/>
+                                    <Run Text="{Binding HoTen}"/>
+                                </TextBlock>
+                            </DataTemplate>
+                        </HierarchicalDataTemplate.ItemTemplate>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </GroupBox>
+
+        <GroupBox Header="Thông tin sinh viên" Grid.Column="1" Margin="10,0,0,0">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Content="Lớp:" Grid.Row="0"/>
+                <ComboBox Grid.Row="0" Grid.Column="1" Margin="0,5" 
+                  ItemsSource="{Binding DanhSachLop}" 
+                  DisplayMemberPath="TenLop" 
+                  SelectedItem="{Binding LopDangChon, Mode=TwoWay}"/>
+
+                <Label Content="Mã SV:" Grid.Row="1"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Margin="0,5" 
+                 Text="{Binding SinhVienDangChon.MaSV, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Content="Họ tên:" Grid.Row="2"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Margin="0,5" 
+                 Text="{Binding SinhVienDangChon.HoTen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Content="Giới tính:" Grid.Row="3"/>
+                <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="0,5">
+                    <RadioButton Content="Nam" GroupName="GioiTinh"
+             IsChecked="{Binding SinhVienDangChon.GioiTinh, Mode=TwoWay}"/>
+                    <RadioButton Content="Nữ" GroupName="GioiTinh"
+             IsChecked="{Binding SinhVienDangChon.GioiTinhNu, Mode=TwoWay}"/>
+                </StackPanel>
+
+                <Label Content="Thành phố:" Grid.Row="4"/>
+                <ComboBox Grid.Row="4" Grid.Column="1" Margin="0,5" 
+                  ItemsSource="{Binding DanhSachThanhPho}" 
+                  SelectedItem="{Binding SinhVienDangChon.ThanhPho, Mode=TwoWay}"/>
+
+                <Label Content="Địa chỉ:" Grid.Row="5"/>
+                <TextBox Grid.Row="5" Grid.Column="1" Margin="0,5" 
+                 Text="{Binding SinhVienDangChon.DiaChi, Mode=TwoWay}"/>
+
+                <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" Margin="0,15,0,0">
+                    <Button Content="Thêm SV" Width="80" Margin="0,0,10,0" Command="{Binding ThemSVCommand}"/>
+                    <Button Content="Cập nhật SV" Width="80" Margin="0,0,10,0" Command="{Binding CapNhatSVCommand}"/>
+                    <Button Content="Xóa SV" Width="80" Command="{Binding XoaSVCommand}"/>
+                </StackPanel>
+
+                <CheckBox Grid.Row="7" Grid.ColumnSpan="2" Content="Bật chế độ thêm lớp" 
+                  Margin="0,20,0,5" IsChecked="{Binding IsThemLop, Mode=TwoWay}"/>
+                <StackPanel Grid.Row="8" Grid.ColumnSpan="2" Orientation="Horizontal" 
+                    Visibility="{Binding IsThemLop, Converter={StaticResource BoolToVisibility}}">
+                    <TextBox Width="180" Text="{Binding TenLopMoi, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Content="Thêm lớp" Width="100" Margin="10,0,0,0" Command="{Binding ThemLopCommand}"/>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</UserControl>

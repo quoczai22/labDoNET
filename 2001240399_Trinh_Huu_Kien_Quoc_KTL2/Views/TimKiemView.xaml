@@ -1,0 +1,76 @@
+﻿<Window x:Class="_2001240399_Trinh_Huu_Kien_Quoc_KTL2.Views.TimKiemView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_2001240399_Trinh_Huu_Kien_Quoc_KTL2.Views"
+        mc:Ignorable="d"
+        Title="TimKiemView" Height="300" Width="800">
+    <Grid Margin="15">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" Margin="0,20,10,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Chọn tầng" Grid.Row="0" Grid.Column="0" Margin="0,0,10,15" VerticalAlignment="Center"/>
+            <ComboBox Grid.Row="0" Grid.Column="1" Margin="0,0,0,15" Height="25"
+                      ItemsSource="{Binding DanhSachTang}"
+                      DisplayMemberPath="TenNhom"
+                      SelectedItem="{Binding SelectedTang}"/>
+
+            <TextBlock Text="Sức chứa" Grid.Row="1" Grid.Column="0" Margin="0,0,10,15" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,15" Height="25"
+                     Text="{Binding TimKiemSucChua, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Button Content="Tìm kiếm" Grid.Row="2" Grid.Column="1" Width="80" Height="25" HorizontalAlignment="Left"
+                    Command="{Binding TimKiemCommand}" Background="#E0E0E0"/>
+        </Grid>
+
+        <GroupBox Header="Thông tin phòng" Grid.Column="1" Margin="10,0,10,50">
+            <ListBox Margin="5" ItemsSource="{Binding KetQuaTimKiem}" 
+                     SelectedItem="{Binding SelectedPhong}"
+                     DisplayMemberPath="MaPhong"/>
+        </GroupBox>
+
+        <Grid Grid.Column="2" Margin="10,20,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Tên phòng" Grid.Row="0" Grid.Column="0" Margin="0,5,0,10" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding ChiTietPhong}" Grid.Row="0" Grid.Column="1" Margin="0,5,0,10" FontWeight="Bold" Foreground="Red"/>
+
+            <TextBlock Text="Sức chứa" Grid.Row="1" Grid.Column="0" Margin="0,5,0,10" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding ChiTietSucChua}" Grid.Row="1" Grid.Column="1" Margin="0,5,0,10" FontWeight="Bold" Foreground="Red"/>
+
+            <TextBlock Text="Giá" Grid.Row="2" Grid.Column="0" Margin="0,5,0,10" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding ChiTietGia}" Grid.Row="2" Grid.Column="1" Margin="0,5,0,10" FontWeight="Bold" Foreground="Red"/>
+
+            <TextBlock Text="Kiểu phòng" Grid.Row="3" Grid.Column="0" Margin="0,5,0,10" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding ChiTietKieuPhong}" Grid.Row="3" Grid.Column="1" Margin="0,5,0,10" FontWeight="Bold" Foreground="Red"/>
+
+            <TextBlock Text="Tình trạng" Grid.Row="4" Grid.Column="0" Margin="0,5,0,10" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding CHiTietTinhTrang}" Grid.Row="4" Grid.Column="1" Margin="0,5,0,10" FontWeight="Bold" Foreground="Red"/>
+        </Grid>
+    </Grid>
+</Window>

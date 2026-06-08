@@ -12,5 +12,8 @@ obj/
 *.DS_Store
 *.tmp
 *.bak
+Properties/
+packages/
 #loai bo file .rar
 *.rar
+
