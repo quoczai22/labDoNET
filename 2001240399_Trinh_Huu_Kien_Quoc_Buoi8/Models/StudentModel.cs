@@ -32,6 +32,16 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_Buoi8.Models
             }
         }
 
+        public bool GioiTinhNu
+        {
+            get => !GioiTinh;
+            set
+            {
+                GioiTinh = !value;
+                OnPropertyChanged(nameof(GioiTinhNu));
+            }
+        }
+
         public string GioiTinhText => GioiTinh ? "Nam" : "Nữ"; 
 
         public string ThanhPho { get => _thanhPho; set { _thanhPho = value; OnPropertyChanged(nameof(ThanhPho)); } }

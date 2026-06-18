@@ -25,7 +25,6 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KT2L2.ViewModels
             {
                 _selectedLoaiPhong = value;
                 OnPropertyChanged(nameof(SelectedLoaiPhong));
-                CommandManager.InvalidateRequerySuggested();
             }
         }
 
@@ -37,7 +36,6 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KT2L2.ViewModels
             {
                 _sucChuaTimKiem = value;
                 OnPropertyChanged(nameof(SucChuaTimKiem));
-                CommandManager.InvalidateRequerySuggested();
             }
         }
 

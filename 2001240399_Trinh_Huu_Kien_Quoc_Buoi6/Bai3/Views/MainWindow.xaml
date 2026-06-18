@@ -1,0 +1,195 @@
+<Window x:Class="Bai3.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Bai3.ViewModels"
+        mc:Ignorable="d"
+        Title="Lab 06 - Bài 3" Height="620" Width="980">
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+
+    <Grid Margin="15">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="330"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="1" Padding="10">
+            <StackPanel>
+                <TextBlock Text="Danh sách khoa - lớp - sinh viên"
+                           FontSize="18"
+                           FontWeight="Bold"
+                           Margin="0,0,0,10"/>
+
+                <TreeView ItemsSource="{Binding Faculties}"
+                          SelectedItemChanged="TreeView_SelectedItemChanged"
+                          Height="315">
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Classes}">
+                            <TextBlock Text="{Binding FacultyName}" FontWeight="SemiBold"/>
+                            <HierarchicalDataTemplate.ItemTemplate>
+                                <HierarchicalDataTemplate ItemsSource="{Binding Students}">
+                                    <TextBlock Text="{Binding ClassName}" Margin="15,2,0,2"/>
+                                    <HierarchicalDataTemplate.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Margin="30,2,0,2">
+                                                <TextBlock Text="{Binding StudentId}" Width="70"/>
+                                                <TextBlock Text="{Binding FullName}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </HierarchicalDataTemplate.ItemTemplate>
+                                </HierarchicalDataTemplate>
+                            </HierarchicalDataTemplate.ItemTemplate>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+
+                <TextBlock Text="Tên khoa mới:" Margin="0,15,0,5"/>
+                <TextBox Height="28"
+                         Text="{Binding NewFacultyName, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Content="Thêm khoa"
+                        Width="120"
+                        Height="30"
+                        Margin="0,8,0,0"
+                        HorizontalAlignment="Left"
+                        Command="{Binding AddFacultyCommand}"/>
+
+                <TextBlock Text="Tên lớp mới:" Margin="0,15,0,5"/>
+                <TextBox Height="28"
+                         Text="{Binding NewClassName, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Content="Thêm lớp"
+                        Width="120"
+                        Height="30"
+                        Margin="0,8,0,0"
+                        HorizontalAlignment="Left"
+                        Command="{Binding AddClassCommand}"/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Column="2" BorderBrush="Gray" BorderThickness="1" Padding="10">
+            <StackPanel>
+                <TextBlock Text="Thông tin sinh viên"
+                           FontSize="18"
+                           FontWeight="Bold"
+                           Margin="0,0,0,10"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Khoa:" VerticalAlignment="Center" Margin="0,5"/>
+                    <ComboBox Grid.Row="0" Grid.Column="1"
+                              Height="28"
+                              Margin="0,5"
+                              ItemsSource="{Binding Faculties}"
+                              DisplayMemberPath="FacultyName"
+                              SelectedItem="{Binding SelectedFaculty, Mode=TwoWay}"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Lớp:" VerticalAlignment="Center" Margin="0,5"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1"
+                              Height="28"
+                              Margin="0,5"
+                              ItemsSource="{Binding ClassesOfSelectedFaculty}"
+                              DisplayMemberPath="ClassName"
+                              SelectedItem="{Binding SelectedClass, Mode=TwoWay}"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Mã sinh viên:" VerticalAlignment="Center" Margin="0,5"/>
+                    <TextBox Grid.Row="2" Grid.Column="1"
+                             Height="28"
+                             Margin="0,5"
+                             Text="{Binding StudentId, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Họ tên:" VerticalAlignment="Center" Margin="0,5"/>
+                    <TextBox Grid.Row="3" Grid.Column="1"
+                             Height="28"
+                             Margin="0,5"
+                             Text="{Binding StudentName, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Địa chỉ:" VerticalAlignment="Center" Margin="0,5"/>
+                    <TextBox Grid.Row="4" Grid.Column="1"
+                             Height="28"
+                             Margin="0,5"
+                             Text="{Binding StudentAddress, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Giới tính:" VerticalAlignment="Center" Margin="0,5"/>
+                    <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Margin="0,5">
+                        <RadioButton Content="Nam"
+                                     IsChecked="{Binding IsMale, Mode=TwoWay}"
+                                     Margin="0,0,25,0"/>
+                        <RadioButton Content="Nữ"
+                                     IsChecked="{Binding IsFemale, Mode=TwoWay}"/>
+                    </StackPanel>
+
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Trạng thái:" VerticalAlignment="Center" Margin="0,5"/>
+                    <CheckBox Grid.Row="6" Grid.Column="1"
+                              Content="Đang học"
+                              IsChecked="{Binding IsStudying, Mode=TwoWay}"
+                              VerticalAlignment="Center"
+                              Margin="0,5"/>
+                </Grid>
+
+                <StackPanel Orientation="Horizontal" Margin="0,18,0,0">
+                    <Button Content="Thêm sinh viên"
+                            Width="120"
+                            Height="32"
+                            Margin="0,0,10,0"
+                            Command="{Binding AddStudentCommand}"/>
+                    <Button Content="Xóa sinh viên"
+                            Width="120"
+                            Height="32"
+                            Margin="0,0,10,0"
+                            Command="{Binding DeleteStudentCommand}"/>
+                    <Button Content="Làm mới"
+                            Width="100"
+                            Height="32"
+                            Command="{Binding ClearInputCommand}"/>
+                </StackPanel>
+
+                <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" Margin="0,20,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Sinh viên chọn:" FontWeight="Bold"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedStudent.FullName}" FontWeight="Bold"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Mã SV:" Margin="0,6,0,0"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedStudent.StudentId}" Margin="0,6,0,0"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Giới tính:" Margin="0,6,0,0"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedStudent.GenderName}" Margin="0,6,0,0"/>
+
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Trạng thái:" Margin="0,6,0,0"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedStudent.StatusName}" Margin="0,6,0,0"/>
+
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Địa chỉ:" Margin="0,6,0,0"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedStudent.Address}" Margin="0,6,0,0"/>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

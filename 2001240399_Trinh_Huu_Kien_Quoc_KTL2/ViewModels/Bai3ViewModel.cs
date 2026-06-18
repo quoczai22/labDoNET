@@ -42,7 +42,6 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
                 TinhTongTien();
                 _maDatPhongHienTai = null;
                 DanhSachChiTietPhuThu?.Clear();
-                CommandManager.InvalidateRequerySuggested();
             }
         } 
 
@@ -69,7 +68,6 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
                 _selectedKhachHang = value;
                 OnPropertyChanged(nameof(SelectedKhachHang));
                 _maDatPhongHienTai = null;
-                CommandManager.InvalidateRequerySuggested();
             }
         }
 
@@ -83,7 +81,6 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
                 OnPropertyChanged(nameof(GioVaoDTO));
                 TinhTongTien();
                 _maDatPhongHienTai = null;
-                CommandManager.InvalidateRequerySuggested();
             }
         }
 
@@ -97,7 +94,6 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
                 OnPropertyChanged(nameof(GioRaDTO));
                 TinhTongTien();
                 _maDatPhongHienTai = null;
-                CommandManager.InvalidateRequerySuggested();
             }
         }
 
@@ -113,7 +109,6 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
                 {
                     GiaPhuThuDTO = SelectedPhuThu.GiaPT.ToString();
                 }
-                CommandManager.InvalidateRequerySuggested();
             }
         }
 
@@ -132,7 +127,6 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_KTL2.ViewModels
             {
                 _soLuongDTO = value;
                 OnPropertyChanged(nameof(SsoLuongDTO));
-                CommandManager.InvalidateRequerySuggested();
             }
         }
 

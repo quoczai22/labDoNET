@@ -23,10 +23,9 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_Buoi8.Views
         {
             InitializeComponent();
             var vm = new ViewModels.MainViewModel();
-            var ucLop = new UC_QuanLyLop { DataContext = vm };
-            var ucSV = new UC_DanhSachSinhVien { DataContext = vm };
-            TabQuanLyLop.Content = new UC_QuanLyLop();
-            TabDanhSachSV.Content = new UC_DanhSachSinhVien();
+            DataContext = vm;
+            TabQuanLyLop.Content = new UC_QuanLyLop { DataContext = vm };
+            TabDanhSachSV.Content = new UC_DanhSachSinhVien { DataContext = vm };
         }
     }
 }

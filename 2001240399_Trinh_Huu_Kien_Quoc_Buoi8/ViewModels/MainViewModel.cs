@@ -90,7 +90,7 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_Buoi8.ViewModels
             {
                 _tuKhoaTimKiem = value;
                 OnPropertyChanged(nameof(TuKhoaTimKiem));
-                SinhVienView.Refresh();
+                SinhVienView?.Refresh();
             }
         }
         ClassModel _lopLocDangChon;
@@ -101,7 +101,7 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_Buoi8.ViewModels
             {
                 _lopLocDangChon = value;
                 OnPropertyChanged(nameof(LopLocDangChon));
-                SinhVienView.Refresh();
+                SinhVienView?.Refresh();
             }
         }
 
@@ -167,15 +167,16 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_Buoi8.ViewModels
 
         public MainViewModel()
         {
-            DanhSachLop = new ObservableCollection<ClassModel> { new ClassModel { TenLop = "05DHTH1" }, new ClassModel { TenLop = "05DHTH2" } };
-
             DanhSachSinhVien = new ObservableCollection<StudentModel>();
 
             DanhSachThanhPho = new ObservableCollection<string> { "Hà Nội", "TP.HCM", "Đà Nẵng", "Cần Thơ" };
 
             SinhVienDangChon = new StudentModel();
 
+            DanhSachLop = new ObservableCollection<ClassModel>();
+
             DanhSachLopLoc = new ObservableCollection<ClassModel> { new ClassModel { TenLop = "All" } };
+            LoadSampleData();
  
             ThemLopCommand = new RelayCommand(ThemLop);
             ThemSVCommand = new RelayCommand(ThemSinhVien);
@@ -185,6 +186,45 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_Buoi8.ViewModels
 
             SinhVienView = CollectionViewSource.GetDefaultView(DanhSachSinhVien);
             SinhVienView.Filter = FilterSinhVien;
+        }
+
+        private void LoadSampleData()
+        {
+            var lop1 = new ClassModel { TenLop = "05DHTH1" };
+            var lop2 = new ClassModel { TenLop = "05DHTH2" };
+            var lop3 = new ClassModel { TenLop = "05DHTH3" };
+            var lop4 = new ClassModel { TenLop = "05DHTH4" };
+
+            DanhSachLop.Add(lop1);
+            DanhSachLop.Add(lop2);
+            DanhSachLop.Add(lop3);
+            DanhSachLop.Add(lop4);
+
+            foreach (var lop in DanhSachLop)
+                DanhSachLopLoc.Add(lop);
+
+            AddSampleStudent(lop1, "001", "Lương Minh Châu", true, "TP.HCM", "Q12");
+            AddSampleStudent(lop1, "002", "Nguyễn Minh Đạt", true, "TP.HCM", "Q1");
+            AddSampleStudent(lop2, "003", "Nguyễn Trí Đức", true, "Đà Nẵng", "Q5");
+
+            LopDangChon = lop1;
+            LopLocDangChon = DanhSachLopLoc.FirstOrDefault();
+        }
+
+        private void AddSampleStudent(ClassModel lop, string maSV, string hoTen, bool gioiTinh, string thanhPho, string diaChi)
+        {
+            var sinhVien = new StudentModel
+            {
+                MaSV = maSV,
+                HoTen = hoTen,
+                GioiTinh = gioiTinh,
+                ThanhPho = thanhPho,
+                DiaChi = diaChi,
+                TenLop = lop.TenLop
+            };
+
+            DanhSachSinhVien.Add(sinhVien);
+            lop.DanhSachSinhVien.Add(sinhVien);
         }
 
         private bool FilterSinhVien(object obj)

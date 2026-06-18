@@ -27,7 +27,15 @@ namespace _2001240399_Trinh_Huu_Kien_Quoc_Buoi8.Views
         
         void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if(DataContext is ViewModels.MainViewModel vm && e.NewValue is Models.StudentModel student)
+            if (DataContext is not ViewModels.MainViewModel vm)
+                return;
+
+            if (e.NewValue is Models.ClassModel lop)
+            {
+                vm.LopDangChon = lop;
+                vm.SelectedStudentTree = null;
+            }
+            else if (e.NewValue is Models.StudentModel student)
             {
                 vm.SelectedStudentTree = student;
             }
