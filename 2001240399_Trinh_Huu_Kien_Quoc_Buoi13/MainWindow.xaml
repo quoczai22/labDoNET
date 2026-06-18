@@ -1,0 +1,41 @@
+﻿<Window x:Class="_2001240399_Trinh_Huu_Kien_Quoc_Buoi13.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Lab 13 - Báo cáo WPF" Height="650" Width="1000"
+        Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border BorderBrush="#CCCCCC" BorderThickness="1" Background="White" Padding="12" Margin="0,0,0,12">
+            <DockPanel>
+                <TextBlock Text="BÁO CÁO LAB 13" FontSize="20" FontWeight="Bold" Foreground="#2C3E50" DockPanel.Dock="Left"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Khoa" Width="95" Height="32" Margin="4,0" Click="btnKhoa_Click"/>
+                    <Button Content="Lớp" Width="95" Height="32" Margin="4,0" Click="btnLop_Click"/>
+                    <Button Content="Môn học" Width="95" Height="32" Margin="4,0" Click="btnMonHoc_Click"/>
+                    <Button Content="Sinh viên" Width="95" Height="32" Margin="4,0" Click="btnSinhVien_Click"/>
+                    <Button Content="Điểm" Width="95" Height="32" Margin="4,0" Click="btnDiem_Click"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <GroupBox Grid.Row="1" BorderBrush="#CCCCCC" BorderThickness="1" Background="White">
+            <GroupBox.Header>
+                <TextBlock x:Name="txtTieuDe" Text="DANH SÁCH SINH VIÊN" FontSize="16" FontWeight="Bold" Foreground="#2C3E50" Margin="5,0"/>
+            </GroupBox.Header>
+            <DataGrid x:Name="dgBaoCao" Margin="10" AutoGenerateColumns="True" CanUserAddRows="False"
+                      IsReadOnly="True" HeadersVisibility="Column" GridLinesVisibility="All"/>
+        </GroupBox>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <TextBlock x:Name="txtTrangThai" VerticalAlignment="Center" Margin="0,0,15,0" Foreground="#555"/>
+            <Button Content="Tải lại" Width="90" Height="32" Margin="4,0" Click="btnTaiLai_Click"/>
+            <Button Content="Xem in" Width="90" Height="32" Margin="4,0" Click="btnXemIn_Click"/>
+            <Button Content="Đóng" Width="90" Height="32" Margin="4,0" Click="btnDong_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,50 +1,39 @@
-<UserControl x:Class="Lab11_ValidationNavigation.Views.MonHocView"
+﻿<UserControl x:Class="_2001240399_TrinhHuuKienQuoc_Buoi11.Views.MonHocView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Grid Margin="15">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="360"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Quan ly Mon hoc" FontSize="26" FontWeight="Bold" Margin="0,0,0,18"/>
-
-        <Grid Grid.Row="1" Margin="0,0,0,18">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="230"/>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="230"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <TextBlock Text="Ma mon" VerticalAlignment="Center"/>
-            <TextBox Grid.Column="1" Text="{Binding NewMonHoc.MaMon, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
-            <TextBlock Grid.Column="2" Text="Ten mon" VerticalAlignment="Center"/>
-            <TextBox Grid.Column="3" Text="{Binding NewMonHoc.TenMon, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
-            <TextBlock Grid.Row="1" Text="So tin chi" VerticalAlignment="Center"/>
-            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding NewMonHoc.SoTinChi, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
-
-            <StackPanel Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Orientation="Horizontal" Margin="0,4,0,0">
-                <Button Content="Them" Command="{Binding AddCommand}"/>
-                <Button Content="Cap nhat" Command="{Binding UpdateCommand}"/>
-                <Button Content="Xoa" Command="{Binding DeleteCommand}"/>
-                <Button Content="Nhap lai" Command="{Binding ClearCommand}"/>
+        <GroupBox Header="THÔNG TIN MÔN HỌC" Margin="0,0,15,0">
+            <StackPanel Margin="15">
+                <Label Content="Mã môn:"/>
+                <TextBox Text="{Binding MaMon, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                <Label Content="Tên môn:"/>
+                <TextBox Text="{Binding TenMon, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                <Label Content="Số tín chỉ:"/>
+                <TextBox Text="{Binding SoTinChi, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                <UniformGrid Rows="1" Columns="5" Margin="0,16,0,0">
+                    <Button Content="Thêm" Margin="0,0,6,0" Command="{Binding ThemCommand}"/>
+                    <Button Content="Sửa" Margin="0,0,6,0" Command="{Binding SuaCommand}"/>
+                    <Button Content="Xóa" Margin="0,0,6,0" Command="{Binding XoaCommand}"/>
+                    <Button Content="Lưu" Margin="0,0,6,0" Command="{Binding LuuCommand}"/>
+                    <Button Content="Hủy" Command="{Binding HuyCommand}"/>
+                </UniformGrid>
             </StackPanel>
-        </Grid>
+        </GroupBox>
 
-        <DataGrid Grid.Row="2" ItemsSource="{Binding DS_MonHoc}" SelectedItem="{Binding SelectedMonHoc}"
-                  AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Ma mon" Binding="{Binding MaMon}" Width="150"/>
-                <DataGridTextColumn Header="Ten mon" Binding="{Binding TenMon}" Width="*"/>
-                <DataGridTextColumn Header="So tin chi" Binding="{Binding SoTinChi}" Width="150"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <GroupBox Grid.Column="1" Header="DANH SÁCH MÔN HỌC">
+            <DataGrid Margin="10" AutoGenerateColumns="False" CanUserAddRows="False"
+                      ItemsSource="{Binding DS_MonHoc}" SelectedItem="{Binding SelectedMonHoc, Mode=TwoWay}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Mã môn" Binding="{Binding MaMon}" Width="110"/>
+                    <DataGridTextColumn Header="Tên môn" Binding="{Binding TenMon}" Width="*"/>
+                    <DataGridTextColumn Header="Số TC" Binding="{Binding SoTinChi}" Width="80"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
     </Grid>
 </UserControl>

@@ -1,6 +1,6 @@
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
-namespace Lab11_ValidationNavigation.Views
+namespace _2001240399_TrinhHuuKienQuoc_Buoi11.Views
 {
     public partial class MonHocView : UserControl
     {

@@ -93,22 +93,42 @@ namespace Bai2.ViewModels
         {
             Departments.Add(new Department
             {
-                Name = "Tổ chức cán bộ"
+                Name = "Tổ chức cán bộ",
+                Employees = new ObservableCollection<Employee>
+        {
+            new Employee { EmployeeId = "NV01", FullName = "Nguyễn Văn An", Address = "TP.HCM" },
+            new Employee { EmployeeId = "NV02", FullName = "Trần Thị Bình", Address = "Đồng Nai" }
+        }
             });
 
             Departments.Add(new Department
             {
-                Name = "Tổ chức hành chính"
+                Name = "Tổ chức hành chính",
+                Employees = new ObservableCollection<Employee>
+        {
+            new Employee { EmployeeId = "NV03", FullName = "Lê Minh Cường", Address = "Bình Dương" },
+            new Employee { EmployeeId = "NV04", FullName = "Phạm Thu Dung", Address = "TP.HCM" }
+        }
             });
 
             Departments.Add(new Department
             {
-                Name = "Kế hoạch"
+                Name = "Kế hoạch",
+                Employees = new ObservableCollection<Employee>
+        {
+            new Employee { EmployeeId = "NV05", FullName = "Hoàng Quốc Đạt", Address = "Long An" },
+            new Employee { EmployeeId = "NV06", FullName = "Võ Thanh Hà", Address = "TP.HCM" }
+        }
             });
 
             Departments.Add(new Department
             {
-                Name = "Kế toán"
+                Name = "Kế toán",
+                Employees = new ObservableCollection<Employee>
+        {
+            new Employee { EmployeeId = "NV07", FullName = "Đặng Thị Lan", Address = "Tây Ninh" },
+            new Employee { EmployeeId = "NV08", FullName = "Bùi Anh Khoa", Address = "TP.HCM" }
+        }
             });
         }
 
