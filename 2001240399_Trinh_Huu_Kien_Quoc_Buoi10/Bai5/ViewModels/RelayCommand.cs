@@ -1,10 +1,16 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Lab11_ValidationNavigation.ViewModels
+namespace Bai5.ViewModels
 {
-    public class RelayCommand : ICommand
+    public class RelayCommand :ICommand
     {
+        public event EventHandler CanExecuteChanged;
+
         private readonly Action<object> _execute;
         private readonly Predicate<object> _canExecute;
 
@@ -16,7 +22,7 @@ namespace Lab11_ValidationNavigation.ViewModels
 
         public bool CanExecute(object parameter)
         {
-            return _canExecute == null || _canExecute(parameter);
+            return _canExecute?.Invoke(parameter) ?? true;
         }
 
         public void Execute(object parameter)
@@ -24,10 +30,9 @@ namespace Lab11_ValidationNavigation.ViewModels
             _execute(parameter);
         }
 
-        public event EventHandler CanExecuteChanged
+        public void RaiseCanExecuteChanged()
         {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

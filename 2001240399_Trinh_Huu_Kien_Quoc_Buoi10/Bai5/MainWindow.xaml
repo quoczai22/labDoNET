@@ -1,35 +1,10 @@
-﻿<Window x:Class="Lab11_ValidationNavigation.MainWindow"
+﻿<Window x:Class="Bai5.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModels="clr-namespace:Lab11_ValidationNavigation.ViewModels"
+        xmlns:local="clr-namespace:Bai5"
         mc:Ignorable="d"
-        Title="Bai TH 10 - Bai 5" Height="620" Width="1040"
-        WindowStartupLocation="CenterScreen">
-    <Window.DataContext>
-        <viewModels:MainViewModel/>
-    </Window.DataContext>
-
-    <Grid Background="#F5F7FA">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="230"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <Border Grid.Column="0" Background="#1F2937" Padding="18">
-            <StackPanel>
-                <TextBlock Text="Bai TH 10 - Bai 5" Foreground="White" FontSize="24" FontWeight="Bold" Margin="0,0,0,24"/>
-                <TextBlock Text="Danh muc" Foreground="#9CA3AF" FontWeight="Bold" Margin="0,0,0,8"/>
-                <Button Content="Khoa" Command="{Binding OpenKhoaCommand}" Margin="0,0,0,8"/>
-                <Button Content="Lop" Command="{Binding OpenLopCommand}" Margin="0,0,0,8"/>
-                <Button Content="Mon hoc" Command="{Binding OpenMonHocCommand}" Margin="0,0,0,18"/>
-                <TextBlock Text="Nghiep vu" Foreground="#9CA3AF" FontWeight="Bold" Margin="0,0,0,8"/>
-                <Button Content="Sinh vien" Command="{Binding OpenSinhVienCommand}" Margin="0,0,0,8"/>
-            </StackPanel>
-        </Border>
-
-        <ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}" Margin="24"/>
-    </Grid>
+        Title="MainWindow" Height="550" Width="900">
+  
 </Window>
-
