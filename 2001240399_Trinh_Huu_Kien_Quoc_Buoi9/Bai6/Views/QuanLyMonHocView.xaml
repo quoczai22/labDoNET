@@ -74,7 +74,7 @@
 
                     <DataGridTextColumn Header="Lớp" Binding="{Binding SinhVien.MaLop}" Width="150" IsReadOnly="True"/>
 
-                    <DataGridTextColumn Header="Điểm" Binding="{Binding Diem, UpdateSourceTrigger=LostFocus, ConverterCulture='en-US'}" Width="100">
+                    <DataGridTextColumn Header="Điểm" Binding="{Binding Diem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N1, ConverterCulture='en-US'}" Width="100">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -97,3 +97,4 @@
         </Border>
     </Grid>
 </Window>
+

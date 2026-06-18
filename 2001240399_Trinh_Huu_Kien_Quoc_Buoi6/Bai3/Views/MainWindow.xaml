@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:Bai3.ViewModels"
         mc:Ignorable="d"
-        Title="Lab 06 - Bài 3" Height="620" Width="980">
+        Title="Lab 06 - Bài 3" Height="700" Width="980">
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>

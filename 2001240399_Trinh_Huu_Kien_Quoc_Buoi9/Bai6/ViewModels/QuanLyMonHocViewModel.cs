@@ -2,11 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.Entity;
+using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Bai6.ViewModels
 {
@@ -16,8 +15,6 @@ namespace Bai6.ViewModels
 
         public ObservableCollection<MonHoc> DS_MonHoc { get; set; }
         public List<string> DS_NamHoc { get; set; } = new List<string> { "2024-2025", "2025-2026", "2026-2027" };
-
-        // Đổi thành danh sách kiểu int để đồng bộ với trường HocKy trong Database
         public List<int> DS_HocKy { get; set; } = new List<int> { 1, 2, 3 };
 
         private ObservableCollection<KetQua> _dsKetQua;
@@ -27,8 +24,8 @@ namespace Bai6.ViewModels
             set
             {
                 _dsKetQua = value;
-                // Kích hoạt thông báo để DataGrid cập nhật giao diện lập tức
                 OnPropertyChanged(nameof(DS_KetQua));
+                CommandManager.InvalidateRequerySuggested();
             }
         }
 
@@ -36,110 +33,134 @@ namespace Bai6.ViewModels
         public string SelectedMonHoc
         {
             get { return _selectedMonHoc; }
-            set { _selectedMonHoc = value; OnPropertyChanged(nameof(SelectedMonHoc)); }
+            set { _selectedMonHoc = value; OnPropertyChanged(nameof(SelectedMonHoc)); CommandManager.InvalidateRequerySuggested(); }
         }
 
         private string _selectedNamHoc;
         public string SelectedNamHoc
         {
             get { return _selectedNamHoc; }
-            set { _selectedNamHoc = value; OnPropertyChanged(nameof(SelectedNamHoc));  }
+            set { _selectedNamHoc = value; OnPropertyChanged(nameof(SelectedNamHoc)); CommandManager.InvalidateRequerySuggested(); }
         }
 
         private int? _selectedHocKy;
         public int? SelectedHocKy
         {
             get { return _selectedHocKy; }
-            set { _selectedHocKy = value; OnPropertyChanged(nameof(SelectedHocKy));  }
+            set { _selectedHocKy = value; OnPropertyChanged(nameof(SelectedHocKy)); CommandManager.InvalidateRequerySuggested(); }
         }
 
-        // Khai báo chuẩn tên hai Command liên kết với file XAML
         public RelayCommand LoadCommand { get; set; }
         public RelayCommand SaveCommand { get; set; }
 
         public QuanLyMonHocViewModel()
         {
-            // 1. Khởi tạo các lệnh Nút bấm trước tiên
             LoadCommand = new RelayCommand(Load, CanLoad);
             SaveCommand = new RelayCommand(Save, CanSave);
-
-            // 2. Gọi LoadData sau cùng để nạp dữ liệu lên Form
             LoadData();
         }
 
         void LoadData()
         {
-            // 1. Tải danh sách Môn học đổ vào ComboBox
-            var dsMon = db.MonHocs.ToList();
+            var dsMon = db.MonHocs.OrderBy(m => m.MaMonHoc).ToList();
             DS_MonHoc = new ObservableCollection<MonHoc>(dsMon);
             OnPropertyChanged(nameof(DS_MonHoc));
 
-            // 2. GÁN GIÁ TRỊ MẶC ĐỊNH CHO 3 COMBOBOX ĐỂ KHÔNG BỊ TRỐNG
-            if (dsMon.Count > 0)
-            {
-                SelectedMonHoc = dsMon[0].MaMonHoc;
-            }
+            if (dsMon.Count > 0) SelectedMonHoc = dsMon[0].MaMonHoc;
             SelectedNamHoc = DS_NamHoc[0];
             SelectedHocKy = DS_HocKy[0];
 
-            // 3. Tự động gọi hàm Tải danh sách sinh viên ngay khi vừa mở Form
             Load(null);
         }
 
         void Load(object p)
         {
-            // Kiểm tra ràng buộc điều kiện chọn
-            if (string.IsNullOrEmpty(SelectedMonHoc) || string.IsNullOrEmpty(SelectedNamHoc) || SelectedHocKy == null)
+            if (!CanLoad(p))
             {
                 MessageBox.Show("Vui lòng chọn đầy đủ Môn học, Năm học và Học kỳ trước khi tải!");
                 return;
             }
 
-            // Giải phóng các thực thể thêm tạm chưa lưu khỏi bộ nhớ RAM để tránh lỗi nhân đôi dòng khi bấm nút nhiều lần
-            var addedEntries = db.ChangeTracker.Entries<KetQua>()
-                                .Where(e => e.State == EntityState.Added).ToList();
-            foreach (var entry in addedEntries)
-            {
-                entry.State = EntityState.Detached;
-            }
+            string maMon = SelectedMonHoc.Trim();
+            string namHoc = SelectedNamHoc.Trim();
+            int hocKy = SelectedHocKy.Value;
 
-            var dsSinhVien = db.SinhViens.Include(s => s.KetQuas).ToList();
+            var dsSinhVien = db.SinhViens
+                .AsNoTracking()
+                .OrderBy(s => s.MaSinhVien)
+                .ToList();
+
+            var dsKetQuaDaCo = db.KetQuas
+                .AsNoTracking()
+                .Where(k => k.MaMonHoc == maMon && k.NamHoc == namHoc && k.HocKy == hocKy)
+                .ToList();
+
             var dsDiem = new ObservableCollection<KetQua>();
-
             foreach (var sv in dsSinhVien)
             {
-                // Sử dụng .Trim() để loại bỏ khoảng trắng thừa của kiểu dữ liệu dữ liệu dạng chuỗi cố định (char/nchar) trong SQL
-                var kq = db.KetQuas.FirstOrDefault(k => k.MaSinhVien == sv.MaSinhVien &&
-                                                        k.MaMonHoc.Trim() == SelectedMonHoc.Trim() &&
-                                                        k.NamHoc.Trim() == SelectedNamHoc.Trim() &&
-                                                        k.HocKy == SelectedHocKy);
-
+                var kq = dsKetQuaDaCo.FirstOrDefault(k => k.MaSinhVien == sv.MaSinhVien);
                 if (kq == null)
                 {
                     kq = new KetQua
                     {
                         MaSinhVien = sv.MaSinhVien,
-                        SinhVien = sv,
-                        MaMonHoc = SelectedMonHoc,
-                        NamHoc = SelectedNamHoc,
-                        HocKy = SelectedHocKy.Value
+                        MaMonHoc = maMon,
+                        NamHoc = namHoc,
+                        HocKy = hocKy,
+                        Diem = null
                     };
-                    db.KetQuas.Add(kq);
                 }
+                kq.SinhVien = sv;
                 dsDiem.Add(kq);
             }
 
             DS_KetQua = dsDiem;
         }
 
-        bool CanLoad(object p) { return true; }
+        bool CanLoad(object p)
+        {
+            return !string.IsNullOrWhiteSpace(SelectedMonHoc) &&
+                   !string.IsNullOrWhiteSpace(SelectedNamHoc) &&
+                   SelectedHocKy != null;
+        }
 
         void Save(object p)
         {
+            if (DS_KetQua == null || DS_KetQua.Count == 0)
+            {
+                MessageBox.Show("Vui lòng tải danh sách sinh viên trước khi lưu điểm!");
+                return;
+            }
+
             try
             {
+                foreach (var item in DS_KetQua)
+                {
+                    var kq = db.KetQuas.FirstOrDefault(x => x.MaSinhVien == item.MaSinhVien &&
+                                                            x.MaMonHoc == item.MaMonHoc &&
+                                                            x.NamHoc == item.NamHoc &&
+                                                            x.HocKy == item.HocKy);
+                    if (kq == null)
+                    {
+                        kq = new KetQua
+                        {
+                            MaSinhVien = item.MaSinhVien,
+                            MaMonHoc = item.MaMonHoc,
+                            NamHoc = item.NamHoc,
+                            HocKy = item.HocKy,
+                            Diem = item.Diem
+                        };
+                        db.KetQuas.Add(kq);
+                    }
+                    else
+                    {
+                        kq.Diem = item.Diem;
+                    }
+                }
+
                 db.SaveChanges();
-                MessageBox.Show("Lưu thành công!");
+                MessageBox.Show("Lưu điểm thành công!");
+                Load(null);
             }
             catch (Exception ex)
             {

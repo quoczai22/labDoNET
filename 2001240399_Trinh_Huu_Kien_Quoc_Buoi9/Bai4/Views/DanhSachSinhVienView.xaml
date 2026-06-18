@@ -20,7 +20,7 @@
             <DockPanel LastChildFill="True" Margin="15,10">
                 <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="5" Height="35" Margin="0,20,0,5">
                     <Button Content="Thêm" Margin="0,0,5,0" Command="{Binding AddCommand}" Background="#E1E1E1"/>
-                    <Button Content="Sửa" Margin="0,0,5,0" Command="{Binding UpdateCommand}" Background="#E1E1E1"/>
+                    <Button Content="Sửa" Margin="0,0,5,0" Command="{Binding EditCommand}" Background="#E1E1E1"/>
                     <Button Content="Xóa" Margin="0,0,5,0" Command="{Binding DeleteCommand}" Background="#E1E1E1"/>
                     <Button Content="Lưu" Margin="0,0,5,0" Command="{Binding SaveCommand}" Background="#E1E1E1"/>
                     <Button Content="Hủy" Command="{Binding CancelCommand}" Background="#E1E1E1"/>
@@ -34,7 +34,7 @@
 
                     <Label Content="Họ tên:" Margin="0,10,0,0"/>
                     <TextBox Height="30" VerticalContentAlignment="Center" Padding="5,0"
-                           Text="{Binding HoTen, UpdateSourceTrigger=PropertyChanged}"/>
+                           Text="{Binding TenSV, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <Label Content="Giới tính:" Margin="0,10,0,0"/>
                     <ComboBox Height="30" VerticalContentAlignment="Center" 
@@ -52,7 +52,7 @@
                     <ComboBox Height="30" VerticalContentAlignment="Center"
                             ItemsSource="{Binding DS_Lop}"
                             SelectedValuePath="MaLop"
-                            DisplayMemberPath="TenLop"
+                            DisplayMemberPath="MaLop"
                             SelectedValue="{Binding SelectedMaLop}">
                         
                     </ComboBox>
@@ -96,3 +96,4 @@
         </GroupBox>
     </Grid>
 </Window>
+

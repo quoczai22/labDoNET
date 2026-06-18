@@ -24,6 +24,7 @@ namespace Bai2.Views
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();  
         }
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

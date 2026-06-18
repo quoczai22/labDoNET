@@ -1,41 +1,52 @@
-<Application x:Class="Lab11_ValidationNavigation.App"
+﻿<Application x:Class="_2001240399_TrinhHuuKienQuoc_Buoi11.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:viewModels="clr-namespace:Lab11_ValidationNavigation.ViewModels"
-             xmlns:views="clr-namespace:Lab11_ValidationNavigation.Views"
+             xmlns:vm="clr-namespace:_2001240399_TrinhHuuKienQuoc_Buoi11.ViewModels"
+             xmlns:views="clr-namespace:_2001240399_TrinhHuuKienQuoc_Buoi11.Views"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <Style TargetType="TextBox">
-            <Setter Property="Margin" Value="0,4,14,10"/>
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="Padding" Value="6,0"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Padding" Value="5,2"/>
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="True">
                     <Setter Property="BorderBrush" Value="Red"/>
-                    <Setter Property="ToolTip"
-                            Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="0,0,0,8"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Padding" Value="5,2"/>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="BorderBrush" Value="Red"/>
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="DatePicker">
+            <Setter Property="Margin" Value="0,0,0,8"/>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="BorderBrush" Value="Red"/>
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
 
-        <Style TargetType="Button">
-            <Setter Property="MinWidth" Value="86"/>
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="Margin" Value="0,0,10,0"/>
-            <Setter Property="Padding" Value="10,0"/>
-        </Style>
-
-        <DataTemplate DataType="{x:Type viewModels:KhoaViewModel}">
+        <DataTemplate DataType="{x:Type vm:KhoaViewModel}">
             <views:KhoaView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModels:LopViewModel}">
+        <DataTemplate DataType="{x:Type vm:LopViewModel}">
             <views:LopView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModels:MonHocViewModel}">
+        <DataTemplate DataType="{x:Type vm:MonHocViewModel}">
             <views:MonHocView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModels:SinhVienViewModel}">
+        <DataTemplate DataType="{x:Type vm:SinhVienViewModel}">
             <views:SinhVienView/>
         </DataTemplate>
     </Application.Resources>

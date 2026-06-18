@@ -1,4 +1,6 @@
 <Solution>
   <Project Path="../Bai2/Bai2.csproj" />
+  <Project Path="../Bai3/Bai3.csproj" />
+  <Project Path="../BTVN/BTVN.csproj" />
   <Project Path="Lab06_Bai1_BankMVVM.csproj" />
 </Solution>

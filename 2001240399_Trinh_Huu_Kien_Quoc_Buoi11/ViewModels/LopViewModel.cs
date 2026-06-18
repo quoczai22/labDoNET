@@ -1,150 +1,155 @@
+﻿using _2001240399_TrinhHuuKienQuoc_Buoi11.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.Data.SqlClient;
-using Lab11_ValidationNavigation.Data;
-using Lab11_ValidationNavigation.Models;
 
-namespace Lab11_ValidationNavigation.ViewModels
+namespace _2001240399_TrinhHuuKienQuoc_Buoi11.ViewModels
 {
     public class LopViewModel : BaseViewModel
     {
-        private Lop _selectedLop;
-        private string _maLop;
-        private string _tenLop;
-        private string _maKhoa;
-        private bool _isEditing;
-        private bool _isAdding;
+        private QLSinhVien_Buoi11Entities db = new QLSinhVien_Buoi11Entities();
+        private bool isAdding;
+        private bool isEditing;
 
-        private ObservableCollection<Lop> _dsLop;
-        private ObservableCollection<Khoa> _dsKhoa;
+        public ObservableCollection<Lop> DS_Lop { get; set; }
+        public ObservableCollection<Khoa> DS_Khoa { get; set; }
+        public RelayCommand ThemCommand { get; set; }
+        public RelayCommand SuaCommand { get; set; }
+        public RelayCommand XoaCommand { get; set; }
+        public RelayCommand LuuCommand { get; set; }
+        public RelayCommand HuyCommand { get; set; }
 
-        public ObservableCollection<Lop> DS_Lop { get { return _dsLop; } set { _dsLop = value; OnPropertyChanged(); } }
-        public ObservableCollection<Khoa> DS_Khoa { get { return _dsKhoa; } set { _dsKhoa = value; OnPropertyChanged(); } }
-
+        private Lop _SelectedLop;
         public Lop SelectedLop
         {
-            get { return _selectedLop; }
+            get => _SelectedLop;
             set
             {
-                _selectedLop = value;
-                OnPropertyChanged();
-                if (value != null && !IsAdding)
+                _SelectedLop = value;
+                OnPropertyChanged(nameof(SelectedLop));
+                if (SelectedLop != null && !isAdding && !isEditing)
                 {
-                    MaLop = value.MaLop;
-                    TenLop = value.TenLop;
-                    MaKhoa = value.MaKhoa;
+                    MaLop = SelectedLop.MaLop;
+                    TenLop = SelectedLop.TenLop;
+                    MaKhoa = SelectedLop.MaKhoa;
                 }
             }
         }
 
-        public string MaLop { get { return _maLop; } set { _maLop = value; OnPropertyChanged(); } }
-        public string TenLop { get { return _tenLop; } set { _tenLop = value; OnPropertyChanged(); } }
-        public string MaKhoa { get { return _maKhoa; } set { _maKhoa = value; OnPropertyChanged(); } }
-        public bool IsEditing { get { return _isEditing; } set { _isEditing = value; OnPropertyChanged(); } }
-        public bool IsAdding { get { return _isAdding; } set { _isAdding = value; OnPropertyChanged(); } }
-        public bool IsSaving => IsAdding || IsEditing;
-
-        public ICommand AddCommand { get; }
-        public ICommand EditCommand { get; }
-        public ICommand SaveCommand { get; }
-        public ICommand CancelCommand { get; }
-        public ICommand DeleteCommand { get; }
+        private string _MaLop;
+        public string MaLop { get => _MaLop; set { _MaLop = value; OnPropertyChanged(nameof(MaLop)); } }
+        private string _TenLop;
+        public string TenLop { get => _TenLop; set { _TenLop = value; OnPropertyChanged(nameof(TenLop)); } }
+        private string _MaKhoa;
+        public string MaKhoa { get => _MaKhoa; set { _MaKhoa = value; OnPropertyChanged(nameof(MaKhoa)); } }
 
         public LopViewModel()
         {
-            AddCommand = new RelayCommand(o => BeginAdd());
-            EditCommand = new RelayCommand(o => BeginEdit(), o => SelectedLop != null);
-            SaveCommand = new RelayCommand(o => Save(), o => IsSaving);
-            CancelCommand = new RelayCommand(o => Cancel(), o => IsSaving);
-            DeleteCommand = new RelayCommand(o => Delete(), o => SelectedLop != null);
+            ThemCommand = new RelayCommand(o => ExecuteThem());
+            SuaCommand = new RelayCommand(o => ExecuteSua(), o => SelectedLop != null && !isAdding && !isEditing);
+            XoaCommand = new RelayCommand(o => ExecuteXoa(), o => SelectedLop != null && !isAdding && !isEditing);
+            LuuCommand = new RelayCommand(o => ExecuteLuu(), o => isAdding || isEditing);
+            HuyCommand = new RelayCommand(o => ExecuteHuy(), o => isAdding || isEditing);
             LoadData();
         }
 
         private void LoadData()
         {
+            DS_Lop = new ObservableCollection<Lop>(db.Lops.ToList());
+            DS_Khoa = new ObservableCollection<Khoa>(db.Khoas.ToList());
+            OnPropertyChanged(nameof(DS_Lop));
+            OnPropertyChanged(nameof(DS_Khoa));
+        }
+
+        private void ExecuteThem()
+        {
+            isAdding = true;
+            isEditing = false;
+            ClearForm();
+        }
+
+        private void ExecuteSua()
+        {
+            if (SelectedLop == null) return;
+            isAdding = false;
+            isEditing = true;
+        }
+
+        private void ExecuteXoa()
+        {
+            if (SelectedLop == null) return;
+            if (MessageBox.Show("Bạn chắc chắn muốn xóa lớp này?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) return;
             try
             {
-                DS_Lop = SqlData.LoadLops();
-                DS_Khoa = SqlData.LoadKhoas();
+                var lopDelete = db.Lops.Find(SelectedLop.MaLop);
+                if (lopDelete != null)
+                {
+                    db.Lops.Remove(lopDelete);
+                    db.SaveChanges();
+                    LoadData();
+                    ClearForm();
+                }
             }
-            catch (SqlException ex)
+            catch (System.Exception ex)
             {
-                DS_Lop = new ObservableCollection<Lop>();
-                DS_Khoa = new ObservableCollection<Khoa>();
-                MessageBox.Show("Chua ket noi duoc CSDL QLSinhVien_Buoi11. Hay chay file CSDL_Buoi11.sql truoc.\n" + ex.Message);
+                MessageBox.Show("Lỗi khi xóa: " + ex.Message);
             }
-            SelectedLop = DS_Lop.FirstOrDefault();
         }
 
-        private void BeginAdd()
-        {
-            IsAdding = true;
-            IsEditing = false;
-            MaLop = "";
-            TenLop = "";
-            MaKhoa = DS_Khoa.FirstOrDefault()?.MaKhoa;
-            OnPropertyChanged(nameof(IsSaving));
-        }
-
-        private void BeginEdit()
-        {
-            IsEditing = true;
-            IsAdding = false;
-            OnPropertyChanged(nameof(IsSaving));
-        }
-
-        private void Save()
+        private void ExecuteLuu()
         {
             if (string.IsNullOrWhiteSpace(MaLop) || string.IsNullOrWhiteSpace(TenLop) || string.IsNullOrWhiteSpace(MaKhoa))
             {
-                MessageBox.Show("Ma lop, ten lop va khoa khong duoc de trong.");
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin lớp!");
                 return;
             }
-
-            if (IsAdding)
+            try
             {
-                if (SqlData.Exists("Lop", "MaLop", MaLop))
+                if (isAdding)
                 {
-                    MessageBox.Show("Ma lop da ton tai.");
-                    return;
+                    if (db.Lops.Any(l => l.MaLop == MaLop.Trim()))
+                    {
+                        MessageBox.Show("Mã lớp đã tồn tại!");
+                        return;
+                    }
+                    db.Lops.Add(new Lop { MaLop = MaLop.Trim(), TenLop = TenLop.Trim(), MaKhoa = MaKhoa });
                 }
-
-                SqlData.AddLop(new Lop { MaLop = MaLop, TenLop = TenLop, MaKhoa = MaKhoa });
+                else if (isEditing && SelectedLop != null)
+                {
+                    var lopUp = db.Lops.Find(SelectedLop.MaLop);
+                    if (lopUp != null)
+                    {
+                        lopUp.TenLop = TenLop.Trim();
+                        lopUp.MaKhoa = MaKhoa;
+                    }
+                }
+                db.SaveChanges();
+                MessageBox.Show("Lưu dữ liệu lớp thành công!");
+                isAdding = false;
+                isEditing = false;
                 LoadData();
-                SelectedLop = DS_Lop.FirstOrDefault(l => l.MaLop == MaLop);
+                ClearForm();
             }
-            else if (IsEditing && SelectedLop != null)
+            catch (System.Exception ex)
             {
-                SqlData.UpdateLop(new Lop { MaLop = MaLop, TenLop = TenLop, MaKhoa = MaKhoa });
-                LoadData();
-                SelectedLop = DS_Lop.FirstOrDefault(l => l.MaLop == MaLop);
+                MessageBox.Show("Lỗi khi lưu: " + ex.Message);
             }
-
-            IsAdding = false;
-            IsEditing = false;
-            OnPropertyChanged(nameof(IsSaving));
         }
 
-        private void Cancel()
+        private void ExecuteHuy()
         {
-            IsAdding = false;
-            IsEditing = false;
-            OnPropertyChanged(nameof(IsSaving));
-            SelectedLop = SelectedLop ?? DS_Lop.FirstOrDefault();
+            isAdding = false;
+            isEditing = false;
+            SelectedLop = null;
+            ClearForm();
         }
 
-        private void Delete()
+        private void ClearForm()
         {
-            if (SqlData.Exists("SinhVien", "MaLop", SelectedLop.MaLop))
-            {
-                MessageBox.Show("Khong the xoa lop dang co sinh vien.");
-                return;
-            }
-
-            SqlData.DeleteLop(SelectedLop.MaLop);
-            LoadData();
+            MaLop = string.Empty;
+            TenLop = string.Empty;
+            MaKhoa = null;
         }
     }
 }

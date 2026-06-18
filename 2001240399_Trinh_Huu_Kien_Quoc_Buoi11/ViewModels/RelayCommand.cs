@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using System.Windows.Input;
 
-namespace Lab11_ValidationNavigation.ViewModels
+namespace _2001240399_TrinhHuuKienQuoc_Buoi11.ViewModels
 {
     public class RelayCommand : ICommand
     {
@@ -10,7 +10,10 @@ namespace Lab11_ValidationNavigation.ViewModels
 
         public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
         {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            if (execute == null)
+                throw new ArgumentNullException(nameof(execute));
+
+            _execute = execute;
             _canExecute = canExecute;
         }
 

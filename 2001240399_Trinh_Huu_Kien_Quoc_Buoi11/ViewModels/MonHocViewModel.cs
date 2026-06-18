@@ -1,115 +1,182 @@
+﻿using _2001240399_TrinhHuuKienQuoc_Buoi11.Models;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.Data.SqlClient;
-using Lab11_ValidationNavigation.Data;
-using Lab11_ValidationNavigation.Models;
 
-namespace Lab11_ValidationNavigation.ViewModels
+namespace _2001240399_TrinhHuuKienQuoc_Buoi11.ViewModels
 {
-    public class MonHocViewModel : BaseViewModel
+    public class MonHocViewModel : BaseViewModel, IDataErrorInfo
     {
-        private MonHoc _selectedMonHoc;
+        private QLSinhVien_Buoi11Entities db = new QLSinhVien_Buoi11Entities();
+        private bool isAdding;
+        private bool isEditing;
 
-        private ObservableCollection<MonHoc> _dsMonHoc;
+        public ObservableCollection<MonHoc> DS_MonHoc { get; set; }
+        public RelayCommand ThemCommand { get; set; }
+        public RelayCommand SuaCommand { get; set; }
+        public RelayCommand XoaCommand { get; set; }
+        public RelayCommand LuuCommand { get; set; }
+        public RelayCommand HuyCommand { get; set; }
 
-        public ObservableCollection<MonHoc> DS_MonHoc
-        {
-            get { return _dsMonHoc; }
-            set { _dsMonHoc = value; OnPropertyChanged(); }
-        }
-        public MonHocInputViewModel NewMonHoc { get; } = new MonHocInputViewModel();
-
+        private MonHoc _SelectedMonHoc;
         public MonHoc SelectedMonHoc
         {
-            get { return _selectedMonHoc; }
+            get => _SelectedMonHoc;
             set
             {
-                _selectedMonHoc = value;
-                OnPropertyChanged();
-                if (value != null)
+                _SelectedMonHoc = value;
+                OnPropertyChanged(nameof(SelectedMonHoc));
+                if (SelectedMonHoc != null && !isAdding && !isEditing)
                 {
-                    NewMonHoc.IsEdit = true;
-                    NewMonHoc.OldMaMon = value.MaMon;
-                    NewMonHoc.MaMon = value.MaMon;
-                    NewMonHoc.TenMon = value.TenMon;
-                    NewMonHoc.SoTinChi = value.SoTinChi.ToString();
+                    MaMon = SelectedMonHoc.MaMon;
+                    TenMon = SelectedMonHoc.TenMon;
+                    SoTinChi = SelectedMonHoc.SoTinChi.ToString();
                 }
             }
         }
 
-        public ICommand AddCommand { get; }
-        public ICommand UpdateCommand { get; }
-        public ICommand DeleteCommand { get; }
-        public ICommand ClearCommand { get; }
+        private string _MaMon;
+        public string MaMon { get => _MaMon; set { _MaMon = value; OnPropertyChanged(nameof(MaMon)); RefreshValid(); } }
+        private string _TenMon;
+        public string TenMon { get => _TenMon; set { _TenMon = value; OnPropertyChanged(nameof(TenMon)); RefreshValid(); } }
+        private string _SoTinChi;
+        public string SoTinChi { get => _SoTinChi; set { _SoTinChi = value; OnPropertyChanged(nameof(SoTinChi)); RefreshValid(); } }
+
+        public bool IsValid => string.IsNullOrEmpty(this[nameof(MaMon)]) && string.IsNullOrEmpty(this[nameof(TenMon)]) && string.IsNullOrEmpty(this[nameof(SoTinChi)]);
+        public string Error => null;
+
+        public string this[string columnName]
+        {
+            get
+            {
+                if (columnName == nameof(MaMon))
+                {
+                    if (string.IsNullOrWhiteSpace(MaMon)) return "Mã môn không được để trống";
+                    if (MaMon.Trim().Length > 10) return "Mã môn tối đa 10 ký tự";
+                    if (isAdding && db.MonHocs.Any(m => m.MaMon == MaMon.Trim())) return "Mã môn đã tồn tại";
+                }
+                if (columnName == nameof(TenMon))
+                {
+                    if (string.IsNullOrWhiteSpace(TenMon)) return "Tên môn không được để trống";
+                    if (TenMon.Trim().Length > 50) return "Tên môn tối đa 50 ký tự";
+                    if (db.MonHocs.Any(m => m.TenMon == TenMon.Trim() && (isAdding || m.MaMon != SelectedMonHoc.MaMon))) return "Tên môn đã tồn tại";
+                }
+                if (columnName == nameof(SoTinChi))
+                {
+                    if (string.IsNullOrWhiteSpace(SoTinChi)) return "Số tín chỉ không được để trống";
+                    int soTC;
+                    if (!int.TryParse(SoTinChi, out soTC)) return "Số tín chỉ phải là số nguyên";
+                    if (soTC <= 0 || soTC > 10) return "Số tín chỉ phải từ 1 đến 10";
+                }
+                return null;
+            }
+        }
 
         public MonHocViewModel()
         {
-            AddCommand = new RelayCommand(o => Add());
-            UpdateCommand = new RelayCommand(o => Update(), o => SelectedMonHoc != null);
-            DeleteCommand = new RelayCommand(o => Delete(), o => SelectedMonHoc != null);
-            ClearCommand = new RelayCommand(o => Clear());
+            ThemCommand = new RelayCommand(o => ExecuteThem());
+            SuaCommand = new RelayCommand(o => ExecuteSua(), o => SelectedMonHoc != null && !isAdding && !isEditing);
+            XoaCommand = new RelayCommand(o => ExecuteXoa(), o => SelectedMonHoc != null && !isAdding && !isEditing);
+            LuuCommand = new RelayCommand(o => ExecuteLuu(), o => (isAdding || isEditing) && IsValid);
+            HuyCommand = new RelayCommand(o => ExecuteHuy(), o => isAdding || isEditing);
             LoadData();
+        }
+
+        private void RefreshValid()
+        {
+            OnPropertyChanged(nameof(IsValid));
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private void LoadData()
         {
+            DS_MonHoc = new ObservableCollection<MonHoc>(db.MonHocs.ToList());
+            OnPropertyChanged(nameof(DS_MonHoc));
+        }
+
+        private void ExecuteThem()
+        {
+            isAdding = true;
+            isEditing = false;
+            ClearForm();
+        }
+
+        private void ExecuteSua()
+        {
+            if (SelectedMonHoc == null) return;
+            isAdding = false;
+            isEditing = true;
+            RefreshValid();
+        }
+
+        private void ExecuteXoa()
+        {
+            if (SelectedMonHoc == null) return;
+            if (MessageBox.Show("Bạn chắc chắn muốn xóa môn học này?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) return;
             try
             {
-                DS_MonHoc = SqlData.LoadMonHocs();
+                var monDelete = db.MonHocs.Find(SelectedMonHoc.MaMon);
+                if (monDelete != null)
+                {
+                    db.MonHocs.Remove(monDelete);
+                    db.SaveChanges();
+                    LoadData();
+                    ClearForm();
+                }
             }
-            catch (SqlException ex)
+            catch (System.Exception ex)
             {
-                DS_MonHoc = new ObservableCollection<MonHoc>();
-                MessageBox.Show("Chua ket noi duoc CSDL QLSinhVien_Buoi11. Hay chay file CSDL_Buoi11.sql truoc.\n" + ex.Message);
+                MessageBox.Show("Lỗi khi xóa: " + ex.Message);
             }
-            SelectedMonHoc = DS_MonHoc.FirstOrDefault();
         }
 
-        private void Add()
+        private void ExecuteLuu()
         {
-            NewMonHoc.IsEdit = false;
-            if (!NewMonHoc.IsValid)
+            if (!IsValid) return;
+            int soTC = int.Parse(SoTinChi);
+            try
             {
-                MessageBox.Show("Du lieu mon hoc khong hop le.");
-                return;
+                if (isAdding)
+                {
+                    db.MonHocs.Add(new MonHoc { MaMon = MaMon.Trim(), TenMon = TenMon.Trim(), SoTinChi = soTC });
+                }
+                else if (isEditing && SelectedMonHoc != null)
+                {
+                    var monUp = db.MonHocs.Find(SelectedMonHoc.MaMon);
+                    if (monUp != null)
+                    {
+                        monUp.TenMon = TenMon.Trim();
+                        monUp.SoTinChi = soTC;
+                    }
+                }
+                db.SaveChanges();
+                MessageBox.Show("Lưu dữ liệu môn học thành công!");
+                isAdding = false;
+                isEditing = false;
+                LoadData();
+                ClearForm();
             }
-
-            SqlData.AddMonHoc(new MonHoc { MaMon = NewMonHoc.MaMon, TenMon = NewMonHoc.TenMon, SoTinChi = int.Parse(NewMonHoc.SoTinChi) });
-            LoadData();
-            SelectedMonHoc = DS_MonHoc.FirstOrDefault(m => m.MaMon == NewMonHoc.MaMon);
-        }
-
-        private void Update()
-        {
-            NewMonHoc.IsEdit = true;
-            NewMonHoc.OldMaMon = SelectedMonHoc.MaMon;
-            if (!NewMonHoc.IsValid)
+            catch (System.Exception ex)
             {
-                MessageBox.Show("Du lieu cap nhat mon hoc khong hop le.");
-                return;
+                MessageBox.Show("Lỗi khi lưu: " + ex.Message);
             }
-
-            var oldMaMon = SelectedMonHoc.MaMon;
-            SqlData.UpdateMonHoc(oldMaMon, new MonHoc { MaMon = NewMonHoc.MaMon, TenMon = NewMonHoc.TenMon, SoTinChi = int.Parse(NewMonHoc.SoTinChi) });
-            LoadData();
-            SelectedMonHoc = DS_MonHoc.FirstOrDefault(m => m.MaMon == NewMonHoc.MaMon);
         }
 
-        private void Delete()
+        private void ExecuteHuy()
         {
-            SqlData.DeleteMonHoc(SelectedMonHoc.MaMon);
-            LoadData();
+            isAdding = false;
+            isEditing = false;
+            SelectedMonHoc = null;
+            ClearForm();
         }
 
-        private void Clear()
+        private void ClearForm()
         {
-            NewMonHoc.IsEdit = false;
-            NewMonHoc.OldMaMon = null;
-            NewMonHoc.MaMon = "";
-            NewMonHoc.TenMon = "";
-            NewMonHoc.SoTinChi = "";
+            MaMon = string.Empty;
+            TenMon = string.Empty;
+            SoTinChi = string.Empty;
         }
     }
 }

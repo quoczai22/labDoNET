@@ -3,16 +3,17 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using Bai5.Views;
+using System.Windows.Input;
 
 namespace Bai5.ViewModels
 {
     public class QuanLyMonHocViewModel : BaseViewModel
     {
         QLSinhVienEntities db = new QLSinhVienEntities();
+        private bool isAdding = false;
+        private bool isEditing = false;
+
         public ObservableCollection<MonHoc> DS_MonHoc { get; set; }
         public List<string> DS_TinhChat { get; set; } = new List<string> { "Bắt buộc", "Tự chọn" };
 
@@ -24,71 +25,37 @@ namespace Bai5.ViewModels
             {
                 _selectedMonHoc = value;
                 OnPropertyChanged(nameof(SelectedMonHoc));
-                if (SelectedMonHoc != null)
+                if (SelectedMonHoc != null && !isAdding && !isEditing)
                 {
                     MaMH = SelectedMonHoc.MaMonHoc;
                     TenMH = SelectedMonHoc.TenMonHoc;
-                    SoTinChi =SelectedMonHoc.SoTC;
+                    SoTinChi = SelectedMonHoc.SoTC;
                     TinhChat = SelectedMonHoc.TinhChat;
                 }
+                CommandManager.InvalidateRequerySuggested();
             }
         }
+
         string _maMH;
-        public string MaMH
-        {
-            get { return _maMH; }
-            set
-            {
-                _maMH = value;
-                OnPropertyChanged(nameof(MaMH));
-            }
-        }
+        public string MaMH { get { return _maMH; } set { _maMH = value; OnPropertyChanged(nameof(MaMH)); } }
+
         string _tenMH;
-        public string TenMH
-        {
-            get { return _tenMH; }
-            set
-            {
-                _tenMH = value;
-                OnPropertyChanged(nameof(TenMH));
-            }
-        }
+        public string TenMH { get { return _tenMH; } set { _tenMH = value; OnPropertyChanged(nameof(TenMH)); } }
+
         int? _soTinChi;
-        public int? SoTinChi
-        {
-            get { return _soTinChi; }
-            set
-            {
-                _soTinChi = value;
-                OnPropertyChanged(nameof(SoTinChi));
-            }
-        }
+        public int? SoTinChi { get { return _soTinChi; } set { _soTinChi = value; OnPropertyChanged(nameof(SoTinChi)); } }
+
         string _tinhChat;
-        public string TinhChat
-        {
-            get { return _tinhChat; }
-            set
-            {
-                _tinhChat = value;
-                OnPropertyChanged(nameof(TinhChat));
-            }
-        }
+        public string TinhChat { get { return _tinhChat; } set { _tinhChat = value; OnPropertyChanged(nameof(TinhChat)); } }
+
         private bool _isReadOnlyMaMon;
-        public bool IsReadOnlyMaMon
-        {
-            get { return _isReadOnlyMaMon; }
-            set { _isReadOnlyMaMon = value; OnPropertyChanged(nameof(IsReadOnlyMaMon)); }
-        }
+        public bool IsReadOnlyMaMon { get { return _isReadOnlyMaMon; } set { _isReadOnlyMaMon = value; OnPropertyChanged(nameof(IsReadOnlyMaMon)); } }
 
         private bool _isReadOnlyTenMon;
-        public bool IsReadOnlyTenMon
-        {
-            get { return _isReadOnlyTenMon; }
-            set { _isReadOnlyTenMon = value; OnPropertyChanged(nameof(IsReadOnlyTenMon)); }
-        }
+        public bool IsReadOnlyTenMon { get { return _isReadOnlyTenMon; } set { _isReadOnlyTenMon = value; OnPropertyChanged(nameof(IsReadOnlyTenMon)); } }
 
         public RelayCommand AddCommand { get; set; }
-        public RelayCommand DeleteCommand { get;set; }
+        public RelayCommand DeleteCommand { get; set; }
         public RelayCommand EditCommand { get; set; }
         public RelayCommand SaveCommand { get; set; }
         public RelayCommand CancelCommand { get; set; }
@@ -106,125 +73,133 @@ namespace Bai5.ViewModels
         void LoadData()
         {
             DS_MonHoc = new ObservableCollection<MonHoc>(db.MonHocs.ToList());
+            OnPropertyChanged(nameof(DS_MonHoc));
         }
 
-        bool CanAdd(object p)  { return true; }
-        public bool CanEdit(object p) { return true; }
-        public bool CanDelete(object p) { return true; }
-        public bool CanSave(object p) { return true; }
-        public bool CanCancel(object p)  { return true; }
+        bool CanAdd(object p) { return !isAdding && !isEditing; }
+        public bool CanEdit(object p) { return SelectedMonHoc != null && !isAdding && !isEditing; }
+        public bool CanDelete(object p) { return SelectedMonHoc != null && !isAdding && !isEditing; }
+        public bool CanSave(object p) { return isAdding || isEditing; }
+        public bool CanCancel(object p) { return isAdding || isEditing; }
 
         void Add(object p)
         {
-             var newMonHoc = new MonHoc
-            {
-                MaMonHoc = MaMH,
-                TenMonHoc = TenMH,
-                SoTC = SoTinChi,
-                TinhChat = TinhChat
-            };
-            db.MonHocs.Add(newMonHoc);
-            try
-            {
-                SelectedMonHoc = null;
-                MaMH = string.Empty;
-                TenMH = string.Empty;
-                TinhChat = string.Empty;
-                SoTinChi = null;
-            }
-            catch (System.Data.Entity.Validation.DbEntityValidationException ex)
-            {
-                foreach (var validationErrors in ex.EntityValidationErrors)
-                {
-                    foreach (var validationError in validationErrors.ValidationErrors)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
-                        MessageBox.Show($"Lỗi cột: {validationError.PropertyName} - {validationError.ErrorMessage}");
-                    }
-                }
-            }
-            MaMH = TenMH = TinhChat = string.Empty;
-            SoTinChi = null;
+            isAdding = true;
+            isEditing = false;
+            SelectedMonHoc = null;
+            IsReadOnlyMaMon = false;
+            IsReadOnlyTenMon = false;
+            ClearForm();
+            CommandManager.InvalidateRequerySuggested();
         }
 
         void Edit(object p)
         {
-            if (SelectedMonHoc != null)
+            if (SelectedMonHoc == null)
             {
-                var monHoc = db.MonHocs.Find(SelectedMonHoc.MaMonHoc);
-                if (monHoc != null)
-                {
-                    monHoc.TenMonHoc = TenMH;
-                    monHoc.SoTC = SoTinChi;
-                    monHoc.TinhChat = TinhChat;
-                    db.SaveChanges();
-                    LoadData();
-                }
+                MessageBox.Show("Vui lòng chọn môn học cần sửa!");
+                return;
             }
+
+            isAdding = false;
+            isEditing = true;
+            IsReadOnlyMaMon = true;
+            IsReadOnlyTenMon = false;
+            MaMH = SelectedMonHoc.MaMonHoc;
+            TenMH = SelectedMonHoc.TenMonHoc;
+            SoTinChi = SelectedMonHoc.SoTC;
+            TinhChat = SelectedMonHoc.TinhChat;
+            CommandManager.InvalidateRequerySuggested();
         }
 
         void Delete(object p)
         {
-            if (SelectedMonHoc != null)
+            if (SelectedMonHoc == null)
+            {
+                MessageBox.Show("Vui lòng chọn môn học cần xóa!");
+                return;
+            }
+
+            if (MessageBox.Show("Bạn chắc chắn muốn xóa môn học này?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) return;
+
+            try
             {
                 var monHoc = db.MonHocs.Find(SelectedMonHoc.MaMonHoc);
                 if (monHoc != null)
                 {
                     db.MonHocs.Remove(monHoc);
                     db.SaveChanges();
-                    DS_MonHoc.Remove(SelectedMonHoc);
+                    LoadData();
+                    ClearForm();
+                    SelectedMonHoc = null;
+                    MessageBox.Show("Xóa môn học thành công!");
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi xóa: " + ex.Message);
             }
         }
 
         void Save(object p)
         {
-            // 1. Chặn ngay từ đầu nếu TextBox trống (khỏi sợ lỗi null từ EF)
-            if (string.IsNullOrWhiteSpace(MaMH) || string.IsNullOrWhiteSpace(TenMH))
+            if (!isAdding && !isEditing)
             {
-                MessageBox.Show("Mã môn và Tên môn không được để trống!");
+                MessageBox.Show("Vui lòng bấm Thêm hoặc Sửa trước khi Lưu!");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(MaMH) || string.IsNullOrWhiteSpace(TenMH) || SoTinChi == null || string.IsNullOrWhiteSpace(TinhChat))
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin môn học!");
                 return;
             }
 
             try
             {
-                // 2. Tìm xem mã này đã có trong DB chưa
-                var monHoc = db.MonHocs.Find(MaMH.Trim());
-
-                if (monHoc == null)
+                if (isAdding)
                 {
-                    // NẾU CHƯA CÓ -> THÊM MỚI
-                    monHoc = new MonHoc
+                    if (db.MonHocs.Any(m => m.MaMonHoc == MaMH.Trim()))
+                    {
+                        MessageBox.Show("Mã môn học đã tồn tại!");
+                        return;
+                    }
+
+                    var newMonHoc = new MonHoc
                     {
                         MaMonHoc = MaMH.Trim(),
                         TenMonHoc = TenMH.Trim(),
                         SoTC = SoTinChi,
                         TinhChat = TinhChat
                     };
-                    db.MonHocs.Add(monHoc);
+                    db.MonHocs.Add(newMonHoc);
                 }
-                else
+                else if (isEditing)
                 {
-                    // NẾU ĐÃ CÓ -> CẬP NHẬT (SỬA)
-                    monHoc.TenMonHoc = TenMH.Trim();
-                    monHoc.SoTC = SoTinChi;
-                    monHoc.TinhChat = TinhChat;
+                    var monHoc = db.MonHocs.Find(SelectedMonHoc.MaMonHoc);
+                    if (monHoc != null)
+                    {
+                        monHoc.TenMonHoc = TenMH.Trim();
+                        monHoc.SoTC = SoTinChi;
+                        monHoc.TinhChat = TinhChat;
+                    }
                 }
 
-                // 3. Đẩy xuống DB
                 db.SaveChanges();
                 MessageBox.Show("Lưu dữ liệu thành công!");
-
-                // Nạp lại danh sách lên DataGrid
+                isAdding = false;
+                isEditing = false;
+                IsReadOnlyMaMon = false;
+                IsReadOnlyTenMon = false;
                 LoadData();
+                ClearForm();
+                SelectedMonHoc = null;
+                CommandManager.InvalidateRequerySuggested();
             }
             catch (System.Data.Entity.Validation.DbEntityValidationException ex)
             {
-                // Bắt lỗi Validation nếu còn
-                var errorMessages = ex.EntityValidationErrors
-                        .SelectMany(x => x.ValidationErrors)
-                        .Select(x => x.ErrorMessage);
-                MessageBox.Show("Lỗi rành buộc DB:\n" + string.Join("\n", errorMessages));
+                var errorMessages = ex.EntityValidationErrors.SelectMany(x => x.ValidationErrors).Select(x => x.ErrorMessage);
+                MessageBox.Show("Lỗi ràng buộc DB:\n" + string.Join("\n", errorMessages));
             }
             catch (Exception ex)
             {
@@ -232,12 +207,23 @@ namespace Bai5.ViewModels
             }
         }
 
-
         void Cancel(object p)
         {
-            MaMH = TenMH = TinhChat = string.Empty;
-            SoTinChi = null;
+            isAdding = false;
+            isEditing = false;
+            IsReadOnlyMaMon = false;
+            IsReadOnlyTenMon = false;
             SelectedMonHoc = null;
+            ClearForm();
+            CommandManager.InvalidateRequerySuggested();
+        }
+
+        void ClearForm()
+        {
+            MaMH = string.Empty;
+            TenMH = string.Empty;
+            TinhChat = null;
+            SoTinChi = null;
         }
     }
 }
